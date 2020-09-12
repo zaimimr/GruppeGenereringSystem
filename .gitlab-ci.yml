@@ -11,18 +11,15 @@ build:
     - yarn install
     - yarn run build
 
-
-Job deploying
-
 before_script:
   - yarn install -g firebase-tools
 
 deploy:
   stage: deploy
- script:
-  - cd frontend/src
-  - yarn install
-  - cd ..
-  - firebase deploy --token $FIREBASE_TOKEN
-only:
-  - dev
+  script:
+    - cd frontend/src
+    - yarn install
+    - cd ..
+    - firebase deploy --token $FIREBASE_TOKEN
+  only:
+    - dev
