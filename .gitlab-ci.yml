@@ -17,9 +17,9 @@ before_script:
 deploy:
   stage: deploy
   script:
-    - cd frontend/src
+    - cd frontend
     - yarn install
     - cd ..
-    - firebase deploy --token $FIREBASE_TOKEN
+    - firebase use gruppegenereringsssytem deploy --token $FIREBASE_TOKEN
   only:
     - dev
