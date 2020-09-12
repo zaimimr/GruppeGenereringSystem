@@ -4,7 +4,7 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-      <h1>Gruppegenereringssystem</h1>
+      <h1>Gruppegenereringssystem v1</h1>
     </div>
   );
 }
