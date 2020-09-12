@@ -8,7 +8,7 @@ lint:
   stage: lint
   script:
     - cd frontend
-    - yarn install eslint
+    - yarn add eslint
     - node_modules/eslint/bin/eslint.js
 
 #Build
@@ -19,6 +19,7 @@ build:
     - yarn install
     - yarn run build
 
+#Dont think is necessary to have these with before script
 before_script:
   - yarn global add firebase-tools
 
