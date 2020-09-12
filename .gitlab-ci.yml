@@ -20,6 +20,6 @@ deploy:
     - cd frontend
     - yarn install
     - cd ..
-    - firebase use gruppegenereringsssytem deploy --token $FIREBASE_TOKEN
+    - firebase use gruppegenereringsssytem deploy --token "$FIREBASE_TOKEN"
   only:
     - dev
