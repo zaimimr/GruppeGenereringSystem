@@ -1,7 +1,15 @@
 image: node:12.13.0-alpine
 stages:
   - build
+  - lint
   - deploy
+
+lint:
+  stage: lint
+  script:
+    - cd frontend
+    - yarn install eslint
+    - node_modules/eslint/bin/eslint.js
 
 #Build
 build:
