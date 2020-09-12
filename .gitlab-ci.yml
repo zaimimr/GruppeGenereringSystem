@@ -1,0 +1,34 @@
+image: node:12.13.0-alpine
+stages:
+  - build
+  - lint
+  - deploy
+
+lint:
+  stage: lint
+  script:
+    - cd frontend
+    - yarn add eslint
+    - node_modules/eslint/bin/eslint.js
+
+#Build
+build:
+  stage: build
+  script:
+    - cd frontend
+    - yarn install
+    - yarn run build
+
+#Dont think is necessary to have these with before script
+before_script:
+  - yarn global add firebase-tools
+
+deploy:
+  stage: deploy
+  script:
+    - cd frontend
+    - yarn install
+    - yarn run build
+    - firebase deploy --only hosting --token $FIREBASE_TOKEN
+  only:
+    - dev
