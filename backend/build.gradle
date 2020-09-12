@@ -7,19 +7,12 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.github.jengelman.gradle.plugins:shadow:5.2.0"
-        classpath "com.google.cloud.tools:appengine-gradle-plugin:2.1.0"
     }
 }
 
 apply plugin: 'kotlin'
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: 'application'
-apply plugin: 'war'
-apply plugin: 'com.google.cloud.tools.appengine'
-
-appengine.deploy.projectId = 'GCLOUD_CONFIG'
-appengine.deploy.version = 'GCLOUD_CONFIG'
-
 
 group 'com.gruppe7'
 version '0.0.1'
@@ -55,8 +48,6 @@ dependencies {
 
     implementation("io.github.cdimascio:java-dotenv:5.2.2")
 
-    providedCompile("com.google.appengine:appengine:1.9.60")
-
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
 
 }
@@ -66,7 +57,3 @@ shadowJar {
     classifier = null
     version = null
 }
-
-kotlin.experimental.coroutines = 'enable'
-
-task run(dependsOn: appengineRun)
