@@ -19,6 +19,7 @@ deploy:
   script:
     - cd frontend
     - yarn install
+    - yarn run build
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
   only:
     - dev
