@@ -16,7 +16,7 @@ build:
   stage: build
   script:
     - cd frontend
-    - yarn add
+    - yarn install
     - yarn run build
 
 #Dont think is necessary to have these with before script
@@ -27,7 +27,7 @@ deploy:
   stage: deploy
   script:
     - cd frontend
-    - yarn add
+    - yarn install
     - yarn run build
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
   only:
