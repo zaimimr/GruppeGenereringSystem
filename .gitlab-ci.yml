@@ -1,13 +1,14 @@
 image: node:12.13.0-alpine
-stages: -build
+stages:
+  - build
 
 #Build
 build:
   stage: build
-  script: 
+  script:
     - cd frontend
-    -yarn install
-    -yarn run build
+    - yarn install
+    - yarn run build
 #Job deploying
 #image: node:12.13.0-alpine
 
