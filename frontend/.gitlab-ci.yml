@@ -4,7 +4,9 @@ stages: -build
 #Build
 build:
   stage: build
-  script: -yarn install
+  script: 
+    - cd frontend
+    -yarn install
     -yarn run build
 #Job deploying
 #image: node:12.13.0-alpine
