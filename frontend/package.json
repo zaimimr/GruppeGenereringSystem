@@ -47,7 +47,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn run pretest"
+      "pre-commit": "eslint --fix src --ext .tsx && yarn run pretest"
     }
   }
 }
