@@ -1,5 +1,8 @@
 package com.gruppe7
 
+import com.gruppe7.service.DatabaseFactory
+import com.gruppe7.service.UserService
+import com.gruppe7.web.user
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -12,16 +15,20 @@ import io.ktor.http.cio.websocket.*
 import java.time.*
 import io.ktor.auth.*
 import io.ktor.gson.*
+import javax.xml.crypto.Data
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+
     install(CallLogging) {
         level = Level.INFO
         filter { call -> call.request.path().startsWith("/") }
     }
+
+    DatabaseFactory.init();
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -49,10 +56,19 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 
+    val userService = UserService();
+
+    install(Routing) {
+        user(userService)
+    }
+
+
     routing {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
+
+
 
         webSocket("/myws/echo") {
             send(Frame.Text("Hi from server"))

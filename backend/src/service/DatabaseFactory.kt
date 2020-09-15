@@ -1,5 +1,7 @@
 package com.gruppe7.service
 
+import com.gruppe7.model.User
+import com.gruppe7.model.Users
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import model.Widgets
@@ -15,6 +17,33 @@ object DatabaseFactory {
     fun init() {
         Database.connect(hikari())
         transaction {
+            create(Users);
+
+
+            /*
+            Users.insert {
+                it[name] = "Max T. Schau";
+                it[email] = "max.torre.schau@gmail.com";
+                it[password_hash] = "sdkjfkdjsf";
+
+            }
+
+            Users.insert {
+                it[name] = "Zaim Imran";
+                it[email] = "zaim.imran@gmail.com";
+                it[password_hash] = "hgjghjghjfthrth23";
+
+            }
+
+             */
+
+
+
+
+        }
+        /*
+
+        transaction {
             create(Widgets)
             Widgets.insert {
                 it[name] = "widget one"
@@ -27,6 +56,8 @@ object DatabaseFactory {
                 it[dateUpdated] = System.currentTimeMillis()
             }
         }
+
+         */
     }
 
     private fun hikari(): HikariDataSource {
