@@ -2,29 +2,40 @@ package com.gruppe7.service
 
 import com.gruppe7.model.*
 import model.*
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import java.lang.Exception
+import java.sql.SQLException
+import java.util.*
+import com.toxicbakery.bcrypt.Bcrypt
 
 class UserService {
+    final val SALT_ROUNDS = 6;
     suspend fun getAllUsers(): List<User> = DatabaseFactory.dbQuery {
         Users.selectAll().map { toUser(it) }
     }
 
-    suspend fun addUser(user: NewUser): User {
-        var key = 0
-        DatabaseFactory.dbQuery {
-            key = (Users.insert {
-                it[name] = user.name
-                it[email] = user.email
-                it[password_hash] = user.password_hash
-            } get Users.id)
-        }
-        return getUser(key)!!.also {
-            onChange(ChangeType.CREATE, key, it)
+    suspend fun addUser(user: User): Boolean {
+        return try {
+            val hashedPassword = Bcrypt.hash(user.password_hash, SALT_ROUNDS).toString();
+            val result = DatabaseFactory.dbQuery {
+                Users.insert {
+                    it[id] = UUID.randomUUID()
+                    it[name] = user.name
+                    it[email] = user.email
+                    it[password_hash] = hashedPassword
+                }
+            }
+            println("Result: $result");
+            true;
+        } catch (e : ExposedSQLException) {
+            println(e);
+            false;
         }
     }
 
-    suspend fun getUser(id: Int): User? = DatabaseFactory.dbQuery {
+    suspend fun getUser(id: UUID): User? = DatabaseFactory.dbQuery {
         Users.select {
             (Users.id eq id)
         }.mapNotNull { toUser(it) }
@@ -35,21 +46,12 @@ class UserService {
         Users.deleteAll();
     }
 
-    suspend fun deleteUser(id: Int): Boolean {
+    suspend fun deleteUser(id: UUID): Boolean {
         return DatabaseFactory.dbQuery {
             Users.deleteWhere { Users.id eq id } > 0
-        }.also {
-            if (it) onChange(ChangeType.DELETE, id)
         }
     }
 
-    private val listeners = mutableMapOf<Int, suspend (Notification<User?>) -> Unit>()
-
-    private suspend fun onChange(type: ChangeType, id: Int, entity: User? = null) {
-        listeners.values.forEach {
-            it.invoke(Notification(type, id, entity))
-        }
-    }
 
     private fun toUser(row: ResultRow): User =
             User(

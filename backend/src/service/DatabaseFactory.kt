@@ -11,6 +11,7 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import io.github.cdimascio.dotenv.dotenv
+import java.util.*
 
 object DatabaseFactory {
 
@@ -19,16 +20,16 @@ object DatabaseFactory {
         transaction {
             create(Users);
 
-
             /*
             Users.insert {
+                it[id] = UUID.randomUUID();
                 it[name] = "Max T. Schau";
                 it[email] = "max.torre.schau@gmail.com";
                 it[password_hash] = "sdkjfkdjsf";
-
             }
 
             Users.insert {
+                it[id] = UUID.randomUUID();
                 it[name] = "Zaim Imran";
                 it[email] = "zaim.imran@gmail.com";
                 it[password_hash] = "hgjghjghjfthrth23";
@@ -36,6 +37,8 @@ object DatabaseFactory {
             }
 
              */
+
+
 
 
 
