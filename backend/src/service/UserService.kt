@@ -6,26 +6,8 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class UserService {
-
-    private val listeners = mutableMapOf<Int, suspend (Notification<User?>) -> Unit>()
-
-    fun addChangeListener(id: Int, listener: suspend (Notification<User?>) -> Unit) {
-        listeners[id] = listener
-    }
-
-    fun removeChangeListener(id: Int) = listeners.remove(id)
-
-    private suspend fun onChange(type: ChangeType, id: Int, entity: User? = null) {
-        listeners.values.forEach {
-            it.invoke(Notification(type, id, entity))
-        }
-    }
-
-    suspend fun getUser(id: Int): User? = DatabaseFactory.dbQuery {
-        Users.select {
-            (Users.id eq id)
-        }.mapNotNull { toUser(it) }
-                .singleOrNull()
+    suspend fun getAllUsers(): List<User> = DatabaseFactory.dbQuery {
+        Users.selectAll().map { toUser(it) }
     }
 
     suspend fun addUser(user: NewUser): User {
@@ -42,8 +24,11 @@ class UserService {
         }
     }
 
-    suspend fun getAllUsers(): List<User> = DatabaseFactory.dbQuery {
-        Users.selectAll().map { toUser(it) }
+    suspend fun getUser(id: Int): User? = DatabaseFactory.dbQuery {
+        Users.select {
+            (Users.id eq id)
+        }.mapNotNull { toUser(it) }
+                .singleOrNull()
     }
 
     suspend fun deleteAllUsers() : Int = DatabaseFactory.dbQuery {
@@ -55,6 +40,14 @@ class UserService {
             Users.deleteWhere { Users.id eq id } > 0
         }.also {
             if (it) onChange(ChangeType.DELETE, id)
+        }
+    }
+
+    private val listeners = mutableMapOf<Int, suspend (Notification<User?>) -> Unit>()
+
+    private suspend fun onChange(type: ChangeType, id: Int, entity: User? = null) {
+        listeners.values.forEach {
+            it.invoke(Notification(type, id, entity))
         }
     }
 

@@ -56,10 +56,9 @@ fun Application.module(testing: Boolean = false) {
         }
     }
 
-    val userService = UserService();
 
     install(Routing) {
-        user(userService)
+        user(UserService())
     }
 
 

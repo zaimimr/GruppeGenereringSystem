@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 
 object Users : Table() {
-    val id: Column<Int> = integer("id").autoIncrement();
+    val id: Column<Int> = integer("id");
     val name: Column<String> = varchar("name", 45);
     val email: Column<String> = varchar("email", 45);
     val password_hash : Column<String> = varchar("password_hash", 200);
@@ -22,7 +22,7 @@ data class User(
 )
 
 data class NewUser(
-        val id: Int?,
+        val id: Int,
         val name: String,
         val email: String,
         val password_hash: String,

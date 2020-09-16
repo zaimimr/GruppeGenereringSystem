@@ -17,19 +17,17 @@ fun Route.user(userService: UserService) {
             call.respond(userService.getAllUsers())
         }
 
+        post("/") {
+            val newUser = call.receive<NewUser>();
+            call.respond(HttpStatusCode.Created, userService.addUser(newUser))
+        }
+
         get("/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalStateException("Must provide id");
             val user = userService.getUser(id);
             if (user == null) call.respond(HttpStatusCode.NotFound)
             else call.respond(user)
         }
-
-        post("/") {
-            val newUser = call.receive<NewUser>();
-            println(newUser);
-            call.respond(HttpStatusCode.Created, userService.addUser(newUser))
-        }
-
 
         delete("/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalStateException("Must provide id");
