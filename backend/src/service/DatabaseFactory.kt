@@ -3,30 +3,13 @@ package com.gruppe7.service
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.github.cdimascio.dotenv.dotenv
-import model.Widgets
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils.create
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.jetbrains.exposed.sql.transactions.transaction
 
 object DatabaseFactory {
 
     fun init() {
         Database.connect(hikari())
-        transaction {
-            create(Widgets)
-            Widgets.insert {
-                it[name] = "widget one"
-                it[quantity] = 27
-                it[dateUpdated] = System.currentTimeMillis()
-            }
-            Widgets.insert {
-                it[name] = "widget two"
-                it[quantity] = 14
-                it[dateUpdated] = System.currentTimeMillis()
-            }
-        }
     }
 
     private fun hikari(): HikariDataSource {

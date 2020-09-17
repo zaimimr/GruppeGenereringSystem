@@ -1,11 +1,12 @@
 image: node:12.13.0-alpine
 stages:
   - build
+  - ktlint
   - lint
   - deploy
 
-ktlin:
-  stage: ktlin
+ktlint:
+  stage: ktlint
   script:
     - cd backend
     - ./gradlew ktlintCheck
