@@ -4,6 +4,12 @@ stages:
   - lint
   - deploy
 
+ktlin:
+  stage: ktlin
+  script:
+    - cd backend
+    - ./gradlew ktlintCheck
+
 lint:
   stage: lint
   script:

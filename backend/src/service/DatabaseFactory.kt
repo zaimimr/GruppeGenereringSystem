@@ -2,13 +2,13 @@ package com.gruppe7.service
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.github.cdimascio.dotenv.dotenv
 import model.Widgets
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import io.github.cdimascio.dotenv.dotenv
 
 object DatabaseFactory {
 
@@ -44,7 +44,7 @@ object DatabaseFactory {
     }
 
     suspend fun <T> dbQuery(
-            block: suspend () -> T): T =
-            newSuspendedTransaction { block() }
-
+        block: suspend () -> T
+    ): T =
+        newSuspendedTransaction { block() }
 }

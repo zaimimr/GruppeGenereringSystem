@@ -8,6 +8,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "org.jlleitschuh.gradle.ktlint" version "9.4.0"
+}
+
 apply plugin: 'kotlin'
 apply plugin: 'application'
 
@@ -25,8 +29,14 @@ sourceSets {
 repositories {
     mavenLocal()
     jcenter()
-    maven { url 'https://kotlin.bintray.com/ktor' }
+    maven { url 'https://kotlin.bintray.com/ktor'
+    }
 }
+
+
+
+
+
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -48,4 +58,5 @@ dependencies {
     implementation("io.github.cdimascio:java-dotenv:5.2.2")
 
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+
 }
