@@ -27,10 +27,8 @@ class UserService {
                     it[password_hash] = hashedPassword
                 }
             }
-            println("Result: $result");
             true;
         } catch (e : ExposedSQLException) {
-            println(e);
             false;
         }
     }

@@ -27,8 +27,8 @@ fun Route.user(userService: UserService) {
         get("/{id}") {
             val id : UUID = UUID.fromString(call.parameters["id"]) ?: throw IllegalStateException("Must provide id");
             val user = userService.getUser(id);
-            if (user == null) call.respond(HttpStatusCode.NotFound)
-            else call.respond(user)
+            if (user != null) call.respond(user)
+            else call.respond(HttpStatusCode.NotFound)
         }
 
         delete("/{id}") {
