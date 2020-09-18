@@ -20,7 +20,6 @@ fun Route.user(userService: UserService) {
             call.respond(userService.getAllUsers())
         }
 
-
         post("/") {
             val newUser = call.receive<User>()
             val status = userService.addUser(newUser)
