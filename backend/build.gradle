@@ -53,6 +53,10 @@ dependencies {
 
     implementation("io.github.cdimascio:java-dotenv:5.2.2")
 
+    implementation("com.ToxicBakery.library.bcrypt:bcrypt:1.0.9")
+
+
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    implementation("org.springframework.security:spring-security-core:5.4.0")
 
 }

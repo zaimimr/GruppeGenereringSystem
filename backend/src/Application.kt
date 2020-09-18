@@ -1,4 +1,8 @@
 package com.gruppe7
+
+import com.gruppe7.service.DatabaseFactory
+import com.gruppe7.service.UserService
+import com.gruppe7.web.user
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
@@ -17,6 +21,7 @@ import io.ktor.http.cio.websocket.timeout
 import io.ktor.request.path
 import io.ktor.response.respond
 import io.ktor.response.respondText
+import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.websocket.WebSockets
@@ -29,10 +34,13 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+
     install(CallLogging) {
         level = Level.INFO
         filter { call -> call.request.path().startsWith("/") }
     }
+
+    DatabaseFactory.init()
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -58,6 +66,10 @@ fun Application.module(testing: Boolean = false) {
     install(ContentNegotiation) {
         gson {
         }
+    }
+
+    install(Routing) {
+        user(UserService())
     }
 
     routing {
