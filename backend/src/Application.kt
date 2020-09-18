@@ -34,6 +34,9 @@ fun Application.module(testing: Boolean = false) {
         filter { call -> call.request.path().startsWith("/") }
     }
 
+
+
+
     install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Put)
