@@ -1,3 +1,5 @@
+cache:
+
 image: node:12.13.0-alpine
 stages:
   - build
@@ -6,7 +8,9 @@ stages:
   - deploy
 
 ktlint:
+  image: openjdk:14-ea-8-jdk-alpine3.10
   stage: ktlint
+  
   script:
     - cd backend
     - ./gradlew ktlintCheck
