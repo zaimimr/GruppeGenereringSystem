@@ -1,66 +1,22 @@
 package com.gruppe7.service
 
-import com.gruppe7.model.User
 import com.gruppe7.model.Users
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import model.Widgets
+import io.github.cdimascio.dotenv.dotenv
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils.create
-import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import io.github.cdimascio.dotenv.dotenv
-import java.util.*
 
 object DatabaseFactory {
 
     fun init() {
         Database.connect(hikari())
-        transaction {
-            create(Users);
-
-            /*
-            Users.insert {
-                it[id] = UUID.randomUUID();
-                it[name] = "Max T. Schau";
-                it[email] = "max.torre.schau@gmail.com";
-                it[password_hash] = "sdkjfkdjsf";
-            }
-
-            Users.insert {
-                it[id] = UUID.randomUUID();
-                it[name] = "Zaim Imran";
-                it[email] = "zaim.imran@gmail.com";
-                it[password_hash] = "hgjghjghjfthrth23";
-
-            }
-
-             */
-
-
-
-
-
-
-        }
-        /*
 
         transaction {
-            create(Widgets)
-            Widgets.insert {
-                it[name] = "widget one"
-                it[quantity] = 27
-                it[dateUpdated] = System.currentTimeMillis()
-            }
-            Widgets.insert {
-                it[name] = "widget two"
-                it[quantity] = 14
-                it[dateUpdated] = System.currentTimeMillis()
-            }
+            create(Users)
         }
-
-         */
     }
 
     private fun hikari(): HikariDataSource {
@@ -78,7 +34,7 @@ object DatabaseFactory {
     }
 
     suspend fun <T> dbQuery(
-            block: suspend () -> T): T =
-            newSuspendedTransaction { block() }
-
+        block: suspend () -> T
+    ): T =
+        newSuspendedTransaction { block() }
 }

@@ -1,8 +1,19 @@
+cache:
+
 image: node:12.13.0-alpine
 stages:
   - build
+  - ktlint
   - lint
   - deploy
+
+ktlint:
+  image: openjdk:14-ea-8-jdk-alpine3.10
+  stage: ktlint
+  
+  script:
+    - cd backend
+    - ./gradlew ktlintCheck
 
 lint:
   stage: lint
@@ -19,13 +30,11 @@ build:
     - yarn install
     - yarn run build
 
-#Dont think is necessary to have these with before script
-before_script:
-  - yarn global add firebase-tools
 
 deploy:
   stage: deploy
   script:
+    - yarn global add firebase-tools	
     - cd frontend
     - yarn install
     - yarn run build
