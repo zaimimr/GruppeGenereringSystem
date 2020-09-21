@@ -30,13 +30,11 @@ build:
     - yarn install
     - yarn run build
 
-#Dont think is necessary to have these with before script
-before_script:
-  - yarn global add firebase-tools
 
 deploy:
   stage: deploy
   script:
+    - yarn global add firebase-tools	
     - cd frontend
     - yarn install
     - yarn run build
