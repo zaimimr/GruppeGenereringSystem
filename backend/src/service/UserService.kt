@@ -14,14 +14,14 @@ import org.springframework.security.crypto.bcrypt.BCrypt
 import java.util.UUID
 
 class UserService {
-    private final val saltRounds = 6
+    private final val SALT_ROUNDS = 6
     suspend fun getAllUsers(): List<User> = DatabaseFactory.dbQuery {
         Users.selectAll().map { toUser(it) }
     }
 
     suspend fun addUser(user: User): Boolean {
         return try {
-            val hashedPassword = BCrypt.hashpw(user.password_hash, BCrypt.gensalt(saltRounds))
+            val hashedPassword = BCrypt.hashpw(user.password_hash, BCrypt.gensalt(SALT_ROUNDS))
             val result = DatabaseFactory.dbQuery {
                 Users.insert {
                     it[id] = UUID.randomUUID()
