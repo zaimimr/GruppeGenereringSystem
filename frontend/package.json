@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.10.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -12,15 +15,27 @@
     "husky": "^4.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-hook-form": "^6.8.2",
+    "react-modal-hook": "^3.0.0",
+    "react-papaparse": "^3.8.0",
     "react-scripts": "3.4.3",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jsdom --passWithNoTests",
     "eject": "react-scripts eject",
-    "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix"
+    "lint": "eslint --no-fix src --ext .tsx",
+    "format": "eslint --fix src --ext .tsx"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.tsx": "eslint --cache --fix"
   },
   "browserslist": {
     "production": [
@@ -35,19 +50,23 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.1",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.8.0",
     "eslint-config-babel": "^9.0.0",
-    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-babel": "^5.3.1",
     "eslint-plugin-import": "^2.20.0",
-    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-jest": "^24.0.2",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.18.0",
+    "eslint-plugin-react-hooks": "^4.1.2",
+    "eslint-plugin-simple-import-sort": "^5.0.3",
     "eslint-plugin-standard": "^4.0.1",
-    "prettier": "^1.19.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "eslint --fix src --ext .tsx && yarn run pretest"
-    }
+    "lint-staged": "^10.4.0",
+    "prettier": "^2.1.2"
   }
 }

@@ -1,13 +1,10 @@
 {
   "root": true,
-  "parser": "babel-eslint",
-  "plugins": ["react", "react-hooks", "babel"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint", "react", "react-hooks", "babel", "simple-import-sort"],
   "parserOptions": {
-    "ecmaVersion": 11,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
+    "ecmaVersion": 2020,
+    "sourceType": "module"
   },
   "env": {
     "browser": true,
@@ -15,7 +12,7 @@
     "es6": true,
     "jest": true
   },
-  "extends": ["google", "eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended"],
+  "extends": ["google", "eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended", "plugin:@typescript-eslint/recommended"],
   "globals": {
     "importScripts": true
   },
@@ -77,7 +74,12 @@
         "asyncArrow": "always",
         "named": "never"
       }
-    ]
+    ],
+    "react/prop-types": 0,
+    "simple-import-sort/sort": "error",
+    "sort-imports": "off",
+    "import/order": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off"
   },
   "settings": {
     "react": {
