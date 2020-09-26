@@ -52,6 +52,7 @@ dependencies {
     implementation("mysql:mysql-connector-java:8.0.21")
 
     implementation("io.github.cdimascio:java-dotenv:5.2.2")
+    implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.11.0")
 
 
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"

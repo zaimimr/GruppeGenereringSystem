@@ -13,7 +13,6 @@ object DatabaseFactory {
 
     fun init() {
         Database.connect(hikari())
-
         transaction {
             create(Users)
         }
