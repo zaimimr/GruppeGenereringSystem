@@ -4,3 +4,4 @@
 frontend/build
 
 backend/.gradle
+**/.DS_Store
