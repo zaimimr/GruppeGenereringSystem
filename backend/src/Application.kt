@@ -1,7 +1,8 @@
 package com.gruppe7
 
-import com.gruppe7.service.DatabaseFactory
+// import com.gruppe7.service.DatabaseFactory
 import com.gruppe7.service.UserService
+import com.gruppe7.web.socket
 import com.gruppe7.web.user
 import io.ktor.application.Application
 import io.ktor.application.call
@@ -14,9 +15,7 @@ import io.ktor.gson.gson
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
-import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.pingPeriod
-import io.ktor.http.cio.websocket.readText
 import io.ktor.http.cio.websocket.timeout
 import io.ktor.request.path
 import io.ktor.response.respond
@@ -25,7 +24,6 @@ import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.routing
 import io.ktor.websocket.WebSockets
-import io.ktor.websocket.webSocket
 import org.slf4j.event.Level
 import java.time.Duration
 
@@ -40,7 +38,7 @@ fun Application.module(testing: Boolean = false) {
         filter { call -> call.request.path().startsWith("/") }
     }
 
-    DatabaseFactory.init()
+    // DatabaseFactory.init()
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -69,22 +67,13 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(Routing) {
+        socket()
         user(UserService())
     }
 
     routing {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
-        }
-
-        webSocket("/myws/echo") {
-            send(Frame.Text("Hi from server"))
-            while (true) {
-                val frame = incoming.receive()
-                if (frame is Frame.Text) {
-                    send(Frame.Text("Client said: " + frame.readText()))
-                }
-            }
         }
 
         get("/json/gson") {
