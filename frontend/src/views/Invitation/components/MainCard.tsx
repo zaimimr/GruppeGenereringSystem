@@ -4,7 +4,7 @@ import Button from 'components/Button';
 import Dropdown from 'components/Dropdown';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
-import { useSetGroups } from 'context/GroupsContext';
+import { useSetGroups } from 'context/EventContext';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { CSVReader, readString } from 'react-papaparse';
@@ -121,18 +121,14 @@ function MainCard() {
         <Grid container spacing={4}>
           <Grid container item xs={12}>
             <Grid item sm={4} xs={12}>
-              <Controller
-                as={TextField}
+              <TextField
                 control={control}
-                defaultValue=''
-                error={Boolean(errors.groupName)}
+                error={errors.groupName}
                 fullWidth
-                helperText={errors.groupName?.message}
                 id='invitation_groupname_inputfield'
                 label='Gruppenavn'
                 name='groupName'
-                required
-                rules={{ required: 'Gruppenavn er påkrevd' }}
+                required='Gruppenavn er påkrevd'
               />
             </Grid>
           </Grid>
@@ -174,19 +170,16 @@ function MainCard() {
           )}
           {!watchDropZone && (
             <Grid item xs={12}>
-              <Controller
-                as={TextField}
+              <TextField
                 control={control}
-                defaultValue=''
-                error={Boolean(errors.csvTextarea)}
+                error={errors.csvTextarea}
                 fullWidth
-                helperText={errors.csvTextarea?.message}
                 id='invitation_groupname_inputfield'
                 label='Lim inn tekst i CSV-format'
                 multiline
                 name='csvTextarea'
+                required={watchDropZone ? undefined : 'Må oppgi CSV-data'}
                 rows={6}
-                rules={{ required: !watchDropZone && 'Må oppgi CSV-data' }}
               />
             </Grid>
           )}

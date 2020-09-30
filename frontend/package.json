@@ -4,13 +4,17 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.0",
+    "@material-ui/data-grid": "^4.0.0-alpha.6",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/styles": "^4.10.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
+    "@types/react-virtualized": "^9.21.10",
+    "axios": "^0.20.0",
     "babel": "^6.23.0",
     "husky": "^4.3.0",
     "react": "^16.13.1",
@@ -18,7 +22,10 @@
     "react-hook-form": "^6.8.2",
     "react-modal-hook": "^3.0.0",
     "react-papaparse": "^3.8.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-use-websocket": "^2.1.1",
+    "react-virtualized": "^9.22.2",
     "typescript": "^4.0.3"
   },
   "scripts": {
@@ -51,7 +58,8 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.1",
+    "@types/node": "^14.11.2",
+    "@types/react-router-dom": "^5.1.5",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "babel-eslint": "^10.1.0",

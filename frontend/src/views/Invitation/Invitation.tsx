@@ -15,9 +15,10 @@ import {
 import { DeleteOutline } from '@material-ui/icons';
 import Button from 'components/Button';
 import Paper from 'components/Paper';
-import { useSetGroups } from 'context/GroupsContext';
+import { useSetGroups } from 'context/EventContext';
 import React from 'react';
 import { useModal } from 'react-modal-hook';
+import { useHistory, useParams } from 'react-router-dom';
 import MainCard from 'views/Invitation/components/MainCard';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,6 +61,8 @@ export type GroupType = {
 };
 
 function Invitation({ title }: InvitationProps) {
+  const history = useHistory();
+  const { eventId }: { eventId: string } = useParams();
   const classes = useStyles();
   const [groups, setGroups] = useSetGroups();
   const [groupKey, setGroupKey] = React.useState(0);
@@ -92,7 +95,7 @@ function Invitation({ title }: InvitationProps) {
 
   return (
     <>
-      <Typography gutterBottom variant='h3'>
+      <Typography gutterBottom variant='h4'>
         {title}
       </Typography>
       <Grid container direction={'row-reverse'} justify={'space-between'} spacing={4}>
@@ -101,7 +104,13 @@ function Invitation({ title }: InvitationProps) {
             <Paper>
               <Grid container item spacing={4}>
                 <Grid item xs={12}>
-                  <Button fullWidth label='Send Invitasjon' onClick={() => null} />
+                  <Button
+                    fullWidth
+                    label='Send Invitasjon'
+                    onClick={() => {
+                      history.push(`/filter/${eventId}`);
+                    }}
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <Button fullWidth label='Gå tilbake' link onClick={() => null} />

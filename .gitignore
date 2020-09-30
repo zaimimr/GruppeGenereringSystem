@@ -2,6 +2,8 @@
 **/coverage
 .idea
 frontend/build
+frontend/.eslintcache
+**/.env
 
 backend/.gradle
 **/.DS_Store

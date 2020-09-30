@@ -1,42 +1,57 @@
 import { TextField as TextFieldMaterial } from '@material-ui/core';
 import React from 'react';
+import { Controller } from 'react-hook-form';
 
 export type TextFieldProps = {
   id: string;
   label: string;
   type?: string;
-  error?: boolean;
-  required?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  control: any;
+  name: string;
+  defaultValue?: string;
+  required?: string;
   multiline?: boolean;
   fullWidth?: boolean;
-  helperText?: string;
   rows?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  rules?: any;
 };
 
 const TextField = ({
   id,
   label,
+  control,
+  name,
+  defaultValue = '',
   type = 'input',
-  error = false,
-  required = false,
+  error,
+  required = undefined,
   multiline = false,
   fullWidth = false,
-  helperText = '',
   rows = 1,
+  rules = undefined,
   ...args
 }: TextFieldProps) => {
   return (
     <>
-      <TextFieldMaterial
+      <Controller
+        as={TextFieldMaterial}
         color='primary'
-        error={error}
+        control={control}
+        defaultValue={defaultValue}
+        error={Boolean(error)}
         fullWidth={fullWidth}
-        helperText={helperText}
+        helperText={error?.message}
         id={id}
         label={label}
         multiline={multiline}
-        required={required}
+        name={name}
+        required={Boolean(required)}
         rows={rows}
+        rules={{ required: required, ...rules }}
         type={type}
         variant='outlined'
         {...args}

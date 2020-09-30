@@ -79,7 +79,8 @@
     "simple-import-sort/sort": "error",
     "sort-imports": "off",
     "import/order": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
   },
   "settings": {
     "react": {
