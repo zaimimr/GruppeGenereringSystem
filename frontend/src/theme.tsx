@@ -62,24 +62,13 @@ theme.overrides = {
       padding: 20,
     },
   },
-  MuiGrid: {
-    container: {},
+  // @ts-ignore
+  MuiDataGrid: {
+    root: {
+      backgroundColor: theme.palette.background.paper,
+      border: 'unset',
+    },
   },
 };
 
 export default theme;
-
-// $primary_gray: #121212;
-// $secondary_gray: #1E1E1E;
-// $hover_gray: #2D2D2D;
-
-// $primary_white: #F2F2F2;
-// $hover_white: #aaaaaa;
-
-// $primary_purple: #BB86FC;
-// $secondary_purple: #742ccc;
-
-// $primary_teal: #03DAC5;
-// $secondary_teal: #018786;
-
-// $error_red: #B00020;
