@@ -91,7 +91,7 @@ class GroupGenerator {
         for (n in 0 until list.size) {
             newList.add(ArrayList())
             for (m in 0 until list[n].size) {
-                newList[n].add(Participant(list[n][m].name, list[n][m].email))
+                newList[n].add(Participant(list[n][m].id, list[n][m].name, list[n][m].email))
             }
         }
         return newList

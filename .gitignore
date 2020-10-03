@@ -4,6 +4,8 @@
 frontend/build
 frontend/.eslintcache
 **/.env
+frontend.env
 
 backend/.gradle
 **/.DS_Store
+frontend/.eslintcache
