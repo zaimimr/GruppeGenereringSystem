@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+import { IGroupInformation } from 'models/IGroupInformation';
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
-
-function sendInvitation(participants: any) {
+/*
+function sendInvitation(participants: IParticipants) {
   axios
     .post('/invite', participants)
     .then((response) => {
@@ -11,4 +11,9 @@ function sendInvitation(participants: any) {
     .catch((error) => {
       console.log('Error: ', error);
     });
+}
+*/
+
+export function generateGroups(groupInformation: IGroupInformation) {
+  return axios.post('/generate', groupInformation);
 }

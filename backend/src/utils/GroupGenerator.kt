@@ -1,5 +1,6 @@
 package com.gruppe7.utils
 
+import com.gruppe7.model.Participant
 import java.io.File
 import kotlin.math.abs
 
@@ -7,7 +8,7 @@ class GroupGenerator {
     private val FULL_SCORE = 100
     private val HALF_SCORE = 50
 
-    fun groupGeneratorWithDynamicScore(participantList: ArrayList<Participant>, minParticipantsPerGroup: Int, maxParticipantsPerGroup: Int): Pair<String, ArrayList<ArrayList<Participant>>> {
+    fun groupGeneratorWithDynamicScore(participantList: ArrayList<Participant>, minParticipantsPerGroup: Int, maxParticipantsPerGroup: Int): Pair<Boolean, ArrayList<ArrayList<Participant>>> {
         val groups = ArrayList<ArrayList<Participant>>()
 
         // TODO
@@ -55,7 +56,7 @@ class GroupGenerator {
                 // TODO
                 // Not include printing to file because that is only for testing purposes
                 printToFile(bestGroup as ArrayList<ArrayList<Participant>>)
-                return Pair("Kriterier ikke oppfylt", bestGroup)
+                return Pair(false, bestGroup)
             }
 
             for (group in groups) {
@@ -63,7 +64,7 @@ class GroupGenerator {
             }
         }
         printToFile(groups)
-        return Pair("Kriterier oppfylt", groups)
+        return Pair(true, groups)
     }
 
     // TODO
@@ -91,7 +92,7 @@ class GroupGenerator {
         for (n in 0 until list.size) {
             newList.add(ArrayList())
             for (m in 0 until list[n].size) {
-                newList[n].add(Participant(list[n][m].id, list[n][m].name, list[n][m].email))
+                newList[n].add(Participant(list[n][m].id, list[n][m].name, list[n][m].email, list[n][m].group))
             }
         }
         return newList

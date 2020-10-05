@@ -1,5 +1,7 @@
 package com.gruppe7.utils
 
+import com.gruppe7.model.Participant
+
 data class Group(val groupNumber: Int, val participants: Array<Participant>) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

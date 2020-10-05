@@ -1,5 +1,6 @@
 package com.gruppe7.utils
 
+import com.gruppe7.model.Participant
 import io.github.cdimascio.dotenv.Dotenv
 import io.github.cdimascio.dotenv.dotenv
 import java.lang.System.getProperties
