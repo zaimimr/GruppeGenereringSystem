@@ -2,27 +2,22 @@ package com.gruppe7
 
 // import com.gruppe7.service.DatabaseFactory
 import com.gruppe7.service.UserService
+import com.gruppe7.web.index
 import com.gruppe7.web.socket
 import com.gruppe7.web.user
 import io.ktor.application.Application
-import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.features.CORS
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.gson.gson
-import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.cio.websocket.pingPeriod
 import io.ktor.http.cio.websocket.timeout
 import io.ktor.request.path
-import io.ktor.response.respond
-import io.ktor.response.respondText
 import io.ktor.routing.Routing
-import io.ktor.routing.get
-import io.ktor.routing.routing
 import io.ktor.websocket.WebSockets
 import org.slf4j.event.Level
 import java.time.Duration
@@ -46,7 +41,9 @@ fun Application.module(testing: Boolean = false) {
         method(HttpMethod.Delete)
         method(HttpMethod.Patch)
         header(HttpHeaders.Authorization)
-        header("MyCustomHeader")
+        header(HttpHeaders.AccessControlAllowHeaders)
+        header(HttpHeaders.ContentType)
+        header(HttpHeaders.AccessControlAllowOrigin)
         allowCredentials = true
         anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
     }
@@ -67,17 +64,8 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(Routing) {
+        index()
         socket()
         user(UserService())
-    }
-
-    routing {
-        get("/") {
-            call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
-        }
-
-        get("/json/gson") {
-            call.respond(mapOf("hello" to "world"))
-        }
     }
 }

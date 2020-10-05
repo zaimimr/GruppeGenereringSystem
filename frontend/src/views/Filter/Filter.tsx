@@ -7,6 +7,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
+import { generateGroups } from 'utils/axios';
 import Table from 'views/Filter/components/Table';
 
 export type FilterProps = { title: string };
@@ -40,10 +41,17 @@ function Filter({ title }: FilterProps) {
   const onSubmit = (formData: any) => {
     const data = {
       participants: joinedParticipants,
-      filter: formData,
+      minimumPerGroup: formData.mimimumPerGroup,
+      maximumPerGroup: formData.maximumPerGroup,
     };
-    // eslint-disable-next-line
-    console.log(data);
+    generateGroups(data)
+      .then((response) => {
+        // TODO: Push to /:eventid/presentGroup, and add groups to context etc
+        // console.log(response);
+      })
+      .catch((error) => {
+        // console.error(error);
+      });
   };
 
   return (
@@ -84,31 +92,31 @@ function Filter({ title }: FilterProps) {
                 <form autoComplete='off' noValidate>
                   <FilterItems
                     control={control}
-                    error={errors.max_per_group}
-                    id='filter_max_per_group'
-                    label='Max per gruppe'
-                    name='max_per_group'
+                    error={errors.minimumPerGroup}
+                    id='filter_minimumPerGroup'
+                    label='Min per gruppe'
+                    name='minimumPerGroup'
                     required='Påkrevd'
                     rules={{
                       min: {
                         value: 1,
                         message: 'Må være større enn 0',
                       },
-                      validate: (value: number) => value >= getValues('min_per_group') || 'Max må være større eller lik Min',
                     }}
                   />
                   <FilterItems
                     control={control}
-                    error={errors.min_per_group}
-                    id='filter_min_per_group'
-                    label='Min per gruppe'
-                    name='min_per_group'
+                    error={errors.maximumPerGroup}
+                    id='filter_maximumPerGroup'
+                    label='Max per gruppe'
+                    name='maximumPerGroup'
                     required='Påkrevd'
                     rules={{
                       min: {
                         value: 1,
                         message: 'Må være større enn 0',
                       },
+                      validate: (value: number) => value >= getValues('minimumPerGroup') || 'Max må være større eller lik Min',
                     }}
                   />
                 </form>

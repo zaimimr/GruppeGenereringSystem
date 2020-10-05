@@ -9,3 +9,4 @@ frontend.env
 backend/.gradle
 **/.DS_Store
 frontend/.eslintcache
+frontend/yarn.lock
