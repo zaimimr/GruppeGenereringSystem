@@ -29,6 +29,22 @@ const theme = createMuiTheme({
       secondary: '#aaaaaa',
     },
   },
+  typography: {
+    fontFamily: 'Roboto',
+    h1: {
+      fontSize: '32px',
+      fontWeight: 'bold',
+    },
+    h2: {
+      fontSize: '24px',
+    },
+    body1: {
+      fontSize: '18px',
+    },
+    body2: {
+      fontSize: '12px',
+    },
+  },
   spacing: 4,
   shape: {
     borderRadius: 5,
