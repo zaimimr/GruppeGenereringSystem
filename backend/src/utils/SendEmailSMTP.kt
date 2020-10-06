@@ -53,10 +53,12 @@ class SendEmailSMTP {
         }
     }
 
-    fun sendGroup(groups: Array<Group>, event: String): Boolean {
+    fun sendGroup(groups: Array<Group>, event: String, emailCoordinator: String): Boolean {
         val (dotenv, session, transport) = initEmail()
         try {
+            var allGroups = ""
             for (group in groups) {
+                allGroups += "Gruppenummer " + group.groupNumber + "\n"
                 var groupMembers = "<ul>"
                 var emails = ""
                 for (participant in group.participants) {
@@ -64,6 +66,7 @@ class SendEmailSMTP {
                     groupMembers += "<li>${ participant.name } </li>"
                 }
                 groupMembers += "</ul>"
+                allGroups += groupMembers + "\n"
                 val mailToBeSent = MimeMessage(session)
                 mailToBeSent.setFrom(InternetAddress(dotenv["EMAIL_USERNAME"]))
                 mailToBeSent.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parseHeader(emails, false))
@@ -73,6 +76,13 @@ class SendEmailSMTP {
                 mailToBeSent.setContent(body, "text/html;charset=utf-8")
                 transport.sendMessage(mailToBeSent, mailToBeSent.allRecipients)
             }
+            val mailToBeSent = MimeMessage(session)
+            mailToBeSent.setFrom(InternetAddress(dotenv["EMAIL_USERNAME"]))
+            mailToBeSent.setRecipient(MimeMessage.RecipientType.TO, InternetAddress(emailCoordinator))
+            mailToBeSent.subject = "Grupper i $event"
+            val body = "<h1>Her er gruppene i $event </h1> \n $allGroups"
+            mailToBeSent.setContent(body, "text/html;charset=utf-8")
+            transport.sendMessage(mailToBeSent, mailToBeSent.allRecipients)
             transport.close()
             return true
         } catch (ae: AddressException) {
