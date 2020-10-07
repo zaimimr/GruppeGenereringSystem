@@ -1,10 +1,13 @@
 package com.gruppe7.web
 
+import com.gruppe7.model.ApprovedGroupsData
 import com.gruppe7.model.GenerateGroupData
 import com.gruppe7.model.Participant
 import com.gruppe7.utils.GroupGenerator
+import com.gruppe7.utils.SendEmailSMTP
 import io.ktor.application.call
 import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.response.respondText
@@ -43,5 +46,12 @@ fun Route.index() {
         responseObject["groups"] = groups.second.toTypedArray()
 
         call.respond(responseObject)
+    }
+
+    post("/sendgroups") {
+        val response = call.receive<ApprovedGroupsData>()
+        val emailSMTP = SendEmailSMTP()
+        if (emailSMTP.sendGroup(response.groups, response.event, response.emailCoordinator)) call.respond(HttpStatusCode.OK)
+        else call.respond(HttpStatusCode.BadRequest)
     }
 }
