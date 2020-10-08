@@ -2,7 +2,7 @@ import { Grid, List, ListItem, Typography } from '@material-ui/core';
 import Button from 'components/Button';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
-import { useSetParticipants } from 'context/EventContext';
+import { useSetOriginalGroups, useSetParticipants } from 'context/EventContext';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
@@ -16,6 +16,7 @@ type findParticipantType = { id: string };
 
 function Filter({ title }: FilterProps) {
   const [participants] = useSetParticipants();
+  const [, setOriginGroups] = useSetOriginalGroups();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [joinedParticipants, setJoinedParticipants] = React.useState<any>([]);
 
@@ -23,7 +24,7 @@ function Filter({ title }: FilterProps) {
 
   const history = useHistory();
   const { eventId }: { eventId: string } = useParams();
-  const SocketURL = process.env.REACT_APP_SOCKET_URL + '/connect/' + eventId + '?access_token=token';
+  const SocketURL = `${process.env.REACT_APP_SOCKET_URL}/connect/${eventId}?access_token=token`;
   const { lastMessage } = useWebSocket(SocketURL);
 
   React.useEffect(() => {
@@ -46,11 +47,12 @@ function Filter({ title }: FilterProps) {
     };
     generateGroups(data)
       .then((response) => {
-        // TODO: Push to /:eventid/presentGroup, and add groups to context etc
-        // console.log(response);
+        setOriginGroups(response.data);
+        history.push(`/${eventId}/present`);
       })
-      .catch((error) => {
-        // console.error(error);
+      .catch((err) => {
+        // eslint-disable-next-line
+        console.error(err);
       });
   };
 

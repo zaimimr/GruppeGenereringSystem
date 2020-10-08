@@ -4,6 +4,7 @@ import com.gruppe7.model.Participant
 import io.github.cdimascio.dotenv.Dotenv
 import io.github.cdimascio.dotenv.dotenv
 import java.lang.System.getProperties
+import java.net.UnknownHostException
 import javax.mail.MessagingException
 import javax.mail.Session
 import javax.mail.Transport
@@ -38,7 +39,7 @@ class SendEmailSMTP {
                 mailToBeSent.setFrom(InternetAddress(dotenv["EMAIL_USERNAME"]))
                 mailToBeSent.addRecipient(MimeMessage.RecipientType.TO, InternetAddress(participant.email))
                 mailToBeSent.subject = "Påmelding til $event"
-                val body = "<h1>Påmelding til $event </h1> \n <p>Her er linken for å melde deg på er: ${dotenv["FRONTEND_URL"]}/$event/${participant.id}/ </p>"
+                val body = "<h1>Påmelding til $event </h1> \n <p>Her er linken for å melde deg på er: ${dotenv["FRONTEND_URL"]}/$event/join/${participant.id}/ </p>"
                 mailToBeSent.setContent(body, "text/html;charset=utf-8")
                 transport.sendMessage(mailToBeSent, mailToBeSent.allRecipients)
             }
@@ -53,17 +54,18 @@ class SendEmailSMTP {
         }
     }
 
-    fun sendGroup(groups: Array<Group>, event: String, emailCoordinator: String): Boolean {
+    fun sendGroup(groups: Array<Array<Participant>>, event: String, emailCoordinator: String): Boolean {
         val (dotenv, session, transport) = initEmail()
         try {
             var allGroups = ""
-            for (group in groups) {
-                allGroups += "Gruppenummer " + group.groupNumber + "\n"
+            for ((index, group) in groups.withIndex()) {
+                val groupNumber = (index + 1)
                 var groupMembers = "<ul>"
                 var emails = ""
-                for (participant in group.participants) {
-                    emails += participant.email + ","
+                allGroups += "Gruppenummer " + groupNumber + "\n"
+                for (participant in group) {
                     groupMembers += "<li>${ participant.name } </li>"
+                    emails += participant.email + ","
                 }
                 groupMembers += "</ul>"
                 allGroups += groupMembers + "\n"
@@ -71,7 +73,6 @@ class SendEmailSMTP {
                 mailToBeSent.setFrom(InternetAddress(dotenv["EMAIL_USERNAME"]))
                 mailToBeSent.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parseHeader(emails, false))
                 mailToBeSent.subject = "Din gruppe i $event"
-                val groupNumber = group.groupNumber
                 val body = "<h1>Velkommen til $event </h1> \n <p>Du er på gruppe number $groupNumber. Gruppen består av følgende personer: \n $groupMembers </p>"
                 mailToBeSent.setContent(body, "text/html;charset=utf-8")
                 transport.sendMessage(mailToBeSent, mailToBeSent.allRecipients)
@@ -89,6 +90,9 @@ class SendEmailSMTP {
             ae.printStackTrace()
             return false
         } catch (me: MessagingException) {
+            me.printStackTrace()
+            return false
+        } catch (me: UnknownHostException) {
             me.printStackTrace()
             return false
         }

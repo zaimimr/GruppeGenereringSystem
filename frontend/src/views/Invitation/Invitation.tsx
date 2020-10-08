@@ -15,10 +15,11 @@ import {
 import { DeleteOutline } from '@material-ui/icons';
 import Button from 'components/Button';
 import Paper from 'components/Paper';
-import { useSetGroups } from 'context/EventContext';
+import { IParticipants, useSetCsvGroups, useSetParticipants } from 'context/EventContext';
 import React from 'react';
 import { useModal } from 'react-modal-hook';
 import { useHistory, useParams } from 'react-router-dom';
+import { sendInvitation } from 'utils/axios';
 import MainCard from 'views/Invitation/components/MainCard';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -64,13 +65,14 @@ function Invitation({ title }: InvitationProps) {
   const history = useHistory();
   const { eventId }: { eventId: string } = useParams();
   const classes = useStyles();
-  const [groups, setGroups] = useSetGroups();
+  const [csvGroups, setCsvGroups] = useSetCsvGroups();
+  const [, setParticipants] = useSetParticipants();
   const [groupKey, setGroupKey] = React.useState(0);
 
   const [showModal, hideModal] = useModal(
     () => (
       <Dialog aria-labelledby='modal' fullWidth maxWidth={'xs'} onClose={hideModal} open>
-        <DialogTitle id='modal-title'>{'Ønsker du å slette gruppe ' + groups[groupKey]?.groupName + '?'}</DialogTitle>
+        <DialogTitle id='modal-title'>{'Ønsker du å slette gruppe ' + csvGroups[groupKey]?.groupName + '?'}</DialogTitle>
         <DialogActions>
           <Grid container direction={'row-reverse'} justify={'space-between'} spacing={4}>
             <Grid item md={5} xs={12}>
@@ -78,7 +80,7 @@ function Invitation({ title }: InvitationProps) {
                 fullWidth
                 label='Slett gruppe'
                 onClick={() => {
-                  setGroups([...groups.slice(0, groupKey), ...groups.slice(groupKey + 1, groups.length)]);
+                  setCsvGroups([...csvGroups.slice(0, groupKey), ...csvGroups.slice(groupKey + 1, csvGroups.length)]);
                   hideModal();
                 }}
               />
@@ -90,8 +92,21 @@ function Invitation({ title }: InvitationProps) {
         </DialogActions>
       </Dialog>
     ),
-    [groups, groupKey],
+    [csvGroups, groupKey],
   );
+
+  const submit = () => {
+    sendInvitation(csvGroups, eventId)
+      .then(({ data }: { data: { participants: IParticipants[] } }) => {
+        setParticipants(data.participants);
+        history.push(`/${eventId}/filter`);
+      })
+      // eslint-disable-next-line
+      .catch((err: any) => {
+        // eslint-disable-next-line
+        console.error(err);
+      });
+  };
 
   return (
     <>
@@ -104,13 +119,7 @@ function Invitation({ title }: InvitationProps) {
             <Paper>
               <Grid container item spacing={4}>
                 <Grid item xs={12}>
-                  <Button
-                    fullWidth
-                    label='Send Invitasjon'
-                    onClick={() => {
-                      history.push(`/filter/${eventId}`);
-                    }}
-                  />
+                  <Button fullWidth label='Send Invitasjon' onClick={submit} />
                 </Grid>
                 <Grid item xs={12}>
                   <Button fullWidth label='Gå tilbake' link onClick={() => null} />
@@ -119,13 +128,13 @@ function Invitation({ title }: InvitationProps) {
             </Paper>
           </Grid>
           <Grid item>
-            {groups.length !== 0 && (
+            {csvGroups.length !== 0 && (
               <Paper>
                 <Typography gutterBottom variant='h5'>
                   Grupper
                 </Typography>
                 <List disablePadding>
-                  {groups?.map((group: { groupName: string }, key: number) => (
+                  {csvGroups?.map((group: { groupName: string }, key: number) => (
                     <ListItem className={classes.listItem} key={key}>
                       <ListItemText primary={group.groupName} />
                       <ListItemIcon>

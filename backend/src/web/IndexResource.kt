@@ -2,6 +2,7 @@ package com.gruppe7.web
 
 import com.gruppe7.model.ApprovedGroupsData
 import com.gruppe7.model.GenerateGroupData
+import com.gruppe7.model.InvitationData
 import com.gruppe7.model.Participant
 import com.gruppe7.utils.GroupGenerator
 import com.gruppe7.utils.SendEmailSMTP
@@ -48,10 +49,27 @@ fun Route.index() {
         call.respond(responseObject)
     }
 
+    post("/invite/{event_id}") {
+        val csvGroupList = call.receive<Array<InvitationData>>()
+        val eventID: String = call.parameters["event_id"]!!
+        val participants = ArrayList<Participant>()
+        for (csvGroup in csvGroupList) {
+            participants.addAll(csvGroup.getParticipants())
+        }
+        val responseObject = JSONObject()
+        responseObject["participants"] = participants.toTypedArray()
+        if (SendEmailSMTP().sendInvitation(participants.toTypedArray(), eventID)) call.respond(responseObject)
+        else call.respond(HttpStatusCode(400, "Noe gikk galt under sending av invitasjon"))
+    }
+
     post("/sendgroups") {
-        val response = call.receive<ApprovedGroupsData>()
-        val emailSMTP = SendEmailSMTP()
-        if (emailSMTP.sendGroup(response.groups, response.event, response.emailCoordinator)) call.respond(HttpStatusCode.OK)
-        else call.respond(HttpStatusCode.BadRequest)
+        try {
+            val response = call.receive<ApprovedGroupsData>()
+            if (SendEmailSMTP().sendGroup(response.groups, response.event, response.emailCoordinator)) call.respond(HttpStatusCode.OK)
+            else call.respond(HttpStatusCode.BadRequest)
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+            call.respond(HttpStatusCode.BadRequest)
+        }
     }
 }

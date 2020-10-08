@@ -12,10 +12,9 @@ const useStyles = makeStyles({
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function Table({ participantList }: any) {
   const columns: ColDef[] = [
-    { field: 'name', headerName: 'Navn', width: 180 },
+    { field: 'name', headerName: 'Navn', width: 200 },
     { field: 'email', headerName: 'E-post', width: 200 },
-    { field: 'group', headerName: 'Gruppe', width: 150 },
-    { field: 'gender', headerName: 'Kjønn', width: 100 },
+    { field: 'group', headerName: 'Gruppe', width: 200 },
   ];
   return (
     <DataGrid

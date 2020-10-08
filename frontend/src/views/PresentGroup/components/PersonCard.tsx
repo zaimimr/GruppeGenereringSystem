@@ -1,17 +1,18 @@
 import { Grid, Typography } from '@material-ui/core';
-import { useSetGroups } from 'context/PresentGroupContext';
 import React from 'react';
 import { DragSourceMonitor, useDrag } from 'react-dnd';
-
-import { ItemTypes } from '../../../utils/constants';
+import { ItemTypes } from 'utils/constants';
 export type PersonCardProps = {
   id: number;
   name: string;
   groupNumber: number;
+  // eslint-disable-next-line
+  groups: any;
+  // eslint-disable-next-line
+  setGroups: any;
 };
 
-function PersonCard({ id, name, groupNumber }: PersonCardProps) {
-  const { groups, setGroups } = useSetGroups();
+function PersonCard({ id, name, groupNumber, groups, setGroups }: PersonCardProps) {
   const fromGroupNumber = groupNumber;
   const [{ isDragging }, drag] = useDrag({
     item: { id, name, fromGroupNumber, type: ItemTypes.CARD },
@@ -33,7 +34,7 @@ function PersonCard({ id, name, groupNumber }: PersonCardProps) {
   });
 
   return (
-    <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1, cursor: 'pointer' }}>
       <Grid container>
         <Grid item xs={12}>
           <Typography noWrap variant='subtitle1'>
