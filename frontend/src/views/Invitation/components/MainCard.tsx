@@ -4,7 +4,7 @@ import Button from 'components/Button';
 import Dropdown from 'components/Dropdown';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
-import { useSetGroups } from 'context/EventContext';
+import { useSetCsvGroups } from 'context/EventContext';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { CSVReader, readString } from 'react-papaparse';
@@ -95,7 +95,7 @@ function MainCard() {
     }
   }, [resetDropZone]);
 
-  const [groups, setGroups] = useSetGroups();
+  const [groups, setGroups] = useSetCsvGroups();
   const onSubmit = handleSubmit((data) => {
     const formData: GroupType = {
       groupData: groupInfo,

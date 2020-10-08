@@ -24,7 +24,7 @@ fun Route.socket() {
         val accessToken: String? = call.parameters["access_token"]
         val participantID: String? = call.parameters["participant_id"]
         if (validToken(accessToken)) {
-            val coordinator = CoordinatorClient(this, eventID!!)
+            val coordinator = CoordinatorClient(this, eventID)
             coordinators += coordinator
             try {
                 while (true) {
@@ -48,8 +48,8 @@ fun Route.socket() {
             val coordinator: CoordinatorClient? = coordinators.find { it.eventID == eventID }
             if (coordinator != null) {
                 coordinator.session.outgoing.send(Frame.Text(participantID!!))
-                this.outgoing.send(Frame.Text("Registrering fullførst"))
-            }
+                this.outgoing.send(Frame.Text("Registrering fullført"))
+            } else this.outgoing.send(Frame.Text("Registrering mislykket"))
         }
     }
 }

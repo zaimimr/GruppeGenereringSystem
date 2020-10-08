@@ -3,20 +3,25 @@ import { GroupType } from 'views/Invitation/Invitation';
 
 type Context = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useSetGroups: any;
+  useSetCsvGroups: any;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSetParticipants: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSetOriginalGroups: any;
 };
 
 const EventContext = React.createContext<Context>({
   // eslint-disable-next-line
-  useSetGroups: [[], () => {}],
+  useSetCsvGroups: [[], () => {}],
   // eslint-disable-next-line
   useSetParticipants: [[], () => {}],
+  // eslint-disable-next-line
+  useSetOriginalGroups: [[], () => {}],
 });
 
-export const useSetGroups = () => React.useContext(EventContext).useSetGroups;
+export const useSetCsvGroups = () => React.useContext(EventContext).useSetCsvGroups;
 export const useSetParticipants = () => React.useContext(EventContext).useSetParticipants;
+export const useSetOriginalGroups = () => React.useContext(EventContext).useSetOriginalGroups;
 
 type Props = {
   children: React.ReactNode;
@@ -30,18 +35,15 @@ export type IParticipants = {
   gender?: string;
 };
 export function EventProvider({ children }: Props) {
-  const [groups, setGroups] = React.useState<GroupType[]>([]);
-
-  const [participants, setParticipants] = React.useState<IParticipants[]>([
-    { id: 'vhrwpa', name: 'Zaim Imran', email: 'Zaim@mail.com', group: 'DataIng', gender: 'Mann' },
-    { id: 'bfnaod', name: 'Max Schau', email: 'Max@mail.com', group: 'DataIng', gender: 'Mann' },
-    { id: 'hfwweh', name: 'Ola Normann', email: 'Ola@mail.com', group: 'DigFor', gender: 'Mann' },
-    { id: 'h3qbba', name: 'Kari Traa', email: 'Kari@mail.com', group: 'Freestyle', gender: 'Kvinne' },
-  ]);
+  const [csvGroups, setCsvGroups] = React.useState<GroupType[]>([]);
+  const [participants, setParticipants] = React.useState<IParticipants[]>([]);
+  // eslint-disable-next-line
+  const [originalGroups, setOriginalGroups] = React.useState<any>([]);
 
   const eventContext = {
-    useSetGroups: [groups, setGroups],
+    useSetCsvGroups: [csvGroups, setCsvGroups],
     useSetParticipants: [participants, setParticipants],
+    useSetOriginalGroups: [originalGroups, setOriginalGroups],
   };
 
   return <EventContext.Provider value={eventContext}>{children}</EventContext.Provider>;
