@@ -44,4 +44,4 @@ deploy:
     - yarn run build
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
   only:
-    - master
+    - dev
