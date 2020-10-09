@@ -46,7 +46,7 @@ function Filter({ title }: FilterProps) {
   const onSubmit = (formData: any) => {
     const data = {
       participants: joinedParticipants,
-      minimumPerGroup: formData.mimimumPerGroup,
+      minimumPerGroup: formData.minimumPerGroup,
       maximumPerGroup: formData.maximumPerGroup,
     };
     // eslint-disable-next-line new-cap

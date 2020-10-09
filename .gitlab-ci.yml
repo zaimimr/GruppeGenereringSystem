@@ -1,20 +1,18 @@
-cache:
-
 image: node:12.13.0-alpine
 stages:
   - build
-  - ktlint
   - lint
+  - ktbuild
+  - ktlint
   - deploy
 
-ktlint:
-  image: openjdk:14-ea-8-jdk-alpine3.10
-  stage: ktlint
-  
+build:
+  stage: build
   script:
-    - cd backend
-    - ./gradlew ktlintCheck
-
+    - cd frontend
+    - yarn install
+    - yarn run build
+    
 lint:
   stage: lint
   script:
@@ -22,22 +20,28 @@ lint:
     - yarn add eslint
     - node_modules/eslint/bin/eslint.js
 
-#Build
-build:
-  stage: build
+ktlint:
+  image: openjdk:14-ea-8-jdk-alpine3.10
+  stage: ktlint
   script:
-    - cd frontend
-    - yarn install
-    - yarn run build
+    - cd backend
+    - ./gradlew ktlintCheck
 
+ktbuild:
+  image: openjdk:14-ea-8-jdk-alpine3.10
+  stage: ktbuild
+  script:
+    - cd backend
+    - ./gradlew build
 
 deploy:
   stage: deploy
   script:
     - yarn global add firebase-tools	
     - cd frontend
+    - echo "REACT_APP_API_URL=$REACT_APP_API_URL\nREACT_APP_SOCKET_URL=$REACT_APP_SOCKET_URL" > .env
     - yarn install
     - yarn run build
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
   only:
-    - dev
+    - master
