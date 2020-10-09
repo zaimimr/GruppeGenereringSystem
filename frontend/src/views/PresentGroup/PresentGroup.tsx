@@ -60,7 +60,7 @@ function PresentGroup({ title }: PresentGroupsProps) {
         {title}
       </Typography>
       <Grid container spacing={4}>
-        <Grid container item xs={8}>
+        <Grid container item spacing={4} xs={8}>
           <DndProvider backend={HTML5Backend}>
             {/* eslint-disable-next-line */}
             {groups?.map((group: any, index: number) => {

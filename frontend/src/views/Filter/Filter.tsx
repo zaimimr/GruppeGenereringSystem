@@ -42,7 +42,7 @@ function Filter({ title }: FilterProps) {
   const onSubmit = (formData: any) => {
     const data = {
       participants: joinedParticipants,
-      minimumPerGroup: formData.mimimumPerGroup,
+      minimumPerGroup: formData.minimumPerGroup,
       maximumPerGroup: formData.maximumPerGroup,
     };
     generateGroups(data)

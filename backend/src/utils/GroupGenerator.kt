@@ -1,7 +1,6 @@
 package com.gruppe7.utils
 
 import com.gruppe7.model.Participant
-import java.io.File
 import kotlin.math.abs
 
 class GroupGenerator {
@@ -53,9 +52,7 @@ class GroupGenerator {
             }
 
             if (biggestGroupSizeInIteration < minParticipantsPerGroup) {
-                // TODO
-                // Not include printing to file because that is only for testing purposes
-                printToFile(bestGroup as ArrayList<ArrayList<Participant>>)
+                bestGroup as ArrayList<ArrayList<Participant>>
                 return Pair(false, bestGroup)
             }
 
@@ -63,28 +60,7 @@ class GroupGenerator {
                 group.clear()
             }
         }
-        printToFile(groups)
         return Pair(true, groups)
-    }
-
-    // TODO
-    // Remove method
-    private fun printToFile(groups: ArrayList<ArrayList<Participant>>) {
-        File("./src/utils/list.txt").bufferedWriter().use { out ->
-            for ((index, group) in groups.withIndex()) {
-
-                val sizeOfGroup = group.size
-                val groupNumber = index + 1
-                out.write("Gruppe $groupNumber (amount: $sizeOfGroup):")
-                out.write("\n")
-
-                for (student in group) {
-                    out.write(student.toString())
-                    out.write("\n")
-                }
-                out.write("\n")
-            }
-        }
     }
 
     private fun copyList(list: ArrayList<ArrayList<Participant>>): ArrayList<ArrayList<Participant>> {
