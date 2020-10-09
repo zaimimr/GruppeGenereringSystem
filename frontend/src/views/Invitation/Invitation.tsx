@@ -14,8 +14,10 @@ import {
 } from '@material-ui/core';
 import { DeleteOutline } from '@material-ui/icons';
 import Button from 'components/Button';
+import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
 import { IParticipants, useSetCsvGroups, useSetParticipants } from 'context/EventContext';
+import { Failure, Initial, Loading } from 'lemons';
 import React from 'react';
 import { useModal } from 'react-modal-hook';
 import { useHistory, useParams } from 'react-router-dom';
@@ -68,6 +70,8 @@ function Invitation({ title }: InvitationProps) {
   const [csvGroups, setCsvGroups] = useSetCsvGroups();
   const [, setParticipants] = useSetParticipants();
   const [groupKey, setGroupKey] = React.useState(0);
+  // eslint-disable-next-line new-cap
+  const [submitFormLazy, setSubmitFormLazy] = React.useState(Initial());
 
   const [showModal, hideModal] = useModal(
     () => (
@@ -96,6 +100,8 @@ function Invitation({ title }: InvitationProps) {
   );
 
   const submit = () => {
+    // eslint-disable-next-line new-cap
+    setSubmitFormLazy(Loading());
     sendInvitation(csvGroups, eventId)
       .then(({ data }: { data: { participants: IParticipants[] } }) => {
         setParticipants(data.participants);
@@ -105,11 +111,27 @@ function Invitation({ title }: InvitationProps) {
       .catch((err: any) => {
         // eslint-disable-next-line
         console.error(err);
+        // eslint-disable-next-line new-cap
+        setSubmitFormLazy(Failure(err.response.statusText));
       });
   };
 
   return (
     <>
+      {submitFormLazy.dispatch(
+        () => null,
+        () => (
+          <LoadingScreen message={'Sender mail til deltagerne...'} />
+        ),
+        (err) => (
+          <div>
+            <Typography color='error' variant='h1'>
+              En feil har skjedd: {err}
+            </Typography>
+          </div>
+        ),
+        () => null,
+      )}
       <Typography gutterBottom variant='h4'>
         {title}
       </Typography>

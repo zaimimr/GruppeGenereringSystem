@@ -1,8 +1,10 @@
 import { Grid, List, ListItem, Typography } from '@material-ui/core';
 import Button from 'components/Button';
+import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
 import { useSetOriginalGroups, useSetParticipants } from 'context/EventContext';
+import { Failure, Initial, Loading } from 'lemons';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
@@ -26,6 +28,8 @@ function Filter({ title }: FilterProps) {
   const { eventId }: { eventId: string } = useParams();
   const SocketURL = `${process.env.REACT_APP_SOCKET_URL}/connect/${eventId}?access_token=token`;
   const { lastMessage } = useWebSocket(SocketURL);
+  // eslint-disable-next-line new-cap
+  const [submitFormLazy, setSubmitFormLazy] = React.useState(Initial());
 
   React.useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,6 +49,8 @@ function Filter({ title }: FilterProps) {
       minimumPerGroup: formData.mimimumPerGroup,
       maximumPerGroup: formData.maximumPerGroup,
     };
+    // eslint-disable-next-line new-cap
+    setSubmitFormLazy(Loading());
     generateGroups(data)
       .then((response) => {
         setOriginGroups(response.data);
@@ -53,11 +59,27 @@ function Filter({ title }: FilterProps) {
       .catch((err) => {
         // eslint-disable-next-line
         console.error(err);
+        // eslint-disable-next-line new-cap
+        setSubmitFormLazy(Failure(err.response.statusText));
       });
   };
 
   return (
     <>
+      {submitFormLazy.dispatch(
+        () => null,
+        () => (
+          <LoadingScreen message={'Genererer grupper...'} />
+        ),
+        (err) => (
+          <div>
+            <Typography color='error' variant='h1'>
+              En feil har skjedd: {err}
+            </Typography>
+          </div>
+        ),
+        () => null,
+      )}
       <Typography gutterBottom variant='h4'>
         {title}
       </Typography>

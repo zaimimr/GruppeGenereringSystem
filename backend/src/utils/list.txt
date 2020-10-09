@@ -1,8 +1,6 @@
-Gruppe 1 (amount: 2):
-Participant(id=vhrwpa, name=Zaim Imran, email=Zaim@mail.com, group=DataIng)
-Participant(id=hfwweh, name=Ola Normann, email=Ola@mail.com, group=DigFor)
+Gruppe 1 (amount: 1):
+Participant(id=294b74ae-b119-4d67-b86f-e18dac6e05ee, name=max, email= max.torre.schau@gmail.com, group=Data)
 
-Gruppe 2 (amount: 2):
-Participant(id=bfnaod, name=Max Schau, email=Max@mail.com, group=DataIng)
-Participant(id=h3qbba, name=Kari Traa, email=Kari@mail.com, group=Freestyle)
+Gruppe 2 (amount: 1):
+Participant(id=be93905d-e0d7-4f48-aa29-7faae14a5b06, name=zaim, email= maxts@stud.ntnu.no, group=Data)
 
