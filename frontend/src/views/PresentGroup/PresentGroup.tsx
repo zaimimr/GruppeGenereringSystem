@@ -1,9 +1,11 @@
 import { Box, Grid, Typography } from '@material-ui/core';
 import Button from 'components/Button';
+import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
 import { useSetOriginalGroups } from 'context/EventContext';
-import React, { useState } from 'react';
+import { Failure, Initial, Loading, Success } from 'lemons';
+import React from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useForm } from 'react-hook-form';
@@ -27,7 +29,9 @@ type PresentGroupsProps = {
 
 function PresentGroup({ title }: PresentGroupsProps) {
   const [originalGroups] = useSetOriginalGroups();
-  const [groupFilter] = useState<GroupFilterType>({
+  // TODO
+  // Get this information from Context
+  const [groupFilter] = React.useState<GroupFilterType>({
     minimumPerGroup: 2,
     maximumPerGroup: 3,
   });
@@ -38,7 +42,12 @@ function PresentGroup({ title }: PresentGroupsProps) {
 
   const { eventId }: { eventId: string } = useParams();
 
+  // eslint-disable-next-line new-cap
+  const [submitFormLazy, setSubmitFormLazy] = React.useState(Initial());
+
   const onSubmit = handleSubmit((formData) => {
+    // eslint-disable-next-line new-cap
+    setSubmitFormLazy(Loading());
     sendGroups({
       event: eventId,
       emailCoordinator: formData.koordinator_email,
@@ -47,15 +56,33 @@ function PresentGroup({ title }: PresentGroupsProps) {
       .then((data) => {
         // eslint-disable-next-line
         console.log(data);
+        // eslint-disable-next-line new-cap
+        setSubmitFormLazy(Success(data));
       })
       .catch((err) => {
         // eslint-disable-next-line
-        console.error(err);
+        console.error(err.response);
+        // eslint-disable-next-line new-cap
+        setSubmitFormLazy(Failure(err.response.statusText));
       });
   });
 
   return (
     <>
+      {submitFormLazy.dispatch(
+        () => null,
+        () => (
+          <LoadingScreen message={'Sender ut eposter...'} />
+        ),
+        (err) => (
+          <div>
+            <Typography color='error' variant='h1'>
+              En feil har skjedd: {err}
+            </Typography>
+          </div>
+        ),
+        () => null,
+      )}
       <Typography gutterBottom variant='h1'>
         {title}
       </Typography>
