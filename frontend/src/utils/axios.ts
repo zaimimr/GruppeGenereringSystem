@@ -1,17 +1,16 @@
 import axios from 'axios';
-import { IGroupInformation } from 'models/IGroupInformation';
-import { GroupType } from 'views/Invitation/Invitation';
+import { ICsvData, IFilterData, IApprovedGroupsData } from './types';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-export function sendInvitation(csvGroups: GroupType[], eventID: String) {
+export function sendInvitation(csvGroups: ICsvData[], eventID: String) {
   return axios.post(`/invite/${eventID}`, csvGroups)
 }
 
-export function generateGroups(groupInformation: IGroupInformation) {
+export function generateGroups(groupInformation: IFilterData) {
   return axios.post('/generate', groupInformation);
 }
 
-export function sendGroups(groups: any) {
+export function sendGroups(groups: IApprovedGroupsData) {
   return axios.post('/sendgroups', groups);
 }

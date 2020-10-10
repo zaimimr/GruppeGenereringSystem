@@ -1,10 +1,11 @@
 import { Grid, Typography } from '@material-ui/core';
+import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 import { DragSourceMonitor, useDrag } from 'react-dnd';
 import { ItemTypes } from 'utils/constants';
+import { IParticipants } from 'utils/types';
 export type PersonCardProps = {
-  id: number;
-  name: string;
+  participant: IParticipants;
   groupNumber: number;
   // eslint-disable-next-line
   groups: any;
@@ -12,17 +13,22 @@ export type PersonCardProps = {
   setGroups: any;
 };
 
-function PersonCard({ id, name, groupNumber, groups, setGroups }: PersonCardProps) {
+function PersonCard({ participant, groupNumber, groups, setGroups }: PersonCardProps) {
   const fromGroupNumber = groupNumber;
   const [{ isDragging }, drag] = useDrag({
-    item: { id, name, fromGroupNumber, type: ItemTypes.CARD },
-    end: (item: { id: number; name: string; fromGroupNumber: number } | undefined, monitor: DragSourceMonitor) => {
+    item: { participant, fromGroupNumber, type: ItemTypes.CARD },
+    end: (item: { participant: IParticipants; fromGroupNumber: number } | undefined, monitor: DragSourceMonitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
         if (dropResult.toGroupNumber !== fromGroupNumber) {
-          const copyOfGroup = [...groups];
-          const groupWithoutRemovedUser = copyOfGroup[item.fromGroupNumber].filter((user: { id: number; name: string }) => user.id !== item.id);
-          copyOfGroup[dropResult.toGroupNumber].push({ id: item.id, name: item.name });
+          const copyOfGroup = cloneDeep(groups);
+          const groupWithoutRemovedUser = copyOfGroup[item.fromGroupNumber].filter((user: IParticipants) => user.id !== item.participant.id);
+          copyOfGroup[dropResult.toGroupNumber].push({
+            id: item.participant.id,
+            name: item.participant.name,
+            email: item.participant.email,
+            group: item.participant.group,
+          });
           copyOfGroup[item.fromGroupNumber] = groupWithoutRemovedUser;
           setGroups(copyOfGroup);
         }
@@ -38,7 +44,7 @@ function PersonCard({ id, name, groupNumber, groups, setGroups }: PersonCardProp
       <Grid container>
         <Grid item xs={12}>
           <Typography noWrap variant='subtitle1'>
-            {name}
+            {participant.name}
           </Typography>
         </Grid>
       </Grid>

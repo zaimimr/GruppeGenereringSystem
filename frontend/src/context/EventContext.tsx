@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { GroupType } from 'views/Invitation/Invitation';
-
+import { ICsvData, IParticipants, IPresentData } from 'utils/types';
 type Context = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSetCsvGroups: any;
@@ -23,23 +22,11 @@ export const useSetCsvGroups = () => React.useContext(EventContext).useSetCsvGro
 export const useSetParticipants = () => React.useContext(EventContext).useSetParticipants;
 export const useSetOriginalGroups = () => React.useContext(EventContext).useSetOriginalGroups;
 
-type Props = {
-  children: React.ReactNode;
-};
-
-export type IParticipants = {
-  id: string;
-  name: string;
-  email: string;
-  group: string;
-  gender?: string;
-};
-export function EventProvider({ children }: Props) {
-  const [csvGroups, setCsvGroups] = React.useState<GroupType[]>([]);
+export function EventProvider({ children }: { children: React.ReactNode }) {
+  const [csvGroups, setCsvGroups] = React.useState<ICsvData[]>([]);
   const [participants, setParticipants] = React.useState<IParticipants[]>([]);
   // eslint-disable-next-line
-  const [originalGroups, setOriginalGroups] = React.useState<any>([]);
-
+  const [originalGroups, setOriginalGroups] = React.useState<IPresentData>()
   const eventContext = {
     useSetCsvGroups: [csvGroups, setCsvGroups],
     useSetParticipants: [participants, setParticipants],

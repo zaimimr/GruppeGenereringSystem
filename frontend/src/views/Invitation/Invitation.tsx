@@ -16,12 +16,13 @@ import { DeleteOutline } from '@material-ui/icons';
 import Button from 'components/Button';
 import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
-import { IParticipants, useSetCsvGroups, useSetParticipants } from 'context/EventContext';
+import { useSetCsvGroups, useSetParticipants } from 'context/EventContext';
 import { Failure, Initial, Loading } from 'lemons';
 import React from 'react';
 import { useModal } from 'react-modal-hook';
 import { useHistory, useParams } from 'react-router-dom';
 import { sendInvitation } from 'utils/axios';
+import { IParticipants } from 'utils/types';
 import MainCard from 'views/Invitation/components/MainCard';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -54,14 +55,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export type InvitationProps = { title: string };
-
-export type GroupType = {
-  groupData: string[][];
-  groupName: string;
-  csvHeader: boolean;
-  csvName: string;
-  csvEmail: string;
-};
 
 function Invitation({ title }: InvitationProps) {
   const history = useHistory();
@@ -108,7 +101,7 @@ function Invitation({ title }: InvitationProps) {
         history.push(`/${eventId}/filter`);
       })
       // eslint-disable-next-line
-      .catch((err: any) => {
+      .catch(err => {
         // eslint-disable-next-line
         console.error(err);
         // eslint-disable-next-line new-cap

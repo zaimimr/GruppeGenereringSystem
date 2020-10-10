@@ -5,12 +5,14 @@ import Paper from 'components/Paper';
 import TextField from 'components/TextField';
 import { useSetOriginalGroups } from 'context/EventContext';
 import { Failure, Initial, Loading, Success } from 'lemons';
+import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { sendGroups } from 'utils/axios';
+import { IPresentData } from 'utils/types';
 import GroupCard from 'views/PresentGroup/components/GroupCard';
 
 export type ParticipantType = {
@@ -36,7 +38,7 @@ function PresentGroup({ title }: PresentGroupsProps) {
     maximumPerGroup: 3,
   });
   // eslint-disable-next-line
-  const [groups, setGroups] = React.useState<any>(originalGroups.groups);
+  const [groups, setGroups] = React.useState<IPresentData['generatedGroups']>(cloneDeep(originalGroups.generatedGroups));
 
   const { errors, handleSubmit, control } = useForm();
 
@@ -50,8 +52,11 @@ function PresentGroup({ title }: PresentGroupsProps) {
     setSubmitFormLazy(Loading());
     sendGroups({
       event: eventId,
-      emailCoordinator: formData.koordinator_email,
-      groups: groups,
+      coordinatorEmail: formData.koordinator_email,
+      finalData: {
+        isCriteria: originalGroups.isCriteria,
+        generatedGroups: groups,
+      },
     })
       .then((data) => {
         // eslint-disable-next-line
@@ -81,7 +86,11 @@ function PresentGroup({ title }: PresentGroupsProps) {
             </Typography>
           </div>
         ),
-        () => null,
+        () => (
+          <div>
+            <Typography variant='h1'>Gruppen er sendt</Typography>
+          </div>
+        ),
       )}
       <Typography gutterBottom variant='h1'>
         {title}
@@ -105,15 +114,21 @@ function PresentGroup({ title }: PresentGroupsProps) {
               <form autoComplete='off' noValidate onSubmit={onSubmit}>
                 <Grid container item spacing={4}>
                   <Grid item xs={12}>
-                    <Typography color={originalGroups.criteriaSucceed ? 'textPrimary' : 'error'} gutterBottom variant='body1'>
-                      {originalGroups.criteriaSucceed ? 'Kriterier oppfyllt' : 'Kriterier ikke oppfyllt'}
+                    <Typography color={originalGroups.isCriteria ? 'textPrimary' : 'error'} gutterBottom variant='body1'>
+                      {originalGroups.isCriteria ? 'Kriterier oppfyllt' : 'Kriterier ikke oppfyllt'}
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <Button fullWidth label='Godkjenn' onClick={() => null} type='submit' />
                   </Grid>
                   <Grid item xs={12}>
-                    <Button fullWidth label='Tilbakestill' onClick={() => setGroups(originalGroups.groups)} />
+                    <Button
+                      fullWidth
+                      label='Tilbakestill'
+                      onClick={() => {
+                        setGroups(cloneDeep(originalGroups.generatedGroups));
+                      }}
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField

@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { ColDef, ComponentProps, DataGrid } from '@material-ui/data-grid';
 import Pagination from '@material-ui/lab/Pagination';
 import React from 'react';
+import { IParticipants } from 'utils/types';
 
 const useStyles = makeStyles({
   root: {
@@ -9,8 +10,7 @@ const useStyles = makeStyles({
     marginLeft: 'auto',
   },
 });
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function Table({ participantList }: any) {
+export default function Table({ participantList }: { participantList: IParticipants[] }) {
   const columns: ColDef[] = [
     { field: 'name', headerName: 'Navn', width: 200 },
     { field: 'email', headerName: 'E-post', width: 200 },
@@ -26,7 +26,8 @@ export default function Table({ participantList }: any) {
       disableSelectionOnClick
       hideFooterRowCount
       pageSize={5}
-      rows={participantList}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      rows={participantList as any}
       rowsPerPageOptions={[5, 25, 100]}
     />
   );
@@ -40,8 +41,9 @@ function CustomPagination({ paginationProps }: ComponentProps) {
       className={classes.root}
       color='primary'
       count={paginationProps.pageCount}
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onChange={(event: any, value: any) => paginationProps.setPage(value)}
+      onChange={(e: React.ChangeEvent<unknown>, value: number) => {
+        paginationProps.setPage(value);
+      }}
       page={paginationProps.page}
     />
   );

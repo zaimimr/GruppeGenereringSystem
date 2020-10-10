@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import { generateGroups } from 'utils/axios';
+import { IFilterData, IParticipants } from 'utils/types';
 import Table from 'views/Filter/components/Table';
 
 export type FilterProps = { title: string };
@@ -19,8 +20,7 @@ type findParticipantType = { id: string };
 function Filter({ title }: FilterProps) {
   const [participants] = useSetParticipants();
   const [, setOriginGroups] = useSetOriginalGroups();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [joinedParticipants, setJoinedParticipants] = React.useState<any>([]);
+  const [joinedParticipants, setJoinedParticipants] = React.useState<IParticipants[]>([]);
 
   const { errors, handleSubmit, control, getValues } = useForm();
 
@@ -32,7 +32,6 @@ function Filter({ title }: FilterProps) {
   const [submitFormLazy, setSubmitFormLazy] = React.useState(Initial());
 
   React.useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const isParticipantRegistered = joinedParticipants.find(({ id }: findParticipantType) => id === lastMessage?.data);
     if (!isParticipantRegistered) {
       const participant = participants.find(({ id }: findParticipantType) => id === lastMessage?.data);
@@ -42,8 +41,7 @@ function Filter({ title }: FilterProps) {
     }
     // eslint-disable-next-line
   }, [lastMessage]);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (formData: any) => {
+  const onSubmit = (formData: IFilterData) => {
     const data = {
       participants: joinedParticipants,
       minimumPerGroup: formData.minimumPerGroup,

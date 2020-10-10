@@ -8,22 +8,22 @@ import { useSetCsvGroups } from 'context/EventContext';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { CSVReader, readString } from 'react-papaparse';
-import { GroupType } from 'views/Invitation/Invitation';
+import { ICsvData } from 'utils/types';
 
-export type MainCardFormInputType = {
+export type IMainCardFormInput = {
   groupName: string;
   csvDropzone: string | string[][];
   csvTextarea: string;
-  csvName: string;
-  csvEmail: string;
+  csvNameField: string;
+  csvEmailField: string;
 };
 
 const MainCardFormInputDefaultValue = {
   groupName: '',
   csvDropzone: '',
   csvTextarea: '',
-  csvName: '',
-  csvEmail: '',
+  csvNameField: '',
+  csvEmailField: '',
 };
 
 function MainCard() {
@@ -47,7 +47,7 @@ function MainCard() {
   );
   const classes = useStyles();
 
-  const { errors, handleSubmit, clearErrors, control, reset, setValue, getValues, setError, watch } = useForm<MainCardFormInputType>({
+  const { errors, handleSubmit, clearErrors, control, reset, setValue, getValues, setError, watch } = useForm<IMainCardFormInput>({
     defaultValues: MainCardFormInputDefaultValue,
   });
 
@@ -61,12 +61,13 @@ function MainCard() {
   React.useEffect(() => {
     const csvData: string[][] = [];
     if (watchDropZone) {
-      const dropzoneValue: MainCardFormInputType['csvDropzone'] = getValues('csvDropzone');
+      const dropzoneValue: IMainCardFormInput['csvDropzone'] = getValues('csvDropzone');
       if (Array.isArray(dropzoneValue)) {
-        // Does not allow for string[] as type
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         dropzoneValue.forEach(({ data }: any) => {
-          csvData.push(data);
+          if (data instanceof Array) {
+            csvData.push(data);
+          }
         });
       }
     } else if (watchTextArea) {
@@ -78,10 +79,10 @@ function MainCard() {
         });
       } else {
         clearErrors(['csvTextarea']);
-        // Does not allow for string[] as type
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        textareaValue.data.forEach((v: any) => {
-          csvData.push(v);
+        textareaValue.data.forEach((value: string[] | unknown) => {
+          if (value instanceof Array) {
+            csvData.push(value);
+          }
         });
       }
     }
@@ -97,12 +98,12 @@ function MainCard() {
 
   const [groups, setGroups] = useSetCsvGroups();
   const onSubmit = handleSubmit((data) => {
-    const formData: GroupType = {
-      groupData: groupInfo,
+    const formData: ICsvData = {
       groupName: data.groupName,
-      csvHeader: checkboxChecked,
-      csvName: data.csvName,
-      csvEmail: data.csvEmail,
+      csvIsHeader: checkboxChecked,
+      csvNameField: data.csvNameField,
+      csvEmailField: data.csvEmailField,
+      csvData: groupInfo,
     };
     setGroups([...groups, formData]);
     resetForm();
@@ -142,7 +143,7 @@ function MainCard() {
                   <CSVReader
                     addRemoveButton
                     isReset={resetDropZone}
-                    onDrop={(data: MainCardFormInputType['csvDropzone']) => setValue('csvDropzone', data)}
+                    onDrop={(data: IMainCardFormInput['csvDropzone']) => setValue('csvDropzone', data)}
                     onError={() =>
                       setError('csvDropzone', {
                         type: 'manual',
@@ -191,7 +192,7 @@ function MainCard() {
               checked={checkboxChecked}
               control={<Checkbox />}
               label={'Filen har kolonnenavn'}
-              onChange={(event: React.ChangeEvent<unknown>, checked: boolean) => setCheckboxChecked(checked)}
+              onChange={(e: React.ChangeEvent<unknown>, checked: boolean) => setCheckboxChecked(checked)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -199,15 +200,15 @@ function MainCard() {
               as={Dropdown}
               control={control}
               defaultValue=''
-              error={errors.csvName?.message}
+              error={errors.csvNameField?.message}
               id='invitation_dropdown_name_selector'
               items={groupInfo}
               label='Navn'
-              name='csvName'
+              name='csvNameField'
               required
               rules={{ required: 'Navn felt er påkrevd' }}
-              setValue={(e: React.ChangeEvent<{ value: unknown }>) => setValue('csvName', e.target.value as string)}
-              value={getValues('csvName')}
+              setValue={(e: React.ChangeEvent<{ value: unknown }>) => setValue('csvNameField', e.target.value as string)}
+              value={getValues('csvNameField')}
             />
           </Grid>
           <Grid item xs={12}>
@@ -215,15 +216,15 @@ function MainCard() {
               as={Dropdown}
               control={control}
               defaultValue=''
-              error={errors.csvEmail?.message}
+              error={errors.csvEmailField?.message}
               id='invitation_dropdown_email_selector'
               items={groupInfo}
               label='E-post'
-              name='csvEmail'
+              name='csvEmailField'
               required
               rules={{ required: 'E-post felt er påkrevd' }}
-              setValue={(e: React.ChangeEvent<{ value: unknown }>) => setValue('csvEmail', e.target.value as string)}
-              value={getValues('csvEmail')}
+              setValue={(e: React.ChangeEvent<{ value: unknown }>) => setValue('csvEmailField', e.target.value as string)}
+              value={getValues('csvEmailField')}
             />
           </Grid>
           <Grid container item justify='space-between' xs={12}>
