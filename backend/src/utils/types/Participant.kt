@@ -1,4 +1,4 @@
-package com.gruppe7.model
+package com.gruppe7.utils.types
 
 data class Participant(
     val id: String,

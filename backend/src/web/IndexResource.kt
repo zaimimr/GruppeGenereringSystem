@@ -1,11 +1,11 @@
 package com.gruppe7.web
 
-import com.gruppe7.model.ApprovedGroupsData
-import com.gruppe7.model.GenerateGroupData
-import com.gruppe7.model.InvitationData
-import com.gruppe7.model.Participant
 import com.gruppe7.utils.GroupGenerator
 import com.gruppe7.utils.SendEmailSMTP
+import com.gruppe7.utils.types.ApprovedGroupsData
+import com.gruppe7.utils.types.CsvData
+import com.gruppe7.utils.types.FilterData
+import com.gruppe7.utils.types.Participant
 import io.ktor.application.call
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
@@ -23,51 +23,60 @@ fun Route.index() {
         call.respondText("Velkommen til gruppegenerering", ContentType.Text.Plain)
     }
 
-    post("/generate") {
-        val response = call.receive<GenerateGroupData>()
-        val listOfParticipant = ArrayList<Participant>()
-        for (participant in response.participants) {
-            listOfParticipant.add(
-                Participant(
-                    participant.id,
-                    participant.name,
-                    participant.email,
-                    participant.group
-                )
-            )
+    post("/invite/{event_id}") {
+        try {
+            val csvGroupList = call.receive<Array<CsvData>>()
+            val eventID: String = call.parameters["event_id"]!!
+            val participants = ArrayList<Participant>()
+            for (csvGroup in csvGroupList) {
+                participants.addAll(csvGroup.getParticipants())
+            }
+            val responseObject = JSONObject()
+            responseObject["participants"] = participants.toTypedArray()
+            SendEmailSMTP().sendInvitation(participants.toTypedArray(), eventID)
+            call.respond(responseObject)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            call.respond(HttpStatusCode.BadRequest)
         }
-        val groupGenerator = GroupGenerator()
-        val groups = groupGenerator.groupGeneratorWithDynamicScore(
-            listOfParticipant,
-            response.minimumPerGroup,
-            response.maximumPerGroup
-        )
-        val responseObject = JSONObject()
-        responseObject["criteriaSucceed"] = groups.first
-        responseObject["groups"] = groups.second.toTypedArray()
-
-        call.respond(responseObject)
     }
 
-    post("/invite/{event_id}") {
-        val csvGroupList = call.receive<Array<InvitationData>>()
-        val eventID: String = call.parameters["event_id"]!!
-        val participants = ArrayList<Participant>()
-        for (csvGroup in csvGroupList) {
-            participants.addAll(csvGroup.getParticipants())
+    post("/generate") {
+        try {
+            val response = call.receive<FilterData>()
+            val listOfParticipant = ArrayList<Participant>()
+            for (participant in response.participants) {
+                listOfParticipant.add(
+                    Participant(
+                        participant.id,
+                        participant.name,
+                        participant.email,
+                        participant.group
+                    )
+                )
+            }
+            val groupGenerator = GroupGenerator()
+            val groups = groupGenerator.groupGeneratorWithDynamicScore(
+                listOfParticipant,
+                response.minimumPerGroup,
+                response.maximumPerGroup
+            )
+            val responseObject = JSONObject()
+            responseObject["isCriteria"] = groups.first
+            responseObject["generatedGroups"] = groups.second.toTypedArray()
+            call.respond(responseObject)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            call.respond(HttpStatusCode.BadRequest)
         }
-        val responseObject = JSONObject()
-        responseObject["participants"] = participants.toTypedArray()
-        if (SendEmailSMTP().sendInvitation(participants.toTypedArray(), eventID)) call.respond(responseObject)
-        else call.respond(HttpStatusCode(400, "Noe gikk galt under sending av invitasjon"))
     }
 
     post("/sendgroups") {
         try {
             val response = call.receive<ApprovedGroupsData>()
-            if (SendEmailSMTP().sendGroup(response.groups, response.event, response.emailCoordinator)) call.respond(HttpStatusCode.OK)
-            else call.respond(HttpStatusCode.BadRequest)
-        } catch (e: IllegalStateException) {
+            SendEmailSMTP().sendGroup(response.finalData, response.event, response.coordinatorEmail)
+            call.respond(HttpStatusCode.OK)
+        } catch (e: Exception) {
             e.printStackTrace()
             call.respond(HttpStatusCode.BadRequest)
         }

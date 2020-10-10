@@ -4,6 +4,9 @@ fresh:
 run:
 	./gradlew run
 
+format:
+	./gradlew ktlinFormat
+	
 docker:
 	make fresh
 	docker build -t gen-g .
