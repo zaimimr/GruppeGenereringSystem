@@ -4,6 +4,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
 import { useSetOriginalGroups, useSetParticipants } from 'context/EventContext';
+import useSnackbar from 'context/SnakbarContext';
 import { Failure, Initial, Loading } from 'lemons';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -30,6 +31,7 @@ function Filter({ title }: FilterProps) {
   const { lastMessage } = useWebSocket(SocketURL);
   // eslint-disable-next-line new-cap
   const [submitFormLazy, setSubmitFormLazy] = React.useState(Initial());
+  const { showSnackbar } = useSnackbar();
 
   React.useEffect(() => {
     const isParticipantRegistered = joinedParticipants.find(({ id }: findParticipantType) => id === lastMessage?.data);
@@ -52,11 +54,13 @@ function Filter({ title }: FilterProps) {
     generateGroups(data)
       .then((response) => {
         setOriginGroups(response.data);
+        showSnackbar('success', 'Gruppene er blitt generert');
         history.push(`/${eventId}/present`);
       })
       .catch((err) => {
         // eslint-disable-next-line
         console.error(err);
+        showSnackbar('error', err.response?.statusText);
         // eslint-disable-next-line new-cap
         setSubmitFormLazy(Failure(err.response.statusText));
       });

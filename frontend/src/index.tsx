@@ -1,6 +1,7 @@
 import 'index.css';
 
 import { Container, ThemeProvider } from '@material-ui/core';
+import { SnackbarProvider } from 'context/SnakbarContext';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ModalProvider } from 'react-modal-hook';
@@ -11,15 +12,17 @@ import Routing from './Routing';
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <ModalProvider>
-        <Container maxWidth='md'>
-          <Router>
-            <Switch>
-              <Routing />
-            </Switch>
-          </Router>
-        </Container>
-      </ModalProvider>
+      <SnackbarProvider>
+        <ModalProvider>
+          <Container maxWidth='md'>
+            <Router>
+              <Switch>
+                <Routing />
+              </Switch>
+            </Router>
+          </Container>
+        </ModalProvider>
+      </SnackbarProvider>
     </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root'),

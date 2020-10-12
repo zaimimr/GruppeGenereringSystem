@@ -17,6 +17,7 @@ import Button from 'components/Button';
 import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
 import { useSetCsvGroups, useSetParticipants } from 'context/EventContext';
+import useSnackbar from 'context/SnakbarContext';
 import { Failure, Initial, Loading } from 'lemons';
 import React from 'react';
 import { useModal } from 'react-modal-hook';
@@ -65,6 +66,7 @@ function Invitation({ title }: InvitationProps) {
   const [groupKey, setGroupKey] = React.useState(0);
   // eslint-disable-next-line new-cap
   const [submitFormLazy, setSubmitFormLazy] = React.useState(Initial());
+  const { showSnackbar } = useSnackbar();
 
   const [showModal, hideModal] = useModal(
     () => (
@@ -95,17 +97,18 @@ function Invitation({ title }: InvitationProps) {
   const submit = () => {
     // eslint-disable-next-line new-cap
     setSubmitFormLazy(Loading());
+
     sendInvitation(csvGroups, eventId)
       .then(({ data }: { data: { participants: IParticipants[] } }) => {
         setParticipants(data.participants);
+        showSnackbar('success', 'Alle invitasjonen er nå sendt');
         history.push(`/${eventId}/filter`);
       })
       // eslint-disable-next-line
       .catch(err => {
-        // eslint-disable-next-line
-        console.error(err);
+        showSnackbar('error', err.response?.statusText);
         // eslint-disable-next-line new-cap
-        setSubmitFormLazy(Failure(err.response.statusText));
+        setSubmitFormLazy(Failure(err.response?.statusText));
       });
   };
 
@@ -116,13 +119,7 @@ function Invitation({ title }: InvitationProps) {
         () => (
           <LoadingScreen message={'Sender mail til deltagerne...'} />
         ),
-        (err) => (
-          <div>
-            <Typography color='error' variant='h1'>
-              En feil har skjedd: {err}
-            </Typography>
-          </div>
-        ),
+        () => null,
         () => null,
       )}
       <Typography gutterBottom variant='h4'>

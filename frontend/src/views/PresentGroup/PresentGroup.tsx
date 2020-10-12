@@ -4,6 +4,7 @@ import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
 import { useSetOriginalGroups } from 'context/EventContext';
+import useSnackbar from 'context/SnakbarContext';
 import { Failure, Initial, Loading, Success } from 'lemons';
 import cloneDeep from 'lodash/cloneDeep';
 import React from 'react';
@@ -44,6 +45,8 @@ function PresentGroup({ title }: PresentGroupsProps) {
 
   const { eventId }: { eventId: string } = useParams();
 
+  const { showSnackbar } = useSnackbar();
+
   // eslint-disable-next-line new-cap
   const [submitFormLazy, setSubmitFormLazy] = React.useState(Initial());
 
@@ -61,12 +64,14 @@ function PresentGroup({ title }: PresentGroupsProps) {
       .then((data) => {
         // eslint-disable-next-line
         console.log(data);
+        showSnackbar('success', 'Alle gruppene er nå sendt på mail til koordinator og deltagerne');
         // eslint-disable-next-line new-cap
         setSubmitFormLazy(Success(data));
       })
       .catch((err) => {
         // eslint-disable-next-line
         console.error(err.response);
+        showSnackbar('error', err.response?.statusText);
         // eslint-disable-next-line new-cap
         setSubmitFormLazy(Failure(err.response.statusText));
       });
@@ -79,18 +84,8 @@ function PresentGroup({ title }: PresentGroupsProps) {
         () => (
           <LoadingScreen message={'Sender ut eposter...'} />
         ),
-        (err) => (
-          <div>
-            <Typography color='error' variant='h1'>
-              En feil har skjedd: {err}
-            </Typography>
-          </div>
-        ),
-        () => (
-          <div>
-            <Typography variant='h1'>Gruppen er sendt</Typography>
-          </div>
-        ),
+        () => null,
+        () => null,
       )}
       <Typography gutterBottom variant='h1'>
         {title}
@@ -126,6 +121,7 @@ function PresentGroup({ title }: PresentGroupsProps) {
                       fullWidth
                       label='Tilbakestill'
                       onClick={() => {
+                        showSnackbar('success', 'Gruppene er tilbakestillt');
                         setGroups(cloneDeep(originalGroups.generatedGroups));
                       }}
                     />
