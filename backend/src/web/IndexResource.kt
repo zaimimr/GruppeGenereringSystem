@@ -56,10 +56,10 @@ fun Route.index() {
                 )
             }
             val groupGenerator = GroupGenerator()
+
             val groups = groupGenerator.groupGeneratorWithDynamicScore(
                 listOfParticipant,
-                response.minimumPerGroup,
-                response.maximumPerGroup
+                response.filters.toCollection(ArrayList())
             )
             val responseObject = JSONObject()
             responseObject["isCriteria"] = groups.first

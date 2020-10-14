@@ -1,6 +1,55 @@
-Gruppe 1 (amount: 1):
-Participant(id=294b74ae-b119-4d67-b86f-e18dac6e05ee, name=max, email= max.torre.schau@gmail.com, group=Data)
+Gruppe 1 (amount: 6):
+Participant(id=id, name=Cynthia Arnold, email=epi@fate.mz, group=Dataingeniør)
+Participant(id=id, name=Harriet Tate, email=do@ofafam.cm, group=Dataingeniør)
+Participant(id=id, name=Clyde Little, email=jisule@huh.rw, group=DigSec)
+Participant(id=id, name=Alan Simmons, email=goag@azladak.jm, group=DigSec)
+Participant(id=id, name=Bernice Conner, email=jovgojop@ju.bv, group=DigFor)
+Participant(id=id, name=Harry Francis, email=da@corap.ml, group=DigFor)
 
-Gruppe 2 (amount: 1):
-Participant(id=be93905d-e0d7-4f48-aa29-7faae14a5b06, name=zaim, email= maxts@stud.ntnu.no, group=Data)
+Gruppe 2 (amount: 6):
+Participant(id=id, name=Lura Bennett, email=sefu@unofowel.gh, group=Dataingeniør)
+Participant(id=id, name=Sylvia Watkins, email=lofjijaw@nepi.cn, group=Dataingeniør)
+Participant(id=id, name=Adrian Johnston, email=mofge@lijecvah.nf, group=DigSec)
+Participant(id=id, name=Jerry Stephens, email=kadkak@juemobac.ki, group=DigSec)
+Participant(id=id, name=Harvey Klein, email=fifi@ku.lk, group=DigFor)
+Participant(id=id, name=Bernice Conner, email=jovgojop@ju.bv, group=DigFor)
+
+Gruppe 3 (amount: 6):
+Participant(id=id, name=Edwin Sims, email=lial@lil.pk, group=Dataingeniør)
+Participant(id=id, name=Marvin Alexander, email=peg@vudwaak.lk, group=Dataingeniør)
+Participant(id=id, name=Lizzie Gonzalez, email=lezi@megurhac.cf, group=DigSec)
+Participant(id=id, name=Stanley Copeland, email=tivruhit@zoep.do, group=DigSec)
+Participant(id=id, name=Juan Cobb, email=sufagete@tezoz.af, group=DigFor)
+Participant(id=id, name=Harvey Klein, email=fifi@ku.lk, group=DigFor)
+
+Gruppe 4 (amount: 6):
+Participant(id=id, name=Laura Bowen, email=uf@abtuaw.me, group=Dataingeniør)
+Participant(id=id, name=Olive Rivera, email=jeov@delwe.sh, group=Dataingeniør)
+Participant(id=id, name=Beulah Hawkins, email=woggidiz@gorpa.gg, group=DigSec)
+Participant(id=id, name=Mike Evans, email=lalsurni@la.hk, group=DigSec)
+Participant(id=id, name=Ricardo Sherman, email=retwise@wavi.mh, group=DigFor)
+Participant(id=id, name=Juan Cobb, email=sufagete@tezoz.af, group=DigFor)
+
+Gruppe 5 (amount: 6):
+Participant(id=id, name=Derek Fernandez, email=tudigi@ahucos.tc, group=Dataingeniør)
+Participant(id=id, name=Eliza Carlson, email=huh@vampol.ky, group=Dataingeniør)
+Participant(id=id, name=Jeremiah Ellis, email=ilu@utvalme.iq, group=DigSec)
+Participant(id=id, name=Jeffery Hubbard, email=viuz@zahis.tz, group=DigFor)
+Participant(id=id, name=Glen Woods, email=agzudez@da.kg, group=DigFor)
+Participant(id=id, name=Ricardo Sherman, email=retwise@wavi.mh, group=DigFor)
+
+Gruppe 6 (amount: 6):
+Participant(id=id, name=Owen Joseph, email=degbej@ti.ge, group=Dataingeniør)
+Participant(id=id, name=Russell Bailey, email=ubaci@fofileriw.au, group=DigSec)
+Participant(id=id, name=Steve Jackson, email=baziphi@zad.dk, group=DigSec)
+Participant(id=id, name=Alfred Nash, email=imafe@ikzanag.in, group=DigFor)
+Participant(id=id, name=Jeffery Hubbard, email=viuz@zahis.tz, group=DigFor)
+Participant(id=id, name=Glen Woods, email=agzudez@da.kg, group=DigFor)
+
+Gruppe 7 (amount: 5):
+Participant(id=id, name=Estelle Luna, email=guhed@jeezecam.sr, group=Dataingeniør)
+Participant(id=id, name=Lawrence Silva, email=lo@daska.es, group=DigSec)
+Participant(id=id, name=Leon Thornton, email=ov@godoge.be, group=DigSec)
+Participant(id=id, name=Harry Francis, email=da@corap.ml, group=DigFor)
+Participant(id=id, name=Alfred Nash, email=imafe@ikzanag.in, group=DigFor)
 
