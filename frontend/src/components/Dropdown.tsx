@@ -4,7 +4,7 @@ import React from 'react';
 export type DropdownProps = {
   id: string;
   label: string;
-  items: string[][];
+  items: string[];
   required?: boolean;
   value: string;
   setValue: (e: React.ChangeEvent<{ value: unknown }>) => void;
@@ -19,7 +19,7 @@ const Dropdown = ({ id, required = false, label, items, value, setValue, error }
       </InputLabel>
       <Select autoWidth id={id} label={label} labelId={id} native onChange={setValue} value={value}>
         <option aria-label='None' value='' />
-        {items[0]?.map((item, index) => (
+        {items?.map((item, index) => (
           <option key={index} value={index}>
             {item}
           </option>
