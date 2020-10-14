@@ -244,7 +244,13 @@ const Filters = ({ control, label, getValues, errors }: IFilter) => {
               value: 0,
               message: 'Må være større eller lik 0',
             },
-            validate: (value: number) => (value !== 0 && value >= getValues(`${label}_min`)) || 'Max må være større eller lik Min',
+            validate: (value: number) => {
+              const isNotSet = value === 0;
+              const isSmallerThenMin = value < getValues(`${label}_min`);
+              if (!isNotSet && isSmallerThenMin) {
+                return 'Max må være større eller lik Min';
+              }
+            },
           }}
           type={'number'}
         />
