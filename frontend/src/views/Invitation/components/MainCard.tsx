@@ -202,7 +202,7 @@ function MainCard() {
               defaultValue=''
               error={errors.csvNameField?.message}
               id='invitation_dropdown_name_selector'
-              items={groupInfo}
+              items={groupInfo[0]}
               label='Navn'
               name='csvNameField'
               required
@@ -218,7 +218,7 @@ function MainCard() {
               defaultValue=''
               error={errors.csvEmailField?.message}
               id='invitation_dropdown_email_selector'
-              items={groupInfo}
+              items={groupInfo[0]}
               label='E-post'
               name='csvEmailField'
               required

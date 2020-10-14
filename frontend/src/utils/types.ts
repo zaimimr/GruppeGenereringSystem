@@ -14,16 +14,14 @@ export type ICsvData = {
 };
 
 export type IFilterField = {
-  group?: string;
-  key: 'minimum' | 'maximum';
-  value: number;
+  name?: string;
+  minimum: number;
+  maximum: number;
 };
 
 export type IFilterData = {
   participants: IParticipants[];
-  minimumPerGroup: number;
-  maximumPerGroup: number;
-  filters?: IFilterField[];
+  filters: IFilterField[];
 };
 
 export type IPresentData = {
