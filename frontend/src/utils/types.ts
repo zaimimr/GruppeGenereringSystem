@@ -27,6 +27,7 @@ export type IFilterData = {
 export type IPresentData = {
   isCriteria: boolean;
   generatedGroups: IParticipants[][];
+  filters?: IFilterField[];
 };
 
 export type IApprovedGroupsData = {

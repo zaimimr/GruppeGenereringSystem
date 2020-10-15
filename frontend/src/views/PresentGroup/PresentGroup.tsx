@@ -13,7 +13,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { sendGroups } from 'utils/axios';
-import { IPresentData } from 'utils/types';
+import { IFilterField, IPresentData } from 'utils/types';
 import GroupCard from 'views/PresentGroup/components/GroupCard';
 
 export type ParticipantType = {
@@ -32,12 +32,7 @@ type PresentGroupsProps = {
 
 function PresentGroup({ title }: PresentGroupsProps) {
   const [originalGroups] = useSetOriginalGroups();
-  // TODO
-  // Get this information from Context
-  const [groupFilter] = React.useState<GroupFilterType>({
-    minimumPerGroup: 2,
-    maximumPerGroup: 3,
-  });
+
   // eslint-disable-next-line
   const [groups, setGroups] = React.useState<IPresentData['generatedGroups']>(cloneDeep(originalGroups.generatedGroups));
 
@@ -149,8 +144,16 @@ function PresentGroup({ title }: PresentGroupsProps) {
             <Paper>
               <Box display='flex' flexDirection='column'>
                 <Typography variant='h2'>Filtere</Typography>
-                <Typography variant='body1'>Min per gruppe : {groupFilter.minimumPerGroup}</Typography>
-                <Typography variant='body1'>Max per gruppe : {groupFilter.maximumPerGroup}</Typography>
+                {originalGroups.filters.map((filter: IFilterField, index: number) => (
+                  <React.Fragment key={index}>
+                    <Typography variant='body1'>
+                      {filter?.name || 'Generell'} min: {filter.minimum}
+                    </Typography>
+                    <Typography variant='body1'>
+                      {filter?.name || 'Generell'} max: {filter.maximum}
+                    </Typography>
+                  </React.Fragment>
+                ))}
               </Box>
             </Paper>
           </Grid>
