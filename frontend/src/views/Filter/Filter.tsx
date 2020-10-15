@@ -48,8 +48,8 @@ function Filter({ title }: FilterProps) {
   // eslint-disable-next-line
   const onSubmit = (formData: any) => {
     const filters = [{ name: undefined, minimum: inputNumberParser(formData.minimumPerGroup), maximum: inputNumberParser(formData.maximumPerGroup) }];
-    // eslint-disable-next-line
     uniqueGroups.forEach((group) =>
+      // eslint-disable-next-line
       filters.push({ name: group as any, minimum: inputNumberParser(formData[`${group}_min`]), maximum: inputNumberParser(formData[`${group}_min`]) }),
     );
     const data: IFilterData = {
@@ -197,6 +197,7 @@ const FilterItems = ({ id, name, label, type = 'number', control, error, require
   );
 };
 type IFilter = {
+  // eslint-disable-next-line
   control: any;
   label: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -204,7 +205,6 @@ type IFilter = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   errors: any;
 };
-// eslint-disable-next-line
 const Filters = ({ control, label, getValues, errors }: IFilter) => {
   return (
     <>
@@ -245,7 +245,8 @@ const Filters = ({ control, label, getValues, errors }: IFilter) => {
               message: 'Må være større eller lik 0',
             },
             validate: (value: number) => {
-              const isNotSet = value === 0;
+              // eslint-disable-next-line eqeqeq
+              const isNotSet = value == 0;
               const isSmallerThenMin = value < getValues(`${label}_min`);
               if (!isNotSet && isSmallerThenMin) {
                 return 'Max må være større eller lik Min';

@@ -61,9 +61,11 @@ fun Route.index() {
                 listOfParticipant,
                 response.filters.toCollection(ArrayList())
             )
+
             val responseObject = JSONObject()
             responseObject["isCriteria"] = groups.first
             responseObject["generatedGroups"] = groups.second.toTypedArray()
+            responseObject["filters"] = response.filters
             call.respond(responseObject)
         } catch (e: Exception) {
             e.printStackTrace()

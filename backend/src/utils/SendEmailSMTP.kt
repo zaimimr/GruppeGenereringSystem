@@ -13,7 +13,10 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 class SendEmailSMTP {
-    val dotenv = dotenv()
+    val dotenv = dotenv {
+        ignoreIfMalformed = true
+        ignoreIfMissing = true
+    }
     val EMAIL_HOST = if (System.getenv("EMAIL_HOST") != null) System.getenv("EMAIL_HOST") else dotenv["EMAIL_HOST"]
     val EMAIL_PORT = if (System.getenv("EMAIL_PORT") != null) System.getenv("EMAIL_PORT") else dotenv["EMAIL_PORT"]
     val EMAIL_USERNAME = if (System.getenv("EMAIL_USERNAME") != null) System.getenv("EMAIL_USERNAME") else dotenv["EMAIL_USERNAME"]
