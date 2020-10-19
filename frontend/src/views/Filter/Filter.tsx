@@ -66,8 +66,8 @@ function Filter({ title }: FilterProps) {
       })
       .catch((err) => {
         // eslint-disable-next-line
-        console.error(err);
-        showSnackbar('error', err.response?.statusText);
+        console.error(err.response);
+        showSnackbar('error', err.response.data);
         // eslint-disable-next-line new-cap
         setSubmitFormLazy(Failure(err.response?.statusText));
       });
@@ -84,13 +84,7 @@ function Filter({ title }: FilterProps) {
         () => (
           <LoadingScreen message={'Genererer grupper...'} />
         ),
-        (err) => (
-          <div>
-            <Typography color='error' variant='h1'>
-              En feil har skjedd: {err}
-            </Typography>
-          </div>
-        ),
+        () => null,
         () => null,
       )}
       <Typography gutterBottom variant='h4'>
