@@ -15,6 +15,7 @@ import io.ktor.response.respondText
 import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.post
+import io.sentry.Sentry
 import org.json.simple.JSONObject
 
 fun Route.index() {
@@ -36,8 +37,9 @@ fun Route.index() {
             SendEmailSMTP().sendInvitation(participants.toTypedArray(), eventID)
             call.respond(responseObject)
         } catch (e: Exception) {
+            Sentry.capture(e)
             e.printStackTrace()
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.BadRequest, "Noe gikk galt under sending av invitasjon")
         }
     }
 
@@ -68,8 +70,8 @@ fun Route.index() {
             responseObject["filters"] = response.filters
             call.respond(responseObject)
         } catch (e: Exception) {
-            e.printStackTrace()
-            call.respond(HttpStatusCode.BadRequest)
+            Sentry.capture(e)
+            call.respond(HttpStatusCode.BadRequest, "Noe gikk galt under generering av grupper")
         }
     }
 
@@ -79,8 +81,8 @@ fun Route.index() {
             SendEmailSMTP().sendGroup(response.finalData, response.event, response.coordinatorEmail)
             call.respond(HttpStatusCode.OK)
         } catch (e: Exception) {
-            e.printStackTrace()
-            call.respond(HttpStatusCode.BadRequest)
+            Sentry.capture(e)
+            call.respond(HttpStatusCode.BadRequest, "Noe gikk galt under sending av grupper")
         }
     }
 }

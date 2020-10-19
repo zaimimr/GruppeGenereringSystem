@@ -2,6 +2,7 @@ package com.gruppe7
 
 // import com.gruppe7.service.DatabaseFactory
 import com.gruppe7.service.UserService
+import com.gruppe7.utils.getSystemVariable
 import com.gruppe7.web.index
 import com.gruppe7.web.socket
 import com.gruppe7.web.user
@@ -19,6 +20,7 @@ import io.ktor.http.cio.websocket.timeout
 import io.ktor.request.path
 import io.ktor.routing.Routing
 import io.ktor.websocket.WebSockets
+import io.sentry.Sentry
 import org.slf4j.event.Level
 import java.time.Duration
 
@@ -27,14 +29,17 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-
     install(CallLogging) {
         level = Level.INFO
         filter { call -> call.request.path().startsWith("/") }
     }
 
-    // DatabaseFactory.init()
+    Sentry.init(getSystemVariable("SENTRY_DNS"))
+    val client = Sentry.getStoredClient()
+    client.environment = getSystemVariable("SENTRY_ENV")
+    client.serverName = getSystemVariable("SENTRY_SERVER_NAME")
 
+    // DatabaseFactory.init()
     install(CORS) {
         method(HttpMethod.Options)
         method(HttpMethod.Put)
