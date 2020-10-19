@@ -66,9 +66,9 @@ function PresentGroup({ title }: PresentGroupsProps) {
       .catch((err) => {
         // eslint-disable-next-line
         console.error(err.response);
-        showSnackbar('error', err.response?.statusText);
+        showSnackbar('error', err.response.data);
         // eslint-disable-next-line new-cap
-        setSubmitFormLazy(Failure(err.response.statusText));
+        setSubmitFormLazy(Failure(err.response.data));
       });
   });
 

@@ -12,6 +12,7 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 class SendEmailSMTP {
+
     val EMAIL_HOST = getSystemVariable("EMAIL_HOST")
     val EMAIL_PORT = getSystemVariable("EMAIL_PORT")
     val EMAIL_USERNAME = getSystemVariable("EMAIL_USERNAME")
@@ -98,16 +99,12 @@ class SendEmailSMTP {
             mailToBeSent.setContent(body, "text/html;charset=utf-8")
             transport.sendMessage(mailToBeSent, mailToBeSent.allRecipients)
         } catch (ae: AddressException) {
-            ae.printStackTrace()
             throw AddressException("Noe gikk galt; ugyldig e-post")
         } catch (me: MessagingException) {
-            me.printStackTrace()
             throw MessagingException("Noe gikk galt; ugyldig e-post tekst")
         } catch (me: UnknownHostException) {
-            me.printStackTrace()
             throw UnknownHostException("Noe gikk galt under sending av e-post")
         } catch (e: Exception) {
-            e.printStackTrace()
             throw Exception("Noe gikk galt")
         } finally {
             transport.close()

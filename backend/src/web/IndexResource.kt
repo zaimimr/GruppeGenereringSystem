@@ -39,7 +39,7 @@ fun Route.index() {
         } catch (e: Exception) {
             Sentry.capture(e)
             e.printStackTrace()
-            call.respond(HttpStatusCode.BadRequest, "Noe gikk galt under sending av invitasjon")
+            call.respond(HttpStatusCode.BadRequest, e.message ?: "Noe gikk galt under sending av invitasjon")
         }
     }
 
@@ -71,7 +71,7 @@ fun Route.index() {
             call.respond(responseObject)
         } catch (e: Exception) {
             Sentry.capture(e)
-            call.respond(HttpStatusCode.BadRequest, "Noe gikk galt under generering av grupper")
+            call.respond(HttpStatusCode.BadRequest, e.message ?: "Noe gikk galt under generering av grupper")
         }
     }
 
@@ -82,7 +82,7 @@ fun Route.index() {
             call.respond(HttpStatusCode.OK)
         } catch (e: Exception) {
             Sentry.capture(e)
-            call.respond(HttpStatusCode.BadRequest, "Noe gikk galt under sending av grupper")
+            call.respond(HttpStatusCode.BadRequest, e.message ?: "Noe gikk galt under sending av grupper")
         }
     }
 }

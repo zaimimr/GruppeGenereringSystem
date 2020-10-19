@@ -106,7 +106,7 @@ function Invitation({ title }: InvitationProps) {
       })
       // eslint-disable-next-line
       .catch(err => {
-        showSnackbar('error', err.response?.statusText);
+        showSnackbar('error', err.response.data);
         // eslint-disable-next-line new-cap
         setSubmitFormLazy(Failure(err.response?.statusText));
       });
