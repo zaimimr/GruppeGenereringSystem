@@ -2,7 +2,6 @@ package com.gruppe7.utils
 
 import com.gruppe7.utils.types.Participant
 import com.gruppe7.utils.types.PresentData
-import io.github.cdimascio.dotenv.dotenv
 import java.lang.System.getProperties
 import java.net.UnknownHostException
 import javax.mail.MessagingException
@@ -13,19 +12,14 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 class SendEmailSMTP {
-    val dotenv = dotenv {
-        ignoreIfMalformed = true
-        ignoreIfMissing = true
-    }
-    val EMAIL_HOST = if (System.getenv("EMAIL_HOST") != null) System.getenv("EMAIL_HOST") else dotenv["EMAIL_HOST"]
-    val EMAIL_PORT = if (System.getenv("EMAIL_PORT") != null) System.getenv("EMAIL_PORT") else dotenv["EMAIL_PORT"]
-    val EMAIL_USERNAME = if (System.getenv("EMAIL_USERNAME") != null) System.getenv("EMAIL_USERNAME") else dotenv["EMAIL_USERNAME"]
-    val EMAIL_PASSWORD = if (System.getenv("EMAIL_PASSWORD") != null) System.getenv("EMAIL_PASSWORD") else dotenv["EMAIL_PASSWORD"]
-    val FRONTEND_URL = if (System.getenv("FRONTEND_URL") != null) System.getenv("FRONTEND_URL") else dotenv["FRONTEND_URL"]
+    val EMAIL_HOST = getSystemVariable("EMAIL_HOST")
+    val EMAIL_PORT = getSystemVariable("EMAIL_PORT")
+    val EMAIL_USERNAME = getSystemVariable("EMAIL_USERNAME")
+    val EMAIL_PASSWORD = getSystemVariable("EMAIL_PASSWORD")
+    val FRONTEND_URL = getSystemVariable("FRONTEND_URL")
 
     private fun initEmail(): Pair<Session, Transport> {
         try {
-
             val properties = getProperties()
             properties["mail.smtp.host"] = EMAIL_HOST
             properties["mail.smtp.port"] = EMAIL_PORT

@@ -58,7 +58,8 @@ dependencies {
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.11.0")
     compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.0'
     compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.0'
-
+    implementation("io.sentry:sentry:$sentry_version")
+    
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     implementation("org.springframework.security:spring-security-core:5.4.0")
 
