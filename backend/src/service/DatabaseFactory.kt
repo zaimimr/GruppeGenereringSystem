@@ -1,9 +1,9 @@
 package com.gruppe7.service
 
 import com.gruppe7.model.Users
+import com.gruppe7.utils.getSystemVariable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.github.cdimascio.dotenv.dotenv
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -19,12 +19,11 @@ object DatabaseFactory {
     }
 
     private fun hikari(): HikariDataSource {
-        val dotenv = dotenv()
         val config = HikariConfig()
         config.driverClassName = "com.mysql.cj.jdbc.Driver"
-        config.jdbcUrl = dotenv["DATABASE_URL"]
-        config.username = dotenv["DATABASE_USERNAME"]
-        config.password = dotenv["DATABASE_PASSWORD"]
+        config.jdbcUrl = getSystemVariable("DATABASE_URL")
+        config.username = getSystemVariable("DATABASE_USERNAME")
+        config.password = getSystemVariable("DATABASE_PASSWORD")
         config.maximumPoolSize = 3
         config.isAutoCommit = false
         config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
