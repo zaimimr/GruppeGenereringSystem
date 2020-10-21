@@ -54,7 +54,7 @@ class SendEmailSMTP {
             }
         } catch (ae: AddressException) {
             ae.printStackTrace()
-            throw AddressException("Ugyldig epost")
+            throw AddressException("Ugyldig e-post")
         } catch (me: MessagingException) {
             me.printStackTrace()
             throw MessagingException("Noe gikk galt med sending av e-post")

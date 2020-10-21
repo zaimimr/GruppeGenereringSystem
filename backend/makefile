@@ -11,6 +11,12 @@ clean:
 run:
 	./gradlew run
 
+auto:
+	./gradlew -t installDist
+
+test:
+	./gradlew test
+
 docker:
 	make fresh
 	docker build -t gen-g .
