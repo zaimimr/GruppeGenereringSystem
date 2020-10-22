@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { sendGroups } from 'utils/axios';
 import { IFilterField, IPresentData } from 'utils/types';
+import { IParticipants } from 'utils/types';
 import GroupCard from 'views/PresentGroup/components/GroupCard';
 
 export type ParticipantType = {
@@ -85,20 +86,8 @@ function PresentGroup({ title }: PresentGroupsProps) {
       <Typography gutterBottom variant='h1'>
         {title}
       </Typography>
-      <Grid container spacing={4}>
-        <Grid container item spacing={4} xs={8}>
-          <DndProvider backend={HTML5Backend}>
-            {/* eslint-disable-next-line */}
-            {groups?.map((group: any, index: number) => {
-              return (
-                <Grid item key={index} sm={4} xs={12}>
-                  <GroupCard groupNumber={index} groups={groups} participants={group} setGroups={setGroups} />
-                </Grid>
-              );
-            })}
-          </DndProvider>
-        </Grid>
-        <Grid container item spacing={4} xs={4}>
+      <Grid container direction={'row-reverse'} justify={'space-between'} spacing={4} xs={12}>
+        <Grid container direction={'column'} item sm={4} spacing={4} xs={12}>
           <Grid item>
             <Paper>
               <form autoComplete='off' noValidate onSubmit={onSubmit}>
@@ -125,6 +114,7 @@ function PresentGroup({ title }: PresentGroupsProps) {
                     <TextField
                       control={control}
                       error={errors.koordinator_email}
+                      fullWidth
                       id={'koordinator_email_text_field'}
                       label={'Din E-post'}
                       name={'koordinator_email'}
@@ -157,6 +147,17 @@ function PresentGroup({ title }: PresentGroupsProps) {
               </Box>
             </Paper>
           </Grid>
+        </Grid>
+        <Grid container item sm={8} spacing={4} xs={12}>
+          <DndProvider backend={HTML5Backend}>
+            {groups?.map((group: IParticipants[], index: number) => {
+              return (
+                <Grid item key={index} md={4} sm={6} xs={12}>
+                  <GroupCard groupNumber={index} groups={groups} participants={group} setGroups={setGroups} />
+                </Grid>
+              );
+            })}
+          </DndProvider>
         </Grid>
       </Grid>
     </>
