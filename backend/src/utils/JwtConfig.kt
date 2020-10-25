@@ -14,7 +14,7 @@ object JwtConfig {
 
     private val secret = getSystemVariable("JWT_SECRET") ?: "randomstring"
     private const val issuer = "gen-g"
-    private const val validityInMs = 36_000_00 * 10 // 10 hours
+    private const val validityInMs = 36_000_00 * 24 * 7 // 7 days
     private val algorithm = Algorithm.HMAC512(secret)
 
     fun generateToken(user: User): String = JWT.create()
@@ -32,7 +32,7 @@ object JwtConfig {
         run {
             val id = jwtCredential.payload.getClaim("id").asString()
             if (id != null) {
-                return UserService().getUser(UUID.fromString(id))
+                return UserService().getUser(UUID.fromString(id))!!
             }
             return null
         }

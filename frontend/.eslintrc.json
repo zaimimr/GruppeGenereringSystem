@@ -31,6 +31,7 @@
     "jsx-a11y/accessible-emoji": "off",
     "keyword-spacing": "error",
     "linebreak-style": "off",
+    "new-cap": "off",
     "max-len": [
       "error",
       {

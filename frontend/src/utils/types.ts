@@ -35,3 +35,15 @@ export type IApprovedGroupsData = {
   coordinatorEmail: string;
   finalData: IPresentData;
 };
+
+export type ILoginCredentials = {
+  email: string;
+  password: string;
+};
+
+export type IUser= {
+  id: string;
+  email: string;
+  name: string;
+};
+
