@@ -11,6 +11,7 @@ import com.gruppe7.web.user
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.auth.Authentication
+import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.jwt
 import io.ktor.features.CORS
 import io.ktor.features.CallLogging
@@ -82,6 +83,8 @@ fun Application.module(testing: Boolean = false) {
         auth(UserService())
         index()
         socket()
-        user(UserService())
+        authenticate {
+            user(UserService())
+        }
     }
 }

@@ -77,6 +77,9 @@ theme.overrides = {
     root: {
       padding: 20,
     },
+    elevation4: {
+      boxShadow: 'unset',
+    },
   },
   // @ts-ignore
   MuiDataGrid: {

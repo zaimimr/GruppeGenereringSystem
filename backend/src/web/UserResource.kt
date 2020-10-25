@@ -1,20 +1,26 @@
 package com.gruppe7.web
 
+import com.gruppe7.model.User
 import com.gruppe7.service.UserService
 import io.ktor.application.call
+import io.ktor.auth.authentication
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.route
+import org.json.simple.JSONObject
 import java.util.UUID
 
 fun Route.user(userService: UserService) {
 
     route("/user") {
         get("/") {
-            call.respond(userService.getAllUsers())
+            val user = call.authentication.principal<User>()
+            val responseObject = JSONObject()
+            responseObject["user"] = user
+            call.respond(responseObject)
         }
 
         get("/{id}") {
