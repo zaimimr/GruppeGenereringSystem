@@ -36,14 +36,22 @@ export type IApprovedGroupsData = {
   finalData: IPresentData;
 };
 
+export type IEventData = {
+  title: string;
+  ingress: string;
+  place?: string;
+  date: string;
+  time: string;
+  description?: string;
+  filters: IFilterField[];
+};
 export type ILoginCredentials = {
   email: string;
   password: string;
 };
 
-export type IUser= {
+export type IUser = {
   id: string;
   email: string;
   name: string;
 };
-

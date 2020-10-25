@@ -42,7 +42,7 @@ function Login() {
       {submitFormLazy.dispatch(
         () => null,
         () => (
-          <LoadingScreen message={'Sender mail til deltagerne...'} />
+          <LoadingScreen message={'Forsøker å logge inn...'} />
         ),
         () => null,
         () => null,
