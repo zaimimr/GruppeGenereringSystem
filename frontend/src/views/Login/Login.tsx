@@ -9,6 +9,7 @@ import { Failure, Initial, Loading, Success } from 'lemons';
 import React from 'react';
 import { useCookies } from 'react-cookie';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router';
 import { login } from 'utils/axios';
 import { ILoginCredentials } from 'utils/types';
 
@@ -18,6 +19,7 @@ function Login() {
   const { showSnackbar } = useSnackbar();
   const [, setUser] = useSetUser();
   const [, setCookie] = useCookies(['access_token']);
+  const history = useHistory();
 
   const { errors, handleSubmit, control } = useForm();
 
@@ -90,7 +92,7 @@ function Login() {
                 <Button fullWidth label={'Glemt passord?'} link onClick={() => null} />
               </Grid>
               <Grid item sm={6} xs={12}>
-                <Button fullWidth label={'Registrer bruker'} link onClick={() => null} />
+                <Button fullWidth label={'Registrer bruker'} link onClick={() => history.push('/signup')} />
               </Grid>
             </Grid>
           </Grid>

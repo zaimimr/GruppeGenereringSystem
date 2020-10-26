@@ -55,3 +55,9 @@ export type IUser = {
   email: string;
   name: string;
 };
+
+export type SignUpData = {
+  name: string;
+  email: string;
+  password: string;
+};
