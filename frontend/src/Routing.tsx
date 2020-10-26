@@ -9,6 +9,7 @@ import Invitation from 'views/Invitation/Invitation';
 import Join from 'views/Join/Join';
 import Login from 'views/Login/Login';
 import PresentGroup from 'views/PresentGroup/PresentGroup';
+import SignUp from 'views/SignUp/SignUp';
 
 function Routing() {
   const hasAuth = useAuth();
@@ -18,6 +19,9 @@ function Routing() {
       <Switch>
         <EventProvider>
           <Container maxWidth='sm'>
+            <Route exact path='/signup'>
+              <SignUp />
+            </Route>
             <Route exact path='/'>
               {hasAuth ? <div>TODO: Bytt ut med event</div> : <Login />}
             </Route>

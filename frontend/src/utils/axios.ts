@@ -1,14 +1,18 @@
 import axios from 'axios';
-import { ICsvData, IFilterData, IApprovedGroupsData, ILoginCredentials } from './types';
+
+import { IApprovedGroupsData, ICsvData, IFilterData, ILoginCredentials, SignUpData } from './types';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
-export function setAuthHeader(token: String) {
-  axios.defaults.headers.common['authorization'] = `Bearer ${token}`
+export function setAuthHeader(token: string) {
+  axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
+}
+export function sendInvitation(csvGroups: ICsvData[], eventID: string) {
+  return axios.post(`/invite/${eventID}`, csvGroups);
 }
 
-export function sendInvitation(csvGroups: ICsvData[], eventID: String) {
-  return axios.post(`/invite/${eventID}`, csvGroups);
+export function signUp(signUpData: SignUpData) {
+  return axios.post('/register', signUpData);
 }
 
 export function generateGroups(groupInformation: IFilterData) {
