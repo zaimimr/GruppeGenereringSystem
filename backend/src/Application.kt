@@ -1,10 +1,14 @@
 package com.gruppe7
 
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.gruppe7.service.DatabaseFactory
+import com.gruppe7.service.EventService
 import com.gruppe7.service.UserService
 import com.gruppe7.utils.JwtConfig
 import com.gruppe7.utils.getSystemVariable
 import com.gruppe7.web.auth
+import com.gruppe7.web.event
 import com.gruppe7.web.index
 import com.gruppe7.web.socket
 import com.gruppe7.web.user
@@ -21,6 +25,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.cio.websocket.pingPeriod
 import io.ktor.http.cio.websocket.timeout
+import io.ktor.jackson.jackson
 import io.ktor.request.path
 import io.ktor.routing.Routing
 import io.ktor.websocket.WebSockets
@@ -75,6 +80,11 @@ fun Application.module(testing: Boolean = false) {
     }
 
     install(ContentNegotiation) {
+        jackson {
+            registerModule(JodaModule())
+            enable(SerializationFeature.INDENT_OUTPUT)
+            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        }
         gson {
         }
     }
@@ -83,6 +93,8 @@ fun Application.module(testing: Boolean = false) {
         auth(UserService())
         index()
         socket()
+        event(EventService())
+        user(UserService())
         authenticate {
             user(UserService())
         }

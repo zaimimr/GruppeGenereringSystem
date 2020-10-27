@@ -1,5 +1,6 @@
 package com.gruppe7.service
 
+import com.gruppe7.model.Events
 import com.gruppe7.model.Users
 import com.gruppe7.utils.getSystemVariable
 import com.zaxxer.hikari.HikariConfig
@@ -15,6 +16,7 @@ object DatabaseFactory {
         Database.connect(hikari())
         transaction {
             create(Users)
+            create(Events)
         }
     }
 

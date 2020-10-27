@@ -46,10 +46,11 @@ dependencies {
     implementation "io.ktor:ktor-auth:$ktor_version"
     implementation "io.ktor:ktor-auth-jwt:$ktor_version"
     implementation "io.ktor:ktor-gson:$ktor_version"
-
+    implementation "io.ktor:ktor-jackson:$ktor_version"
 
     implementation("org.jetbrains.exposed:exposed-core:$ktor_exposed")
     implementation("org.jetbrains.exposed:exposed-jdbc:$ktor_exposed")
+    implementation("org.jetbrains.exposed:exposed-jodatime:$ktor_exposed")
 
     implementation("com.zaxxer:HikariCP:3.4.5")
     implementation("mysql:mysql-connector-java:8.0.21")
@@ -59,7 +60,7 @@ dependencies {
     compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.0'
     compile group: 'com.sun.mail', name: 'javax.mail', version: '1.6.0'
     implementation("io.sentry:sentry:$sentry_version")
-    
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda', version: '2.0.2'
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     implementation("org.springframework.security:spring-security-core:5.4.0")
 
