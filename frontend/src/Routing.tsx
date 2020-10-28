@@ -19,12 +19,16 @@ function Routing() {
       <Switch>
         <EventProvider>
           <Container maxWidth='sm'>
-            <Route exact path='/signup'>
-              <SignUp />
-            </Route>
-            <Route exact path='/'>
-              {hasAuth ? <div>TODO: Bytt ut med event</div> : <Login />}
-            </Route>
+            {!hasAuth && (
+              <>
+                <Route exact path='/signup'>
+                  <SignUp />
+                </Route>
+                <Route exact path='/'>
+                  <Login />
+                </Route>
+              </>
+            )}
             {hasAuth && (
               <Route exact path='/create'>
                 <CreateEvent />
@@ -35,6 +39,9 @@ function Routing() {
             <Container maxWidth='md'>
               <Route exact path='/:eventId/present'>
                 <PresentGroup title='Gruppe generering' />
+              </Route>
+              <Route exact path='/'>
+                <div>Dashboard</div>
               </Route>
               <Route exact path='/:eventId'>
                 <Invitation title='Gruppe generering' />

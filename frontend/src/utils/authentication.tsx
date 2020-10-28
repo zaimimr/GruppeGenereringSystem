@@ -17,15 +17,10 @@ export const useAuth = () => {
         setHasAuth(false);
       });
     } else {
-      getUserWithToken()
-        .then((response: { data: { user: IUser } }) => {
-          setUser(response.data.user);
-          setHasAuth(true);
-        })
-        .catch(() => {
-          removeCookie('access_token');
-          setHasAuth(false);
-        });
+      getUserWithToken().then((response: { data: { user: IUser } }) => {
+        setUser(response.data.user);
+        setHasAuth(true);
+      });
     }
     // eslint-disable-next-line
   }, [cookies.access_token, user]);

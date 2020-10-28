@@ -5,7 +5,7 @@ import { IApprovedGroupsData, ICsvData, IFilterData, ILoginCredentials, SignUpDa
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 export function setAuthHeader(token: string) {
-  axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 export function sendInvitation(csvGroups: ICsvData[], eventID: string) {
   return axios.post(`/invite/${eventID}`, csvGroups);
