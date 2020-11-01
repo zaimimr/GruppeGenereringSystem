@@ -15,24 +15,27 @@ import org.jetbrains.exposed.sql.update
 import java.util.UUID
 
 class EventService {
-    suspend fun addEvent(event: CreateEventData, user: User) {
+    suspend fun addEvent(event: CreateEventData, user: User): Event? {
         verifyMinMaxFilter(event.minimumPerGroup, event.maximumPerGroup)
 
         val datetime = formatStringToDate(event.time)
-
+        var key: UUID? = null
         DatabaseFactory.dbQuery {
-            Events.insert {
-                it[id] = UUID.randomUUID()
-                it[title] = event.title
-                it[ingress] = event.ingress
-                it[place] = event.place
-                it[time] = datetime
-                it[description] = event.description
-                it[minimumPerGroup] = event.minimumPerGroup
-                it[maximumPerGroup] = event.maximumPerGroup
-                it[createdBy] = user.id
-            }
+            key = (
+                Events.insert {
+                    it[id] = UUID.randomUUID()
+                    it[title] = event.title
+                    it[ingress] = event.ingress
+                    it[place] = event.place
+                    it[time] = datetime
+                    it[description] = event.description
+                    it[minimumPerGroup] = event.minimumPerGroup
+                    it[maximumPerGroup] = event.maximumPerGroup
+                    it[createdBy] = user.id
+                } get Events.id
+                )
         }
+        return key?.let { getEvent(it) }
     }
 
     suspend fun getAllEventsCreatedByUser(user: User): List<Event> = DatabaseFactory.dbQuery {
