@@ -35,6 +35,10 @@ export function getUserWithToken() {
   return axios.get('/user');
 }
 
+export function deleteEvent(eventID: string) {
+  return axios.delete(`/event/${eventID}`);
+}
+
 export function getEvents() {
   return axios.get('/event');
 }

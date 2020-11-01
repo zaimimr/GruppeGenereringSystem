@@ -50,8 +50,8 @@ fun Route.event(eventService: EventService) {
                         call.respond(HttpStatusCode.Unauthorized)
                     } else {
                         val eventData = call.receive<CreateEventData>()
-                        eventService.addEvent(eventData, user)
-                        call.respond(HttpStatusCode.Created)
+                        val createdEvent = eventService.addEvent(eventData, user)
+                        call.respond(HttpStatusCode.Created, createdEvent!!)
                     }
                 } catch (e: IllegalArgumentException) {
                     Sentry.capture(e)

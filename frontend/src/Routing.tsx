@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch as DomSwitch } from 'react-router-dom';
 import { useAuth } from 'utils/authentication';
 import CreateEvent from 'views/CreateEvent/CreateEvent';
 import Dashboard from 'views/Dashboard/Dashboard';
+import Event from 'views/Event/Event';
 import Filter from 'views/Filter/Filter';
 import Invitation from 'views/Invitation/Invitation';
 import Join from 'views/Join/Join';
@@ -44,10 +45,13 @@ function Routing() {
                     <Route exact path='/:eventId/present'>
                       <PresentGroup title='Gruppe generering' />
                     </Route>
+                    <Route exact path='/:eventId'>
+                      <Event />
+                    </Route>
                     <Route exact path='/'>
                       <Dashboard />
                     </Route>
-                    <Route exact path='/:eventId'>
+                    <Route exact path='/:eventId/invite'>
                       <Invitation title='Gruppe generering' />
                     </Route>
                     <Route exact path='/:eventId/filter'>
