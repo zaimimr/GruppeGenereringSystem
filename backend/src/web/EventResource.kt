@@ -21,6 +21,10 @@ import io.ktor.routing.route
 import io.sentry.Sentry
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 fun Route.event(eventService: EventService) {
@@ -32,7 +36,10 @@ fun Route.event(eventService: EventService) {
                 if (user == null) {
                     call.respond(HttpStatusCode.Unauthorized)
                 } else {
-                    call.respond(eventService.getAllEventsCreatedByUser(user))
+                    val events = eventService.getAllEventsCreatedByUser(user)
+                    val todaysDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(-1)
+                    val eventsAfterToday = events.filter { LocalDateTime.parse(it.time.toString().split(".")[0].replace("T", " "), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).isAfter(todaysDate) }
+                    call.respond(eventsAfterToday)
                 }
             }
 

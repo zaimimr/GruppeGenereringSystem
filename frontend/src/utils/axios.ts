@@ -34,3 +34,7 @@ export function verifyToken() {
 export function getUserWithToken() {
   return axios.get('/user');
 }
+
+export function getEvents() {
+  return axios.get('/event');
+}

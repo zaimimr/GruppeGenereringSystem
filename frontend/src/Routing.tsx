@@ -1,9 +1,10 @@
 import { Container } from '@material-ui/core';
-import { EventProvider } from 'context/EventContext';
 import React from 'react';
 import { Route, Switch } from 'react-router';
+import { BrowserRouter as Router, Switch as DomSwitch } from 'react-router-dom';
 import { useAuth } from 'utils/authentication';
 import CreateEvent from 'views/CreateEvent/CreateEvent';
+import Dashboard from 'views/Dashboard/Dashboard';
 import Filter from 'views/Filter/Filter';
 import Invitation from 'views/Invitation/Invitation';
 import Join from 'views/Join/Join';
@@ -16,46 +17,52 @@ function Routing() {
 
   return (
     <>
-      <Switch>
-        <EventProvider>
-          <Container maxWidth='sm'>
-            {!hasAuth && (
-              <>
-                <Route exact path='/signup'>
-                  <SignUp />
-                </Route>
-                <Route exact path='/'>
-                  <Login />
-                </Route>
-              </>
-            )}
-            {hasAuth && (
-              <Route exact path='/create'>
-                <CreateEvent />
-              </Route>
-            )}
-          </Container>
-          {hasAuth && (
-            <Container maxWidth='md'>
-              <Route exact path='/:eventId/present'>
-                <PresentGroup title='Gruppe generering' />
-              </Route>
-              <Route exact path='/'>
-                <div>Dashboard</div>
-              </Route>
-              <Route exact path='/:eventId'>
-                <Invitation title='Gruppe generering' />
-              </Route>
-              <Route exact path='/:eventId/filter'>
-                <Filter title='Gruppe generering' />
-              </Route>
-              <Route exact path='/:eventId/join/:participantId'>
-                <Join />
-              </Route>
-            </Container>
-          )}
-        </EventProvider>
-      </Switch>
+      <Router>
+        <DomSwitch>
+          <Switch>
+            <>
+              <Container maxWidth='sm'>
+                {!hasAuth && (
+                  <>
+                    <Route exact path='/signup'>
+                      <SignUp />
+                    </Route>
+                    <Route exact path='/'>
+                      <Login />
+                    </Route>
+                  </>
+                )}
+                {hasAuth && (
+                  <Route exact path='/create'>
+                    <CreateEvent />
+                  </Route>
+                )}
+              </Container>
+              <Container maxWidth='md'>
+                {hasAuth && (
+                  <>
+                    <Route exact path='/:eventId/present'>
+                      <PresentGroup title='Gruppe generering' />
+                    </Route>
+                    <Route exact path='/'>
+                      <Dashboard />
+                    </Route>
+                    <Route exact path='/:eventId'>
+                      <Invitation title='Gruppe generering' />
+                    </Route>
+                    <Route exact path='/:eventId/filter'>
+                      <Filter title='Gruppe generering' />
+                    </Route>
+                    <Route exact path='/:eventId/join/:participantId'>
+                      <Join />
+                    </Route>
+                  </>
+                )}
+              </Container>
+            </>
+          </Switch>
+        </DomSwitch>
+      </Router>
     </>
   );
 }

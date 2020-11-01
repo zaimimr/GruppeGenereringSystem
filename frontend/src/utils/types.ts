@@ -61,3 +61,16 @@ export type SignUpData = {
   email: string;
   password: string;
 };
+
+export type Event = {
+    id: string,
+    title: string,
+    ingress: string,
+    place: string,
+    time: string,
+    description: string,
+    minimumPerGroup: number,
+    maximumPerGroup: number,
+    dateCreated: string,
+    createdBy: string
+}

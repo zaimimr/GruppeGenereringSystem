@@ -28,7 +28,7 @@ function Login() {
     login(loginCredentials)
       .then((response) => {
         setSubmitFormLazy(Success(response.data));
-        setUser(response.data.user);
+        setUser(response.data);
         const expirationDate = new Date();
         expirationDate.setTime(expirationDate.getTime() + 7 * 24 * 60 * 60 * 1000);
         setCookie('access_token', response.data.token, { path: '/', expires: expirationDate, sameSite: true });
