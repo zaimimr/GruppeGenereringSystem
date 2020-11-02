@@ -26,7 +26,7 @@ const DatePicker = ({ id, name, defaultValue, label, error, control, required = 
       defaultValue={defaultValue}
       disableToolbar
       error={Boolean(error)}
-      format='MM/dd/yyyy'
+      format='dd/MM/yyyy'
       fullWidth
       id={id}
       label={label}

@@ -42,22 +42,22 @@ function Routing() {
               <Container maxWidth='md'>
                 {hasAuth && (
                   <>
-                    <Route exact path='/:eventId/present'>
+                    <Route exact path='/event/:eventId/present'>
                       <PresentGroup title='Gruppe generering' />
                     </Route>
-                    <Route exact path='/:eventId'>
+                    <Route exact path='/event/:eventId'>
                       <Event />
                     </Route>
                     <Route exact path='/'>
                       <Dashboard />
                     </Route>
-                    <Route exact path='/:eventId/invite'>
+                    <Route exact path='/event/:eventId/invite'>
                       <Invitation title='Gruppe generering' />
                     </Route>
-                    <Route exact path='/:eventId/filter'>
+                    <Route exact path='/event/:eventId/filter'>
                       <Filter title='Gruppe generering' />
                     </Route>
-                    <Route exact path='/:eventId/join/:participantId'>
+                    <Route exact path='/event/:eventId/join/:participantId'>
                       <Join />
                     </Route>
                   </>

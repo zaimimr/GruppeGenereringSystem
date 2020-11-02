@@ -13,7 +13,7 @@ import { Failure, Initial, LazyResult, Loading, Success } from 'lemons';
 import React, { useEffect } from 'react';
 import { useModal } from 'react-modal-hook';
 import { useHistory, useParams } from 'react-router-dom';
-import { deleteEvent } from 'utils/axios';
+import { deleteEvent, getEvents } from 'utils/axios';
 import { Event as IEvent, IEventData } from 'utils/types';
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,7 @@ function Event() {
   const [submitFormLazy, setSubmitFormLazy] = React.useState<LazyResult<Error, IEventData>>(Initial());
   const history = useHistory();
   const { showSnackbar } = useSnackbar();
-  const [events] = useEvents();
+  const [events, setEvents] = useEvents();
 
   useEffect(() => {
     setSubmitFormLazy(Loading());
@@ -75,6 +75,9 @@ function Event() {
                 onClick={() => {
                   deleteEvent(eventId)
                     .then(() => {
+                      getEvents().then((res: { data: Event[] }) => {
+                        setEvents(res.data);
+                      });
                       showSnackbar('success', 'Arrangementet ble slettet');
                       history.push('/');
                     })
@@ -138,7 +141,7 @@ function Event() {
                           fullWidth
                           label='Start arrangementet'
                           onClick={() => {
-                            history.push(`/${eventId}/invite`);
+                            history.push(`/event/${eventId}/invite`);
                           }}
                         />
                       </Grid>

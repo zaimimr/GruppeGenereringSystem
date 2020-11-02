@@ -62,7 +62,7 @@ function Filter({ title }: FilterProps) {
       .then((response) => {
         setOriginGroups(response.data);
         showSnackbar('success', 'Gruppene er blitt generert');
-        history.push(`/${eventId}/present`);
+        history.push(`/event/${eventId}/present`);
       })
       .catch((err) => {
         // eslint-disable-next-line
@@ -109,7 +109,7 @@ function Filter({ title }: FilterProps) {
                   <Button fullWidth label='Generer grupper' onClick={handleSubmit(onSubmit)} type='submit' />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button fullWidth label='Gå tilbake' link onClick={() => history.push(`/${eventId}`)} />
+                  <Button fullWidth label='Gå tilbake' link onClick={() => history.push(`/event/${eventId}`)} />
                 </Grid>
               </Grid>
             </Paper>

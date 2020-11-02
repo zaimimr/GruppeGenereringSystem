@@ -53,7 +53,7 @@ export default function Dashboard() {
                   <TextField control={control} error={null} fullWidth id='dashboard-search-field' label='Søk på tittel' name='dashboardSearchField' />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button fullWidth label='Opprett et arrangement' onClick={() => history.push('/event')} />
+                  <Button fullWidth label='Opprett et arrangement' onClick={() => history.push('/create')} />
                 </Grid>
               </Grid>
             </Paper>
@@ -86,7 +86,7 @@ const DashboardCard = ({ event }: { event: Event }) => {
   const history = useHistory();
   return (
     <Grid container item>
-      <CardActionArea onClick={() => history.push(`/${event.id}`)}>
+      <CardActionArea onClick={() => history.push(`/event/${event.id}`)}>
         <Paper>
           <Typography gutterBottom variant='h2'>
             {event.title}

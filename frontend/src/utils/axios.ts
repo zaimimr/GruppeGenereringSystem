@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { IApprovedGroupsData, ICsvData, IFilterData, ILoginCredentials, SignUpData } from './types';
+import { CreateEventData, IApprovedGroupsData, ICsvData, IFilterData, ILoginCredentials, SignUpData } from './types';
 
 axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -41,4 +41,8 @@ export function deleteEvent(eventID: string) {
 
 export function getEvents() {
   return axios.get('/event');
+}
+
+export function createEvent(eventData: CreateEventData) {
+  return axios.post('/event', eventData);
 }
