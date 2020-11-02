@@ -102,7 +102,7 @@ function Invitation({ title }: InvitationProps) {
       .then(({ data }: { data: { participants: IParticipants[] } }) => {
         setParticipants(data.participants);
         showSnackbar('success', 'Alle invitasjonen er nå sendt');
-        history.push(`/${eventId}/filter`);
+        history.push(`/event/${eventId}/filter`);
       })
       // eslint-disable-next-line
       .catch(err => {

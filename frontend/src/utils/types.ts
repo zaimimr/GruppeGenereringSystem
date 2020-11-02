@@ -63,14 +63,23 @@ export type SignUpData = {
 };
 
 export type Event = {
-    id: string,
-    title: string,
-    ingress: string,
-    place: string,
-    time: string,
-    description: string,
-    minimumPerGroup: number,
-    maximumPerGroup: number,
-    dateCreated: string,
-    createdBy: string
-}
+  id: string;
+  title: string;
+  ingress: string;
+  place: string;
+  time: string;
+  description: string;
+  minimumPerGroup: number;
+  maximumPerGroup: number;
+  dateCreated: string;
+  createdBy: string;
+};
+export type CreateEventData = {
+  title: string;
+  ingress: string;
+  place: string;
+  time: string;
+  description: string;
+  minimumPerGroup: number;
+  maximumPerGroup: number;
+};

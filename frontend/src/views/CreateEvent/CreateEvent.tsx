@@ -4,8 +4,14 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Button from 'components/Button';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
+import { useEvents } from 'context/EventContext';
+import useSnackbar from 'context/SnakbarContext';
+import dateFormat from 'dateformat';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router';
+import { createEvent, getEvents } from 'utils/axios';
+import { CreateEventData } from 'utils/types';
 
 import DatePicker from './components/DatePicker';
 import TimePicker from './components/TimePicker';
@@ -58,26 +64,33 @@ const InputFields = ({ id, rows = 1, multiline = false, name, label, type = 'str
 };
 function CreateEvent() {
   const { control, handleSubmit, getValues, errors } = useForm<ICreateEventInput>();
+  const { showSnackbar } = useSnackbar();
+  const history = useHistory();
+  const [, setEvents] = useEvents();
 
   const onSubmit = handleSubmit((data) => {
-    // TODO
-    // Do something with the formData
-    /* const formData: IEventData = {
+    const time = dateFormat(data.date, 'dd/mm/yyyy') + ' ' + dateFormat(data.time, 'HH:MM');
+    const formData: CreateEventData = {
       title: data.title,
       ingress: data.ingress,
       place: data.place,
-      date: data.date,
-      time: data.time,
+      time: time,
       description: data.description,
-      filters: [
-        {
-          minimum: data.minimumPerGroup,
-          maximum: data.maximumPerGroup,
-        },
-      ],
+      minimumPerGroup: data.minimumPerGroup,
+      maximumPerGroup: data.maximumPerGroup,
     };
-    console.log(formData);
-    */
+    createEvent(formData)
+      .then((response) => {
+        showSnackbar('success', 'Arrangementet ble opprettet!');
+        getEvents().then((res: { data: Event[] }) => {
+          setEvents(res.data);
+        });
+
+        history.push(`/event/${response.data.id}`);
+      })
+      .catch(() => {
+        showSnackbar('error', 'Noe gikk galt');
+      });
   });
 
   return (
