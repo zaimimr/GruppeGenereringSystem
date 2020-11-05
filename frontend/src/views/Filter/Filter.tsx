@@ -73,10 +73,6 @@ function Filter({ title }: FilterProps) {
       });
   };
 
-  const inputNumberParser = (value: string) => {
-    return value === '' ? 0 : Number(value);
-  };
-
   return (
     <>
       {submitFormLazy.dispatch(
@@ -147,7 +143,7 @@ function Filter({ title }: FilterProps) {
                         value: 1,
                         message: 'Må være større enn 0',
                       },
-                      validate: (value: number) => value >= getValues('minimumPerGroup') || 'Max må være større eller lik Min',
+                      validate: (value: number) => value >= inputNumberParser(getValues('minimumPerGroup')) || 'Max må være større eller lik Min',
                     }}
                   />
                   {
@@ -168,6 +164,10 @@ function Filter({ title }: FilterProps) {
     </>
   );
 }
+
+export const inputNumberParser = (value: string) => {
+  return value === '' ? 0 : Number(value);
+};
 
 type IFilterItems = {
   id: string;
@@ -241,7 +241,7 @@ const Filters = ({ control, label, getValues, errors }: IFilter) => {
             validate: (value: number) => {
               // eslint-disable-next-line eqeqeq
               const isNotSet = value == 0;
-              const isSmallerThenMin = value < getValues(`${label}_min`);
+              const isSmallerThenMin = value < inputNumberParser(getValues(`${label}_min`));
               if (!isNotSet && isSmallerThenMin) {
                 return 'Max må være større eller lik Min';
               }
