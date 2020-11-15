@@ -14,7 +14,7 @@ import React, { useEffect } from 'react';
 import { useModal } from 'react-modal-hook';
 import { useHistory, useParams } from 'react-router-dom';
 import { deleteEvent, getEvents } from 'utils/axios';
-import { Event as IEvent, IEventData } from 'utils/types';
+import { IEvent, IEventData } from 'utils/types';
 
 const useStyles = makeStyles((theme) => ({
   icons: {
@@ -106,11 +106,13 @@ function Event() {
           <LoadingScreen message='Henter arrangement...' />
         ),
         () => (
-          <Typography variant='h1'>Arrangementet er ikke funnet</Typography>
+          <Typography variant='h4'>Arrangementet er ikke funnet</Typography>
         ),
         (event) => (
           <>
-            <Typography variant='h1'>{event.title}</Typography>
+            <Typography gutterBottom variant='h4'>
+              {event.title}
+            </Typography>
             <Grid container direction={'row-reverse'} justify={'space-between'} spacing={4}>
               <Grid container direction={'column'} item sm={4} spacing={4} xs={12}>
                 <Grid item>
@@ -146,7 +148,7 @@ function Event() {
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <Button fullWidth label='Endre arrangementet' onClick={() => null} />
+                        <Button fullWidth label='Endre arrangementet' onClick={() => history.push(`/event/${eventId}/update`)} />
                       </Grid>
                       <Grid item xs={12}>
                         <Button fullWidth label='Slett arrangement' link onClick={showModal} />

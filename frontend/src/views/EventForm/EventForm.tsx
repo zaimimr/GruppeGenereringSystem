@@ -9,9 +9,9 @@ import useSnackbar from 'context/SnakbarContext';
 import dateFormat from 'dateformat';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { createEvent, getEvents } from 'utils/axios';
-import { CreateEventData } from 'utils/types';
+import { CreateEventData, IEvent } from 'utils/types';
 
 import DatePicker from './components/DatePicker';
 import TimePicker from './components/TimePicker';
@@ -62,11 +62,27 @@ const InputFields = ({ id, rows = 1, multiline = false, name, label, type = 'str
     </ListItem>
   );
 };
-function CreateEvent() {
-  const { control, handleSubmit, getValues, errors } = useForm<ICreateEventInput>();
+function EventForm() {
+  const { control, handleSubmit, getValues, errors, setValue } = useForm<ICreateEventInput>();
   const { showSnackbar } = useSnackbar();
   const history = useHistory();
-  const [, setEvents] = useEvents();
+  const { eventId }: { eventId: string } = useParams();
+  const [events, setEvents] = useEvents();
+
+  React.useEffect(() => {
+    const currentEvent = events?.find((event: IEvent) => event.id === eventId);
+    if (currentEvent) {
+      setValue('title', currentEvent.title);
+      setValue('ingress', currentEvent.ingress);
+      setValue('place', currentEvent.place);
+      setValue('date', currentEvent.date);
+      setValue('time', currentEvent.time);
+      setValue('description', currentEvent.description);
+      setValue('minimumPerGroup', currentEvent.minimumPerGroup);
+      setValue('maximumPerGroup', currentEvent.maximumPerGroup);
+    }
+    // eslint-disable-next-line
+  }, [eventId, events]);
 
   const onSubmit = handleSubmit((data) => {
     const time = dateFormat(data.date, 'dd/mm/yyyy') + ' ' + dateFormat(data.time, 'HH:MM');
@@ -96,7 +112,9 @@ function CreateEvent() {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Paper>
-        <Typography variant='h1'>Opprett arrangement</Typography>
+        <Typography gutterBottom variant='h4'>
+          {eventId ? 'Endre arrangement' : 'Opprett arrangement'}
+        </Typography>
         <form noValidate onSubmit={onSubmit}>
           <List disablePadding>
             <InputFields control={control} error={errors.title} id='event_title' label='Tittel' name='title' required='Påkrevd' />
@@ -113,7 +131,7 @@ function CreateEvent() {
               </Grid>
             </ListItem>
             <InputFields control={control} error={errors.date} id='event_description' label='Beskrivelse' multiline name='description' rows={8} />
-            <Grid container justify='space-around' spacing={2}>
+            <Grid container justify={'space-around'} spacing={2}>
               <Grid item sm={6} xs={12}>
                 <InputFields
                   control={control}
@@ -147,10 +165,13 @@ function CreateEvent() {
                   type='number'
                 />
               </Grid>
+              <Grid item sm={6} xs={12}>
+                <Button fullWidth label={eventId ? 'Oppdater arrangement' : 'Opprett arrangement'} onClick={() => null} type='submit' />
+              </Grid>
+              <Grid item sm={6} xs={12}>
+                <Button fullWidth label='Gå tilbake' link onClick={() => history.push(eventId ? `/event/${eventId}` : '/')} />
+              </Grid>
             </Grid>
-
-            <Button fullWidth label='Opprett arrangement' onClick={() => null} type='submit' />
-            <Button fullWidth label='Gå tilbake til dashboard' link onClick={() => null} />
           </List>
         </form>
       </Paper>
@@ -158,4 +179,4 @@ function CreateEvent() {
   );
 }
 
-export default CreateEvent;
+export default EventForm;

@@ -134,7 +134,7 @@ function Invitation({ title }: InvitationProps) {
                   <Button fullWidth label='Send Invitasjon' onClick={submit} />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button fullWidth label='Gå tilbake' link onClick={() => null} />
+                  <Button fullWidth label='Gå tilbake' link onClick={() => history.push(`/event/${eventId}`)} />
                 </Grid>
               </Grid>
             </Paper>

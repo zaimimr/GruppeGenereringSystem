@@ -23,6 +23,9 @@ class UserService {
 
     suspend fun addUser(user: RegistrationData) {
         try {
+            if (user.password != user.repeatPassword) {
+                throw IllegalArgumentException("Passord må være like")
+            }
             val hashedPassword = BCrypt.hashpw(user.password, BCrypt.gensalt(SALT_ROUNDS))
             DatabaseFactory.dbQuery {
                 Users.insert {

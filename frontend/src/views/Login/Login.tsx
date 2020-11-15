@@ -34,8 +34,8 @@ function Login() {
         setCookie('access_token', response.data.token, { path: '/', expires: expirationDate, sameSite: true });
       })
       .catch((err) => {
-        setSubmitFormLazy(Failure(err.response.data));
-        showSnackbar('error', err.response.data);
+        setSubmitFormLazy(Failure(err.response?.data));
+        showSnackbar('error', err.response?.data);
       });
   });
 

@@ -33,18 +33,16 @@ export default function Table({ participantList }: { participantList: IParticipa
   );
 }
 
-function CustomPagination({ paginationProps }: ComponentProps) {
+function CustomPagination(props: ComponentProps) {
   const classes = useStyles();
-
+  const { pagination, api } = props;
   return (
     <Pagination
       className={classes.root}
       color='primary'
-      count={paginationProps.pageCount}
-      onChange={(e: React.ChangeEvent<unknown>, value: number) => {
-        paginationProps.setPage(value);
-      }}
-      page={paginationProps.page}
+      count={pagination.pageCount}
+      onChange={(e, value) => api.current.setPage(value)}
+      page={pagination.page}
     />
   );
 }

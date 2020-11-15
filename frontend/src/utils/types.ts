@@ -32,7 +32,6 @@ export type IPresentData = {
 
 export type IApprovedGroupsData = {
   event: string;
-  coordinatorEmail: string;
   finalData: IPresentData;
 };
 
@@ -62,7 +61,7 @@ export type SignUpData = {
   password: string;
 };
 
-export type Event = {
+export type IEvent = {
   id: string;
   title: string;
   ingress: string;
