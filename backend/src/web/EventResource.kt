@@ -39,7 +39,7 @@ fun Route.event(eventService: EventService) {
                     val events = eventService.getAllEventsCreatedByUser(user)
                     val todaysDate = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(-1)
                     val eventsAfterToday = events.filter { LocalDateTime.parse(it.time.toString().split(".")[0].replace("T", " "), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).isAfter(todaysDate) }
-                    call.respond(eventsAfterToday)
+                    call.respond(eventsAfterToday.sortedBy { it.time })
                 }
             }
 

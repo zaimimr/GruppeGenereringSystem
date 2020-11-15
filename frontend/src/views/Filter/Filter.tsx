@@ -3,7 +3,7 @@ import Button from 'components/Button';
 import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
-import { useSetOriginalGroups, useSetParticipants } from 'context/EventContext';
+import { useEvents, useSetOriginalGroups, useSetParticipants } from 'context/EventContext';
 import useSnackbar from 'context/SnakbarContext';
 import { Failure, Initial, Loading } from 'lemons';
 import React from 'react';
@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
 import useWebSocket from 'react-use-websocket';
 import { generateGroups } from 'utils/axios';
-import { IFilterData, IParticipants } from 'utils/types';
+import { IEvent, IFilterData, IParticipants } from 'utils/types';
 import Table from 'views/Filter/components/Table';
 
 export type FilterProps = { title: string };
@@ -23,7 +23,7 @@ function Filter({ title }: FilterProps) {
   const [, setOriginGroups] = useSetOriginalGroups();
   const [joinedParticipants, setJoinedParticipants] = React.useState<IParticipants[]>([]);
 
-  const { errors, handleSubmit, control, getValues } = useForm();
+  const { errors, handleSubmit, control, getValues, setValue } = useForm();
 
   const history = useHistory();
   const { eventId }: { eventId: string } = useParams();
@@ -32,6 +32,7 @@ function Filter({ title }: FilterProps) {
   // eslint-disable-next-line new-cap
   const [submitFormLazy, setSubmitFormLazy] = React.useState(Initial());
   const { showSnackbar } = useSnackbar();
+  const [events] = useEvents();
 
   const [uniqueGroups] = React.useState(Array.from(new Set(participants.map((participant: IParticipants) => participant.group))));
 
@@ -45,6 +46,16 @@ function Filter({ title }: FilterProps) {
     }
     // eslint-disable-next-line
   }, [lastMessage]);
+
+  React.useEffect(() => {
+    const newEvent = events?.find((event: IEvent) => event.id === eventId);
+    if (newEvent) {
+      setValue('minimumPerGroup', newEvent.minimumPerGroup);
+      setValue('maximumPerGroup', newEvent.maximumPerGroup);
+    }
+    // eslint-disable-next-line
+  }, [eventId, events]);
+
   // eslint-disable-next-line
   const onSubmit = (formData: any) => {
     const filters = [{ name: undefined, minimum: inputNumberParser(formData.minimumPerGroup), maximum: inputNumberParser(formData.maximumPerGroup) }];
@@ -105,7 +116,7 @@ function Filter({ title }: FilterProps) {
                   <Button fullWidth label='Generer grupper' onClick={handleSubmit(onSubmit)} type='submit' />
                 </Grid>
                 <Grid item xs={12}>
-                  <Button fullWidth label='Gå tilbake' link onClick={() => history.push(`/event/${eventId}`)} />
+                  <Button fullWidth label='Gå tilbake' link onClick={() => history.push(`/event/${eventId}/invite`)} />
                 </Grid>
               </Grid>
             </Paper>

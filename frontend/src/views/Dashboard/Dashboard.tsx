@@ -13,7 +13,7 @@ import { Failure, Loading, Success } from 'lemons';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
-import { Event } from 'utils/types';
+import { IEvent } from 'utils/types';
 
 export default function Dashboard() {
   const { control, watch } = useForm();
@@ -82,7 +82,7 @@ export default function Dashboard() {
   );
 }
 
-const DashboardCard = ({ event }: { event: Event }) => {
+const DashboardCard = ({ event }: { event: IEvent }) => {
   const history = useHistory();
   return (
     <Grid container item>

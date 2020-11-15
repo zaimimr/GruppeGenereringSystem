@@ -1,11 +1,12 @@
 import { Container } from '@material-ui/core';
+import Navbar from 'components/Navbar';
 import React from 'react';
 import { Route, Switch } from 'react-router';
 import { BrowserRouter as Router, Switch as DomSwitch } from 'react-router-dom';
 import { useAuth } from 'utils/authentication';
-import CreateEvent from 'views/CreateEvent/CreateEvent';
 import Dashboard from 'views/Dashboard/Dashboard';
 import Event from 'views/Event/Event';
+import EventForm from 'views/EventForm/EventForm';
 import Filter from 'views/Filter/Filter';
 import Invitation from 'views/Invitation/Invitation';
 import Join from 'views/Join/Join';
@@ -22,6 +23,7 @@ function Routing() {
         <DomSwitch>
           <Switch>
             <>
+              <Navbar />
               <Container maxWidth='sm'>
                 {!hasAuth && (
                   <>
@@ -34,9 +36,14 @@ function Routing() {
                   </>
                 )}
                 {hasAuth && (
-                  <Route exact path='/create'>
-                    <CreateEvent />
-                  </Route>
+                  <>
+                    <Route exact path='/create'>
+                      <EventForm />
+                    </Route>
+                    <Route exact path='/event/:eventId/update'>
+                      <EventForm />
+                    </Route>
+                  </>
                 )}
               </Container>
               <Container maxWidth='md'>
