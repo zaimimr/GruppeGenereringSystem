@@ -10,6 +10,14 @@ import org.jetbrains.exposed.sql.SchemaUtils.create
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
+/**
+ * DatabaseFactory
+ *
+ * This object initialtes database connection
+ *
+ * @constructor Initiate database with hikari and create user and event table
+ */
+
 object DatabaseFactory {
 
     fun init() {

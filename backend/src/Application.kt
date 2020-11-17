@@ -5,7 +5,7 @@ import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.gruppe7.service.DatabaseFactory
 import com.gruppe7.service.EventService
 import com.gruppe7.service.UserService
-import com.gruppe7.utils.JwtConfig
+import com.gruppe7.utils.JWTHandler
 import com.gruppe7.utils.getSystemVariable
 import com.gruppe7.web.auth
 import com.gruppe7.web.event
@@ -73,8 +73,8 @@ fun Application.module(testing: Boolean = false) {
     install(Authentication) {
         jwt {
             realm = "gen-g"
-            verifier(JwtConfig.buildJwtVerifier())
-            validate { jwtCredential -> JwtConfig.validateCredential(jwtCredential) }
+            verifier(JWTHandler.buildJwtVerifier())
+            validate { jwtCredential -> JWTHandler.validateCredential(jwtCredential) }
         }
     }
 

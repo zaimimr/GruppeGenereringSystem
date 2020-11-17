@@ -27,10 +27,20 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
+/**
+ * Event end-points
+ *
+ * Endpoints for Event
+ *
+ */
 fun Route.event(eventService: EventService) {
     route("/event") {
 
         authenticate {
+            /**
+             * Endpoint to get all Events belonging to this user
+             * @return Events
+             */
             get("/") {
                 val user = call.authentication.principal<User>()
                 if (user == null) {
@@ -42,7 +52,10 @@ fun Route.event(eventService: EventService) {
                     call.respond(eventsAfterToday.sortedBy { it.time })
                 }
             }
-
+            /**
+             * Endpoint to create Event
+             * @return Event
+             */
             post("/") {
                 try {
                     val user = call.authentication.principal<User>()
@@ -61,6 +74,11 @@ fun Route.event(eventService: EventService) {
                     call.respond(HttpStatusCode.BadRequest, e.message!!)
                 }
             }
+            /**
+             * Endpoint to get one Event by id
+             * @param event_id Event id
+             * @return Event
+             */
             get("/{id}") {
                 try {
                     val user = call.authentication.principal<User>()
@@ -79,6 +97,12 @@ fun Route.event(eventService: EventService) {
                     call.respond(HttpStatusCode.Unauthorized, e.message!!)
                 }
             }
+
+            /**
+             * Endpoint to update Event by id
+             * @param event_id Event id
+             * @return Event
+             */
 
             put("/{id}") {
                 try {
@@ -101,6 +125,10 @@ fun Route.event(eventService: EventService) {
                     call.respond(HttpStatusCode.Unauthorized, e.message!!)
                 }
             }
+            /**
+             * Endpoint to delete Event by id
+             * @param event_id Event id
+             */
 
             delete("/{id}") {
                 try {

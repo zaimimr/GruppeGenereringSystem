@@ -5,6 +5,12 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import java.util.UUID
 
+/**
+ * User model
+ *
+ * User object in database
+ *
+ */
 object Users : Table() {
     val id: Column<UUID> = uuid("id")
     val name: Column<String> = varchar("name", 45)

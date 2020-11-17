@@ -9,8 +9,14 @@ import io.ktor.auth.Principal
 import io.ktor.auth.jwt.JWTCredential
 import java.util.Date
 import java.util.UUID
-
-object JwtConfig {
+/**
+ * JWT handler
+ *
+ * This class has no useful logic; it's just a documentation example.
+ *
+ * @constructor Creates an empty group.
+ */
+object JWTHandler {
 
     private val secret = getSystemVariable("JWT_SECRET") ?: "randomstring"
     private const val issuer = "gen-g"
