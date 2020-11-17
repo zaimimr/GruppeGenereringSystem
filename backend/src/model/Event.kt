@@ -7,6 +7,12 @@ import org.jetbrains.exposed.sql.jodatime.CurrentDateTime
 import org.jetbrains.exposed.sql.jodatime.datetime
 import org.joda.time.DateTime
 import java.util.UUID
+/**
+ * Event model
+ *
+ * Event object in database
+ *
+ */
 
 object Events : Table() {
     val id: Column<UUID> = uuid("id")

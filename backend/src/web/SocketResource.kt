@@ -13,6 +13,10 @@ class CoordinatorClient(val session: DefaultWebSocketSession, val eventID: Strin
     var participants: ByteArray? = null
 }
 
+/**
+ * Socket endpoint used participants to join event
+ */
+
 fun Route.socket() {
 
     val coordinators = Collections.synchronizedSet(LinkedHashSet<CoordinatorClient>())
@@ -32,10 +36,8 @@ fun Route.socket() {
                     when (frame) {
                         is Frame.Text -> {
                             frame.readText()
-                            // TODO: Istedenfor å sende med ParticipantID, send heller med participant objekt
                         }
                         is Frame.Binary -> {
-                            // TODO: Sende meg kandidatdata i binary og bruke dette til å sende en og en kandidat fra backend til frontend
                             val participants = frame.readBytes()
                             coordinator.participants = participants
                         }

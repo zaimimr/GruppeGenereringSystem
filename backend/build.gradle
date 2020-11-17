@@ -1,7 +1,9 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url "https://plugins.gradle.org/m2/" }
+        maven { 
+            url "https://plugins.gradle.org/m2/"
+            }
     }
     
     dependencies {
@@ -12,6 +14,7 @@ buildscript {
 
 plugins {
     id "org.jlleitschuh.gradle.ktlint" version "9.4.0"
+    id("org.jetbrains.dokka") version "1.4.10.2"
 }
 
 apply plugin: 'kotlin'
@@ -30,9 +33,11 @@ sourceSets {
 }
 
 repositories {
+    mavenCentral()
     mavenLocal()
     jcenter()
-    maven { url 'https://kotlin.bintray.com/ktor'
+    maven { 
+        url 'https://kotlin.bintray.com/ktor'
     }
 }
 
@@ -55,6 +60,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:3.4.5")
     implementation("mysql:mysql-connector-java:8.0.21")
 
+dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.10.2")
     implementation("io.github.cdimascio:java-dotenv:5.2.2")
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.11.0")
     compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.0'
@@ -63,7 +69,8 @@ dependencies {
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda', version: '2.0.2'
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     implementation("org.springframework.security:spring-security-core:5.4.0")
-
+    implementation("com.farao-community.ortools:ortools-java:7.8.7959")
+    implementation("com.farao-community.ortools:ortools-linux-x86-64:7.8.7959")
 }
 
 kotlin.experimental.coroutines = 'enable'

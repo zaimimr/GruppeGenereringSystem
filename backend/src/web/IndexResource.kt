@@ -21,6 +21,12 @@ import io.ktor.routing.post
 import io.sentry.Sentry
 import org.json.simple.JSONObject
 
+/**
+ * Util end-points
+ *
+ * Endpoints for group generating function
+ *
+ */
 fun Route.index() {
 
     get("/") {
@@ -28,6 +34,10 @@ fun Route.index() {
     }
 
     authenticate {
+        /**
+         * Endpoint for sending email invitation to participants
+         *
+         */
         post("/invite/{event_id}") {
             try {
                 val csvGroupList = call.receive<Array<CsvData>>()
@@ -47,6 +57,10 @@ fun Route.index() {
             }
         }
 
+        /**
+         * Endpoint for generating groups
+         *
+         */
         post("/generate") {
             try {
                 val response = call.receive<FilterData>()
@@ -78,7 +92,10 @@ fun Route.index() {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Noe gikk galt under generering av grupper")
             }
         }
-
+        /**
+         * Endpoint for sending final groups to participants and coordinator
+         *
+         */
         post("/sendgroups") {
             try {
                 val user = call.authentication.principal<User>()

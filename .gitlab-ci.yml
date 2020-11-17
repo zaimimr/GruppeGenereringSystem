@@ -4,6 +4,7 @@ stages:
   - lint
   - ktbuild
   - ktlint
+  - deploy_pages
   - deploy
 
 build:
@@ -43,5 +44,19 @@ deploy:
     - yarn install
     - yarn run build
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
+  only:
+    - dev
+
+deploy_pages:
+  image: openjdk:14-ea-8-jdk-alpine3.10
+  stage: deploy_pages
+  script:
+      - cd backend
+      - ./gradlew dokkaHtml
+      - cd ..
+      - mv backend/build/dokka/html public
+  artifacts:
+    paths:
+      - public
   only:
     - dev

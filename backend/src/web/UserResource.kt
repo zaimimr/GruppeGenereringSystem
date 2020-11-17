@@ -13,16 +13,28 @@ import io.ktor.routing.get
 import io.ktor.routing.route
 import java.util.UUID
 
+/**
+ * Endpoint for user
+ *
+ */
 fun Route.user(userService: UserService) {
 
     route("/user") {
         authenticate {
+            /**
+             * Get user based on JWT token
+             *
+             */
             get("/") {
                 val user = call.authentication.principal<User>()
                 if (user != null) call.respond(user)
                 else call.respond(HttpStatusCode.NotFound)
             }
 
+            /**
+             * Get user based on ID
+             *
+             */
             get("/{id}") {
                 val id: UUID = UUID.fromString(call.parameters["id"]) ?: throw IllegalStateException("Must provide id")
                 val user = userService.getUser(id)
@@ -30,6 +42,10 @@ fun Route.user(userService: UserService) {
                 else call.respond(HttpStatusCode.NotFound)
             }
 
+            /**
+             * Delete user based on ID
+             *
+             */
             delete("/{id}") {
                 val id: UUID = UUID.fromString(call.parameters["id"]) ?: throw IllegalStateException("Must provide id")
                 val removed = userService.deleteUser(id)
