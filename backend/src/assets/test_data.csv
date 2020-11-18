@@ -1,12 +1,10 @@
-navn, email, group
-Max T. Schau,max@schau.no,Dataingeniør
-Zaim Imran,zaim@gmail.no,Dataingeniør
-Sara Hjelle,sara@gmail.no,Dataingeniør
-Simon Årdal,simon@gmail.no,Dataingeniør
-Nikolai Dokken,nikolai@gmail.no,Dataingeniør
-Gunnar Pettersen, gunnar@gmail.com,DigSec
-Jonas Nilsen, jonas@gmail.com,DigSec
-Anders Brevik, anders@gmail.com,DigFor
-Oskar Nygren, oskar@gmail.com,DigFor
-Victor Høgheim, Victor@gmail.com,DigFor
-Nils Andersen, nils@gmail.com,DigFor
+name,epost,group
+max,max@gmail.com,Dataingeniør
+zaim,zaim@gmail.com,Dataingeniør
+simon,simon@gmail.com,Dataingeniør
+sara,simon@gmail.com,Dataingeniør
+sander,simon@gmail.com,Dataingeniør
+jonas,jonas@gmail.com,Økonomi
+martin,martin@gmail.com,Økonomi
+ksi,martin@gmail.com,Økonomi
+simen,martin@gmail.com,Økonomi

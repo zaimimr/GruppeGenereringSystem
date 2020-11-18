@@ -1,7 +1,7 @@
 package com.gruppe7.web
 
 import com.gruppe7.model.User
-import com.gruppe7.utils.GroupGenerator
+import com.gruppe7.utils.GenerateGroup.BruteForce
 import com.gruppe7.utils.SendEmailSMTP
 import com.gruppe7.utils.types.ApprovedGroupsData
 import com.gruppe7.utils.types.CsvData
@@ -75,13 +75,12 @@ fun Route.index() {
                         )
                     )
                 }
-                val groupGenerator = GroupGenerator()
+                val groupGenerator = BruteForce()
 
-                val groups = groupGenerator.groupGeneratorWithDynamicScore(
+                val groups = groupGenerator.solveWithBruteForce(
                     listOfParticipant,
                     response.filters.toCollection(ArrayList())
                 )
-
                 val responseObject = JSONObject()
                 responseObject["isCriteria"] = groups.first
                 responseObject["generatedGroups"] = groups.second.toTypedArray()
