@@ -2,6 +2,7 @@ package com.gruppe7
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
+import com.google.ortools.Loader
 import com.gruppe7.service.DatabaseFactory
 import com.gruppe7.service.EventService
 import com.gruppe7.service.UserService
@@ -49,6 +50,7 @@ fun Application.module(testing: Boolean = false) {
     client.serverName = getSystemVariable("SENTRY_SERVER_NAME")
 
     DatabaseFactory.init()
+    Loader.loadNativeLibraries()
 
     install(CORS) {
         method(HttpMethod.Options)

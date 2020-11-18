@@ -1,40 +1,19 @@
-package com.gruppe7.utils
+package com.gruppe7.utils.GenerateGroup
 
 import com.gruppe7.utils.types.FilterInformation
 import com.gruppe7.utils.types.Participant
-import java.lang.IllegalArgumentException
+import com.gruppe7.utils.validateGenerateGroupData
 import kotlin.math.abs
 
-class GroupGenerator {
+class BruteForce {
     private val FULL_SCORE = 100
     private val HALF_SCORE = 50
 
-    fun groupGeneratorWithDynamicScore(
+    fun solveWithBruteForce(
         participantList: ArrayList<Participant>,
         filterInformation: ArrayList<FilterInformation>
     ): Pair<Boolean, ArrayList<ArrayList<Participant>>> {
-        val generalInfo = filterInformation.find { it.name == null } ?: throw IllegalArgumentException("Filter for gruppene generelt er ikke sendt med")
-
-        val listOfGroups: ArrayList<String> = ArrayList()
-
-        var leastMinimumPerGroup = 0
-        for (filter in filterInformation) {
-            if (filter.name != null) leastMinimumPerGroup += filter.minimum
-
-            if (filter.maximum == 0) filter.maximum = generalInfo.maximum
-
-            if (filter.maximum < 0 || filter.minimum < 0) throw IllegalArgumentException("Negative tall er ikke tillatt")
-
-            if (filter.maximum > 0 && filter.minimum > filter.maximum) throw IllegalArgumentException("Maksimum kan ikke være større enn minimum")
-
-            if (!listOfGroups.contains(filter.name)) filter.name?.let { listOfGroups.add(it) }
-        }
-
-        if (leastMinimumPerGroup > generalInfo.minimum) throw IllegalArgumentException("Minimum deltagere per gruppe må være større eller lik summen av alle minimum i hvert filter")
-
-        for (participant in participantList) {
-            if (!listOfGroups.contains(participant.group)) throw IllegalArgumentException("${participant.group} har ikke et filter")
-        }
+        validateGenerateGroupData(filterInformation, participantList)
 
         val groups = ArrayList<ArrayList<Participant>>()
         try {
@@ -104,7 +83,7 @@ class GroupGenerator {
                     // TODO: Save the sizes of each group and generate it if we need to return best effort
                     bestGroup = copyList(groups)
                 }
-                if (biggestGroupSizeInIteration < generalInfo.minimum) {
+                if (biggestGroupSizeInIteration < filterInformation.find { it.name == null }!!.minimum) {
                     return Pair(false, bestGroup)
                 }
 
