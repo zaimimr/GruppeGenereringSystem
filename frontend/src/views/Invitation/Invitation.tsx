@@ -55,9 +55,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export type InvitationProps = { title: string };
-
-function Invitation({ title }: InvitationProps) {
+function Invitation() {
   const history = useHistory();
   const { eventId }: { eventId: string } = useParams();
   const classes = useStyles();
@@ -123,8 +121,10 @@ function Invitation({ title }: InvitationProps) {
         () => null,
       )}
       <Typography gutterBottom variant='h4'>
-        {title}
+        Inviter deltagere
       </Typography>
+      <Typography>Her skal man legge til ulike klasser med tilhørende deltagere.</Typography>
+      <Typography gutterBottom>?-ikonet ved hvert felt vil utdype hva hvert felt betyr.</Typography>
       <Grid container direction={'row-reverse'} justify={'space-between'} spacing={4}>
         <Grid container direction={'column'} item md={3} spacing={4}>
           <Grid item>

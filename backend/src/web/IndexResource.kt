@@ -1,6 +1,8 @@
 package com.gruppe7.web
 
+import com.gruppe7.model.Event
 import com.gruppe7.model.User
+import com.gruppe7.service.EventService
 import com.gruppe7.utils.GenerateGroup.BruteForce
 import com.gruppe7.utils.SendEmailSMTP
 import com.gruppe7.utils.types.ApprovedGroupsData
@@ -20,6 +22,7 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.sentry.Sentry
 import org.json.simple.JSONObject
+import java.util.UUID
 
 /**
  * Util end-points
@@ -42,13 +45,14 @@ fun Route.index() {
             try {
                 val csvGroupList = call.receive<Array<CsvData>>()
                 val eventID: String = call.parameters["event_id"]!!
+                val event: Event = EventService().getEvent(UUID.fromString(eventID))!!
                 val participants = ArrayList<Participant>()
                 for (csvGroup in csvGroupList) {
                     participants.addAll(csvGroup.getParticipants())
                 }
                 val responseObject = JSONObject()
                 responseObject["participants"] = participants.toTypedArray()
-                SendEmailSMTP().sendInvitation(participants.toTypedArray(), eventID)
+                SendEmailSMTP().sendInvitation(participants.toTypedArray(), event.title, eventID)
                 call.respond(responseObject)
             } catch (e: Exception) {
                 Sentry.capture(e)
@@ -102,7 +106,9 @@ fun Route.index() {
                     call.respond(HttpStatusCode.Unauthorized)
                 } else {
                     val response = call.receive<ApprovedGroupsData>()
-                    SendEmailSMTP().sendGroup(response.finalData, response.event, user.email)
+
+                    val event: Event = EventService().getEvent(UUID.fromString(response.event))!!
+                    SendEmailSMTP().sendGroup(response.finalData, event.title, user.email)
                     call.respond(HttpStatusCode.OK)
                 }
             } catch (e: Exception) {

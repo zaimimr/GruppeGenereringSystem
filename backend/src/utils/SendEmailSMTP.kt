@@ -40,7 +40,7 @@ class SendEmailSMTP {
         }
     }
 
-    fun sendInvitation(participants: Array<Participant>, event: String) {
+    fun sendInvitation(participants: Array<Participant>, event: String, event_id: String) {
         val (session, transport) = initEmail()
         try {
             for (participant in participants) {
@@ -48,7 +48,7 @@ class SendEmailSMTP {
                 mailToBeSent.setFrom(InternetAddress(EMAIL_USERNAME))
                 mailToBeSent.addRecipient(MimeMessage.RecipientType.TO, InternetAddress(participant.email))
                 mailToBeSent.subject = "Påmelding til $event"
-                val body = "<h1>Påmelding til $event </h1> \n <p>Her er linken for å melde deg på: $FRONTEND_URL/event/$event/join/${participant.id}/ </p>"
+                val body = "<h1>Påmelding til $event </h1> \n <a href='$FRONTEND_URL/event/$event_id/join/${participant.id}/' rel='noopener noreferrer' target='_blank'><p>Meld deg på ved å klikke på denne linken</p></a>"
                 mailToBeSent.setContent(body, "text/html;charset=utf-8")
                 transport.sendMessage(mailToBeSent, mailToBeSent.allRecipients)
             }

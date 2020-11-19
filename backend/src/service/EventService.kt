@@ -28,7 +28,9 @@ class EventService {
      * @return Created Event
      */
     suspend fun addEvent(event: CreateEventData, user: User): Event? {
-        verifyMinMaxFilter(event.minimumPerGroup, event.maximumPerGroup)
+        if (event.minimumPerGroup != 0 || event.maximumPerGroup != 0) {
+            verifyMinMaxFilter(event.minimumPerGroup, event.maximumPerGroup)
+        }
 
         val datetime = formatStringToDate(event.time)
         var key: UUID? = null
@@ -83,8 +85,9 @@ class EventService {
      * @return event
      */
     suspend fun updateEvent(id: UUID, event: UpdateEventData): Boolean {
-        verifyMinMaxFilter(event.minimumPerGroup, event.maximumPerGroup)
-
+        if (event.minimumPerGroup != 0 || event.maximumPerGroup != 0) {
+            verifyMinMaxFilter(event.minimumPerGroup, event.maximumPerGroup)
+        }
         val datetime = formatStringToDate(event.time)
         return DatabaseFactory.dbQuery {
             Events.update({ Events.id eq id }) {

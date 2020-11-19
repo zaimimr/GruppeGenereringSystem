@@ -70,9 +70,10 @@ export default function Dashboard() {
             ),
             () => (
               <>
-                {events.length !== 0 &&
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  new Fuse(events, options).search(searchFilter || ' ').map((event: any) => <DashboardCard event={event.item} key={event.item.id} />)}
+                {events.length !== 0 && searchFilter
+                  ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    new Fuse(events, options).search(searchFilter).map((event: any) => <DashboardCard event={event.item} key={event.item.id} />)
+                  : events.map((event: IEvent) => <DashboardCard event={event} key={event.id} />)}
               </>
             ),
           )}
@@ -121,7 +122,7 @@ const IconText = ({ icon, text, xs = 6 }: { icon: React.ReactNode; text: string;
         alignItems: 'center',
       }}
       xs={xs}>
-      <Grid item>{icon}</Grid>
+      <Grid item>{text && icon}</Grid>
       <Grid item>
         <Typography>{text}</Typography>
       </Grid>

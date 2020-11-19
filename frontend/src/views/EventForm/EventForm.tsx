@@ -2,6 +2,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { Grid, List, ListItem, Typography } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Button from 'components/Button';
+import HelperTooltip from 'components/HelperTooltip';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
 import { useEvents } from 'context/EventContext';
@@ -10,8 +11,9 @@ import dateFormat from 'dateformat';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router';
-import { createEvent, getEvents } from 'utils/axios';
+import { createEvent, getEvents, updateEvent } from 'utils/axios';
 import { CreateEventData, IEvent } from 'utils/types';
+import { inputNumberParser } from 'views/Filter/Filter';
 
 import DatePicker from './components/DatePicker';
 import TimePicker from './components/TimePicker';
@@ -95,18 +97,20 @@ function EventForm() {
       minimumPerGroup: data.minimumPerGroup,
       maximumPerGroup: data.maximumPerGroup,
     };
-    createEvent(formData)
-      .then((response) => {
-        showSnackbar('success', 'Arrangementet ble opprettet!');
-        getEvents().then((res: { data: Event[] }) => {
-          setEvents(res.data);
-        });
+    eventId
+      ? updateEvent(formData)
+      : createEvent(formData)
+          .then((response) => {
+            showSnackbar('success', `Arrangementet ble ${eventId ? 'oppdatert' : 'opprettet'}!`);
+            getEvents().then((res: { data: Event[] }) => {
+              setEvents(res.data);
+            });
 
-        history.push(`/event/${response.data.id}`);
-      })
-      .catch(() => {
-        showSnackbar('error', 'Noe gikk galt');
-      });
+            history.push(`${eventId ? `/event/${response.data.id}` : '/'}`);
+          })
+          .catch(() => {
+            showSnackbar('error', 'Noe gikk galt');
+          });
   });
 
   return (
@@ -131,6 +135,15 @@ function EventForm() {
               </Grid>
             </ListItem>
             <InputFields control={control} error={errors.date} id='event_description' label='Beskrivelse' multiline name='description' rows={8} />
+            <Grid container justify='flex-end'>
+              <Grid item>
+                <HelperTooltip
+                  helperText={`Her har du mulighet til å sette minimum og maximum deltagere per gruppe
+            `}
+                  placement='top-end'
+                />
+              </Grid>
+            </Grid>
             <Grid container justify={'space-around'} spacing={2}>
               <Grid item sm={6} xs={12}>
                 <InputFields
@@ -141,8 +154,8 @@ function EventForm() {
                   name='minimumPerGroup'
                   rules={{
                     min: {
-                      value: 0,
-                      message: 'Må være større eller lik 0',
+                      value: 1,
+                      message: 'Må være større enn 0',
                     },
                   }}
                   type='number'
@@ -160,7 +173,8 @@ function EventForm() {
                       value: 1,
                       message: 'Må være større enn 0',
                     },
-                    validate: (value: number) => value >= getValues('minimumPerGroup') || 'Maksimum per gruppe må være større eller lik minimum',
+                    validate: (value: number) =>
+                      value >= inputNumberParser(getValues('minimumPerGroup')) || 'Maksimum per gruppe må være større eller lik minimum',
                   }}
                   type='number'
                 />

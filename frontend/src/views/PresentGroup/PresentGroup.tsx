@@ -2,7 +2,7 @@ import { Box, Grid, Typography } from '@material-ui/core';
 import Button from 'components/Button';
 import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
-import { useSetOriginalGroups } from 'context/EventContext';
+import { useSetCsvGroups, useSetOriginalGroups, useSetParticipants } from 'context/EventContext';
 import useSnackbar from 'context/SnakbarContext';
 import { Failure, Initial, Loading, Success } from 'lemons';
 import cloneDeep from 'lodash/cloneDeep';
@@ -25,12 +25,10 @@ export type GroupFilterType = {
   maximumPerGroup: number;
 };
 
-type PresentGroupsProps = {
-  title: string;
-};
-
-function PresentGroup({ title }: PresentGroupsProps) {
-  const [originalGroups] = useSetOriginalGroups();
+function PresentGroup() {
+  const [, setCsvGroups] = useSetCsvGroups();
+  const [, setParticipants] = useSetParticipants();
+  const [originalGroups, setOriginalGroups] = useSetOriginalGroups();
 
   // eslint-disable-next-line
   const [groups, setGroups] = React.useState<IPresentData['generatedGroups']>(cloneDeep(originalGroups?.generatedGroups));
@@ -57,6 +55,9 @@ function PresentGroup({ title }: PresentGroupsProps) {
         showSnackbar('success', 'Alle gruppene er nå sendt på mail til koordinator og deltagerne');
         // eslint-disable-next-line new-cap
         setSubmitFormLazy(Success(data));
+        setCsvGroups([]);
+        setParticipants([]);
+        setOriginalGroups();
         history.push('/');
       })
       .catch((err) => {
@@ -77,13 +78,15 @@ function PresentGroup({ title }: PresentGroupsProps) {
         () => null,
       )}
       <Typography gutterBottom variant='h1'>
-        {title}
+        Ferdig genererte grupper
       </Typography>
+      <Typography>For å tilpasse gruppene kan du dra en deltager mellom gruppene.</Typography>
+      <Typography gutterBottom>For å tilbakestille gruppene til slik de var, klikk på tilbakestill knappen</Typography>
       <Grid container direction={'row-reverse'} justify={'space-between'} spacing={4} xs={12}>
         <Grid container direction={'column'} item sm={4} spacing={4} xs={12}>
-          <Grid item>
+          <Grid item xs={12}>
             <Paper>
-              <Grid container item spacing={4}>
+              <Grid container spacing={4}>
                 <Grid item xs={12}>
                   <Typography color={originalGroups?.isCriteria ? 'textPrimary' : 'error'} gutterBottom variant='body1'>
                     {originalGroups?.isCriteria ? 'Kriterier oppfyllt' : 'Kriterier ikke oppfyllt'}
@@ -113,10 +116,10 @@ function PresentGroup({ title }: PresentGroupsProps) {
                 {originalGroups?.filters.map((filter: IFilterField, index: number) => (
                   <React.Fragment key={index}>
                     <Typography variant='body1'>
-                      {filter?.name || 'Generell'} min: {filter.minimum}
+                      {filter?.name || 'Generell'} min: {filter.minimum === 0 ? 'Ikke satt' : filter.minimum}
                     </Typography>
                     <Typography variant='body1'>
-                      {filter?.name || 'Generell'} max: {filter.maximum}
+                      {filter?.name || 'Generell'} max: {filter.maximum === 0 ? 'Ikke satt' : filter.maximum}
                     </Typography>
                   </React.Fragment>
                 ))}
