@@ -50,7 +50,7 @@ function Routing() {
                 {hasAuth && (
                   <>
                     <Route exact path='/event/:eventId/present'>
-                      <PresentGroup title='Gruppe generering' />
+                      <PresentGroup />
                     </Route>
                     <Route exact path='/event/:eventId'>
                       <Event />
@@ -59,16 +59,16 @@ function Routing() {
                       <Dashboard />
                     </Route>
                     <Route exact path='/event/:eventId/invite'>
-                      <Invitation title='Gruppe generering' />
+                      <Invitation />
                     </Route>
                     <Route exact path='/event/:eventId/filter'>
-                      <Filter title='Gruppe generering' />
-                    </Route>
-                    <Route exact path='/event/:eventId/join/:participantId'>
-                      <Join />
+                      <Filter />
                     </Route>
                   </>
                 )}
+                <Route exact path='/event/:eventId/join/:participantId'>
+                  <Join />
+                </Route>
               </Container>
             </>
           </Switch>

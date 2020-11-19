@@ -46,3 +46,7 @@ export function getEvents() {
 export function createEvent(eventData: CreateEventData) {
   return axios.post('/event', eventData);
 }
+
+export function updateEvent(eventData: CreateEventData) {
+  return axios.put('/event', eventData);
+}

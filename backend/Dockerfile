@@ -9,6 +9,7 @@ RUN chown -R $APPLICATION_USER /app
 USER $APPLICATION_USER
 
 COPY ./build/libs/gen-g.jar /app/gen-g.jar
+COPY ./.env /app/.env
 
 WORKDIR /app
 

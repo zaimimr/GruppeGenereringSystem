@@ -2,6 +2,7 @@ import { Checkbox, createStyles, FormControlLabel, makeStyles, Theme, Typography
 import { Grid } from '@material-ui/core';
 import Button from 'components/Button';
 import Dropdown from 'components/Dropdown';
+import HelperTooltip from 'components/HelperTooltip';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
 import { useSetCsvGroups } from 'context/EventContext';
@@ -127,12 +128,29 @@ function MainCard() {
                 error={errors.groupName}
                 fullWidth
                 id='invitation_groupname_inputfield'
-                label='Gruppenavn'
+                label='Klassenavn'
                 name='groupName'
-                required='Gruppenavn er påkrevd'
+                required='Klassenavn er påkrevd'
               />
             </Grid>
           </Grid>
+          <Grid container justify='flex-end'>
+            <Grid item>
+              <HelperTooltip
+                helperText={`Vi forventer et CSV-format av følgende form:
+          ---
+          Ola Normann, ola.normann@mail.com 
+          Sara Svenske, sara@mail.com
+          Donald Danske, duck@mail.com
+          osv.
+          ---
+          Feltenen navn og epost er påkrevd
+          `}
+                placement='top-end'
+              />
+            </Grid>
+          </Grid>
+
           {!watchTextArea && (
             <Grid className={errors.csvDropzone ? classes.dropZoneError : classes.dropZone} item xs={12}>
               <Controller
@@ -187,13 +205,31 @@ function MainCard() {
           <Grid item xs={12}>
             <Typography variant='h4'>Velg påkrevde felter:</Typography>
           </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              checked={checkboxChecked}
-              control={<Checkbox />}
-              label={'Filen har kolonnenavn'}
-              onChange={(e: React.ChangeEvent<unknown>, checked: boolean) => setCheckboxChecked(checked)}
-            />
+          <Grid container item xs={12}>
+            <Grid item>
+              <FormControlLabel
+                checked={checkboxChecked}
+                control={<Checkbox />}
+                label={'Filen har kolonnenavn'}
+                onChange={(e: React.ChangeEvent<unknown>, checked: boolean) => setCheckboxChecked(checked)}
+              />
+            </Grid>
+            <Grid item>
+              <HelperTooltip helperText={`Dersom første felt er en kolonnetittel, (eks: navn, epost), huk av dette feltet`} />
+            </Grid>
+          </Grid>
+          <Grid container justify='flex-end'>
+            <Grid item>
+              <HelperTooltip
+                helperText={`Velg den kolonnen som peker til navn eller e-post.
+              Eks: Dersom en bruker har skrevet inn følgende data:
+              Ola,ola@gmail.com
+              Donald,donald@gmail.com
+              Da vil man velge navn: Ola, og epost: ola@gmail.com.
+              Da presiserer man at alle felter under "Ola" er navn,
+              og alle felter under "ola@gmail.com" er eposter.`}
+              />
+            </Grid>
           </Grid>
           <Grid item xs={12}>
             <Controller
@@ -229,7 +265,7 @@ function MainCard() {
           </Grid>
           <Grid container item justify='space-between' xs={12}>
             <Grid item sm={3} xs={12}>
-              <Button fullWidth label='Legg til gruppe' onClick={() => null} type='submit' />
+              <Button fullWidth label='Legg til klasse' onClick={() => null} type='submit' />
             </Grid>
             <Grid item sm={2} xs={12}>
               <Button fullWidth label='Tøm felt' link onClick={() => resetForm()} />

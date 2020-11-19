@@ -1,5 +1,6 @@
 import { Divider, Grid, List, ListItem, Typography } from '@material-ui/core';
 import Button from 'components/Button';
+import HelperTooltip from 'components/HelperTooltip';
 import LoadingScreen from 'components/LoadingScreen';
 import Paper from 'components/Paper';
 import TextField from 'components/TextField';
@@ -14,11 +15,9 @@ import { generateGroups } from 'utils/axios';
 import { IEvent, IFilterData, IParticipants } from 'utils/types';
 import Table from 'views/Filter/components/Table';
 
-export type FilterProps = { title: string };
-
 type findParticipantType = { id: string };
 
-function Filter({ title }: FilterProps) {
+function Filter() {
   const [participants] = useSetParticipants();
   const [, setOriginGroups] = useSetOriginalGroups();
   const [joinedParticipants, setJoinedParticipants] = React.useState<IParticipants[]>([]);
@@ -95,8 +94,10 @@ function Filter({ title }: FilterProps) {
         () => null,
       )}
       <Typography gutterBottom variant='h4'>
-        {title}
+        Sett filter
       </Typography>
+      <Typography>Deltagere vil automatisk dukke opp i listen når de registrerer ankomst.</Typography>
+      <Typography gutterBottom>I mellomtiden kan du sette filtere for hvor mange du ønsker per gruppe.</Typography>
       <Grid container direction={'row-reverse'} justify={'space-between'} spacing={4}>
         <Grid container direction={'column'} item md={4} spacing={4}>
           <Grid item>
@@ -125,6 +126,12 @@ function Filter({ title }: FilterProps) {
             <Paper>
               <Typography gutterBottom variant='h5'>
                 Filter
+                {
+                  <HelperTooltip
+                    helperText={`Sett minimum- og maximum deltagere per gruppe
+                    Det må minimum være 1 per gruppe`}
+                  />
+                }
               </Typography>
               <List disablePadding>
                 <form autoComplete='off' noValidate>
@@ -176,7 +183,7 @@ function Filter({ title }: FilterProps) {
   );
 }
 
-export const inputNumberParser = (value: string) => {
+export const inputNumberParser = (value: string | number) => {
   return value === '' ? 0 : Number(value);
 };
 
@@ -215,12 +222,17 @@ const Filters = ({ control, label, getValues, errors }: IFilter) => {
     <>
       <Divider />
       <ListItem>
-        <Typography variant='body1'>{label}</Typography>
+        <Typography variant='body1'>
+          {label}{' '}
+          <HelperTooltip
+            helperText={`Du kan også sette filtere per klasse.
+                    Dersom du ikke ønsker et filter kan du la feltet stå tomt`}
+          />
+        </Typography>
       </ListItem>
       <ListItem>
         <TextField
           control={control}
-          defaultValue={'0'}
           error={errors[`${label}_min`]}
           fullWidth
           id={`${label}_min`}
@@ -238,7 +250,6 @@ const Filters = ({ control, label, getValues, errors }: IFilter) => {
       <ListItem>
         <TextField
           control={control}
-          defaultValue={'0'}
           error={errors[`${label}_max`]}
           fullWidth
           id={`${label}_max`}

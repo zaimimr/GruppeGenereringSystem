@@ -17,7 +17,7 @@ const useStyles = makeStyles(() =>
 );
 
 function Navbar() {
-  const [user] = useSetUser();
+  const [user, setUser] = useSetUser();
   const history = useHistory();
   const classes = useStyles();
   const [, , removeCookie] = useCookies(['access_token']);
@@ -34,6 +34,7 @@ function Navbar() {
                 label='Logg ut'
                 onClick={() => {
                   removeCookie('access_token');
+                  setUser();
                   history.push('/');
                   hideModal();
                 }}

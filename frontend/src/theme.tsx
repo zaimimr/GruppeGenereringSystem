@@ -88,6 +88,14 @@ theme.overrides = {
       border: 'unset',
     },
   },
+  MuiTooltip: {
+    popper: {
+      whiteSpace: 'pre-line',
+    },
+    tooltip: {
+      fontSize: '12px',
+    },
+  },
 };
 
 export default theme;

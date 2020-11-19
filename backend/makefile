@@ -20,7 +20,7 @@ test:
 docker:
 	make fresh
 	docker build -t gen-g .
-	docker run -m512M --cpus 2 -it -p 8000:8000 --rm gen-g 
+	docker run -m1024M --cpus 2 -it -p 8000:8000 --rm gen-g 
 
 deploy:
 	make clean

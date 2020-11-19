@@ -15,14 +15,14 @@ class CoordinatorClient(val session: DefaultWebSocketSession, val eventID: Strin
 
 /**
  * Socket endpoint used participants to join event
+ * Endpoint for participant /connect/EVENT_ID/PARTICIPANT_ID
+ * Endpoint for coordinator /connect/EVENT_ID?access_token=ACCESS_TOKEN
  */
 
 fun Route.socket() {
 
     val coordinators = Collections.synchronizedSet(LinkedHashSet<CoordinatorClient>())
 
-    // Ex: ws://localhost:8000/connect/EVENT_ID/PARTICIPANT_ID
-    // or  ws://localhost:8000/connect/EVENT_ID?access_token=ACCESS_TOKEN
     webSocket("/connect/{event_id}/{participant_id?}") {
         val eventID: String = call.parameters["event_id"]!!
         val accessToken: String? = call.parameters["access_token"]
@@ -56,7 +56,6 @@ fun Route.socket() {
     }
 }
 
-// TODO: Valider token med JWT
 fun validToken(accessToken: String?): Boolean {
     return !accessToken.isNullOrBlank()
 }
