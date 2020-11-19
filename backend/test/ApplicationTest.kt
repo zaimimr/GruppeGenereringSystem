@@ -15,5 +15,5 @@ class ApplicationTest {
                 assertEquals("Velkommen til gruppegenerering", response.content)
             }
         }
-    }    
+    }
 }

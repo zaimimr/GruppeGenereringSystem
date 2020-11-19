@@ -2,7 +2,6 @@ package com.gruppe7.web
 
 import com.gruppe7.model.User
 import com.gruppe7.utils.GenerateGroup.BruteForce
-import com.gruppe7.utils.GenerateGroup.FlowNetwork
 import com.gruppe7.utils.SendEmailSMTP
 import com.gruppe7.utils.types.ApprovedGroupsData
 import com.gruppe7.utils.types.CsvData
@@ -111,5 +110,5 @@ fun Route.index() {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Noe gikk galt under sending av grupper")
             }
         }
-    }  
+    }
 }
