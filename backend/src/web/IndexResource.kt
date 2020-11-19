@@ -111,35 +111,5 @@ fun Route.index() {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Noe gikk galt under sending av grupper")
             }
         }
-    }
-    post("/test") {
-        try {
-            val response = call.receive<FilterData>()
-            val listOfParticipant = ArrayList<Participant>()
-            for (participant in response.participants) {
-                listOfParticipant.add(
-                    Participant(
-                        participant.id,
-                        participant.name,
-                        participant.email,
-                        participant.group
-                    )
-                )
-            }
-            val groupGenerator = FlowNetwork()
-
-            val groups = groupGenerator.solveWithMaximumFlow(
-                listOfParticipant,
-                response.filters.toCollection(ArrayList())
-            )
-            val responseObject = JSONObject()
-            responseObject["isCriteria"] = groups.first
-            responseObject["generatedGroups"] = groups.second.toTypedArray()
-            responseObject["filters"] = response.filters
-            call.respond(responseObject)
-        } catch (e: Exception) {
-            Sentry.capture(e)
-            call.respond(HttpStatusCode.BadRequest, e.message ?: "Noe gikk galt under generering av grupper")
-        }
-    }
+    }  
 }
