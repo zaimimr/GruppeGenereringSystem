@@ -14,7 +14,7 @@ run:
 auto:
 	./gradlew -t installDist
 
-test:
+gtest:
 	./gradlew test
 
 docker:
