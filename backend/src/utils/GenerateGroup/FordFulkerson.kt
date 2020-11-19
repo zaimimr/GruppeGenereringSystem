@@ -1,4 +1,4 @@
-package com.gruppe7.utils.FlowNetwork
+package com.gruppe7.utils.GenerateGroup
 
 import com.gruppe7.utils.types.Edge
 import utils.types.Node
