@@ -10,6 +10,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.springframework.security.crypto.bcrypt.BCrypt
 import java.util.UUID
 
@@ -19,13 +20,16 @@ import java.util.UUID
  * This class containes methodes to access and modify User data in database
  */
 class UserService {
-    private final val SALT_ROUNDS = 6
     /**
      * Add user to database.
      * @param user registration data
      * @throws DuplicateEmailException, @exception DuplicateEmailException
      * @return user
      */
+    private val SALT_ROUNDS = 6
+    suspend fun getAllUsers(): List<User> = DatabaseFactory.dbQuery {
+        Users.selectAll().map { toUser(it) }
+    }
 
     suspend fun addUser(user: RegistrationData) {
         try {

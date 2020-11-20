@@ -1,11 +1,43 @@
 image: node:12.13.0-alpine
+
+services:
+  - mysql:latest
+  
+  
+variables:
+    MYSQL_ROOT_PASSWORD: secret
+    MYSQL_DATABASE: gruppegen
+    MYSQL_PORT: 3306
+    
+
+
 stages:
+  - connect
+  - test
   - build
   - lint
   - ktbuild
   - ktlint
+  - deploy_coverage
   - deploy_pages
   - deploy
+
+
+connect:
+  stage: connect
+  image: mysql
+  script:
+    - echo "SELECT 'OK';" | mysql --user=root --password="$MYSQL_ROOT_PASSWORD" --host=mysql "$MYSQL_DATABASE"
+
+
+test:
+  image: java:8-jdk
+  stage: test
+  script:
+    - sleep 20
+    - cd backend
+    - ./gradlew test
+
 
 build:
   stage: build
@@ -44,6 +76,20 @@ deploy:
     - yarn install
     - yarn run build
     - firebase deploy --only hosting --token $FIREBASE_TOKEN
+  only:
+    - dev
+
+deploy_coverage:
+  image: openjdk:14-ea-8-jdk-alpine3.10
+  stage: deploy_coverage
+  script:
+    - cd backend
+    - ./gradlew clean build jacocoTestReport
+    - cd ..
+    - mv backend/build/reports/jacoco/test/html public
+  artifacts:
+    paths:
+      - public	
   only:
     - dev
 
