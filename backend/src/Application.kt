@@ -2,7 +2,6 @@ package com.gruppe7
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
-import com.google.ortools.Loader
 import com.gruppe7.service.DatabaseFactory
 import com.gruppe7.service.EventService
 import com.gruppe7.service.UserService
@@ -14,6 +13,7 @@ import com.gruppe7.web.index
 import com.gruppe7.web.socket
 import com.gruppe7.web.user
 import io.ktor.application.Application
+import io.ktor.application.ApplicationStopped
 import io.ktor.application.install
 import io.ktor.auth.Authentication
 import io.ktor.auth.jwt.jwt
@@ -49,8 +49,7 @@ fun Application.module(testing: Boolean = false) {
     client.environment = getSystemVariable("SENTRY_ENV")
     client.serverName = getSystemVariable("SENTRY_SERVER_NAME")
 
-    DatabaseFactory.init()
-    Loader.loadNativeLibraries()
+    DatabaseFactory.init(testing)
 
     install(CORS) {
         method(HttpMethod.Options)
@@ -96,5 +95,9 @@ fun Application.module(testing: Boolean = false) {
         socket()
         event(EventService())
         user(UserService())
+    }
+
+    environment.monitor.subscribe(ApplicationStopped) {
+        if (testing) DatabaseFactory.dropTables()
     }
 }
