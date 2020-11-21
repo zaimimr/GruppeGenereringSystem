@@ -108,7 +108,6 @@ class UserService {
             id = row[Users.id],
             name = row[Users.name],
             email = row[Users.email],
-            password = row[Users.password],
-            socket_id = row[Users.socket_id]
+            password = row[Users.password]
         )
 }

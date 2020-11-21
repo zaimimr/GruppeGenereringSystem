@@ -16,7 +16,6 @@ object Users : Table() {
     val name: Column<String> = varchar("name", 45)
     val email: Column<String> = varchar("email", 45).uniqueIndex()
     val password: Column<String> = varchar("password", 200)
-    val socket_id: Column<Int?> = (integer("socket_id")).nullable()
     override val primaryKey = PrimaryKey(id, name = "PK_User_ID")
 }
 
@@ -25,5 +24,4 @@ data class User(
     val name: String,
     val email: String,
     @Transient val password: String,
-    val socket_id: Int?
 ) : Principal
