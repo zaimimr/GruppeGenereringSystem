@@ -11,7 +11,7 @@ import javax.mail.internet.AddressException
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-class SendEmailSMTP {
+object EmailHandler {
 
     val EMAIL_HOST = getSystemVariable("EMAIL_HOST")
     val EMAIL_PORT = getSystemVariable("EMAIL_PORT")
