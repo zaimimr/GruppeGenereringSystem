@@ -3,8 +3,8 @@ package com.gruppe7.web
 import com.gruppe7.model.Event
 import com.gruppe7.model.User
 import com.gruppe7.service.EventService
+import com.gruppe7.utils.EmailHandler
 import com.gruppe7.utils.GenerateGroup.BruteForce
-import com.gruppe7.utils.SendEmailSMTP
 import com.gruppe7.utils.types.ApprovedGroupsData
 import com.gruppe7.utils.types.CsvData
 import com.gruppe7.utils.types.FilterData
@@ -52,7 +52,7 @@ fun Route.index() {
                 }
                 val responseObject = JSONObject()
                 responseObject["participants"] = participants.toTypedArray()
-                SendEmailSMTP().sendInvitation(participants.toTypedArray(), event.title, eventID)
+                EmailHandler.sendInvitation(participants.toTypedArray(), event.title, eventID)
                 call.respond(responseObject)
             } catch (e: Exception) {
                 Sentry.capture(e)
@@ -108,7 +108,7 @@ fun Route.index() {
                     val response = call.receive<ApprovedGroupsData>()
 
                     val event: Event = EventService().getEvent(UUID.fromString(response.event))!!
-                    SendEmailSMTP().sendGroup(response.finalData, event.title, user.email)
+                    EmailHandler.sendGroup(response.finalData, event.title, user.email)
                     call.respond(HttpStatusCode.OK)
                 }
             } catch (e: Exception) {
