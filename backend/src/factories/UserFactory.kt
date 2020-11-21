@@ -23,7 +23,6 @@ object UserFactory {
         id = UUID.fromString("e9ad2de6-0acc-46f3-9740-f1d7f9b6e640"),
         name = "Test User",
         email = "test@testuser.com",
-        password = BCrypt.hashpw("test", BCrypt.gensalt(6)),
-        socket_id = null
+        password = BCrypt.hashpw("test", BCrypt.gensalt(6))
     )
 }

@@ -49,7 +49,6 @@ object DatabaseFactory {
                 it[name] = UserFactory.testUser.name
                 it[email] = UserFactory.testUser.email
                 it[password] = UserFactory.testUser.password
-                it[socket_id] = UserFactory.testUser.socket_id
             }
             val testEvent = EventFactory.testEvent
             Events.insert {
