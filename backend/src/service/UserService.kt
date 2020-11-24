@@ -5,6 +5,7 @@ import com.gruppe7.model.Users
 import com.gruppe7.utils.exceptions.DuplicateEmailException
 import com.gruppe7.utils.types.LoginCredentials
 import com.gruppe7.utils.types.RegistrationData
+import com.gruppe7.utils.validatePassword
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.deleteWhere
@@ -33,9 +34,8 @@ class UserService {
 
     suspend fun addUser(user: RegistrationData) {
         try {
-            if (user.password != user.repeatPassword) {
-                throw IllegalArgumentException("Passord må være like")
-            }
+            validatePassword(user.password, user.repeatPassword)
+
             val hashedPassword = BCrypt.hashpw(user.password, BCrypt.gensalt(SALT_ROUNDS))
             DatabaseFactory.dbQuery {
                 Users.insert {

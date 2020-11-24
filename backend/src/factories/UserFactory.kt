@@ -10,7 +10,7 @@ import java.util.UUID
  */
 object UserFactory {
 
-    fun registerUserData(name: String = "Test User", email: String = "user@test.com", password: String = "test", repeatPassword: String = "test"): RegistrationData {
+    fun registerUserData(name: String = "Test User", email: String = "user@test.com", password: String = "Test12345", repeatPassword: String = "Test12345"): RegistrationData {
         return RegistrationData(
             name,
             email,
