@@ -9,6 +9,7 @@ import io.github.cdimascio.dotenv.dotenv
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.lang.IllegalArgumentException
+import java.util.regex.Pattern
 
 val dotenv = dotenv {
     ignoreIfMalformed = true
@@ -66,5 +67,16 @@ fun validateGenerateGroupData(filterInformation: ArrayList<FilterInformation>, p
 
     for (participant in participantList) {
         if (!groups.contains(participant.group)) throw java.lang.IllegalArgumentException("${participant.group} har ikke et filter")
+    }
+}
+
+fun validatePassword(password: String, repeatPassword: String) {
+    val passwordPattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}\$")
+    if (password != repeatPassword) {
+        throw IllegalArgumentException("Passord må være like")
+    }
+
+    if (!passwordPattern.matcher(password).matches()) {
+        throw IllegalArgumentException("Passordet må ha minst 8 karakterer, og inkludere både tall og store og små bokstaver")
     }
 }

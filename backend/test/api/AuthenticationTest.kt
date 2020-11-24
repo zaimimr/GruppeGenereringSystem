@@ -24,8 +24,30 @@ class AuthenticationTest {
                 Gson().toJson(UserFactory.registerUserData(email = "user@gmail.com"))
             )
         }
+        println(request.response.content)
         assert(request.requestHandled)
         assert(request.response.status() == HttpStatusCode.Created)
+    }
+
+    @Test
+    fun `Test add user with weak password`() = withServer {
+        val request = handleRequest {
+            method = HttpMethod.Post
+            uri = "/register"
+            addContentJsonHeader()
+            setBody(
+                Gson().toJson(
+                    UserFactory.registerUserData(
+                        email = "user@gmail.com",
+                        password = "123",
+                        repeatPassword = "123"
+                    )
+                )
+            )
+        }
+        assert(request.response.status() == HttpStatusCode.BadRequest)
+        assert(request.response.content == "Passordet må ha minst 8 karakterer, og inkludere både tall og store og små bokstaver")
+        assert(request.requestHandled)
     }
 
     @Test
@@ -35,7 +57,13 @@ class AuthenticationTest {
             uri = "/register"
             addContentJsonHeader()
             setBody(
-                Gson().toJson(UserFactory.registerUserData(email = "newuser@gmail.com", password = "123", repeatPassword = "1234"))
+                Gson().toJson(
+                    UserFactory.registerUserData(
+                        email = "newuser@gmail.com",
+                        password = "123",
+                        repeatPassword = "1234"
+                    )
+                )
             )
         }
         assert(request.requestHandled)

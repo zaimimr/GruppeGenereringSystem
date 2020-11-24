@@ -33,7 +33,7 @@ function SignUp() {
       })
       .catch((err) => {
         setSubmitFormLazy(Failure(err.response?.data));
-        showSnackbar('error', 'En feil har skjedd');
+        showSnackbar('error', err.response?.data);
       });
   });
   return (
