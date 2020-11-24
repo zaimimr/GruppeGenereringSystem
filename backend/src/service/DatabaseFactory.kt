@@ -69,7 +69,13 @@ object DatabaseFactory {
     private fun hikari(testing: Boolean): HikariDataSource {
         val config = HikariConfig()
         config.driverClassName = "com.mysql.cj.jdbc.Driver"
-        config.jdbcUrl = if (testing) "jdbc:mysql://mysql:3306/gruppegen" else getSystemVariable("DATABASE_URL")
+        config.jdbcUrl = if (testing) {
+            if (getSystemVariable("ENVIRONMENT") == "CI") {
+                "jdbc:mysql://mysql:3306/gruppegen"
+            } else {
+                "jdbc:mysql://localhost:3306/gruppegen"
+            }
+        } else getSystemVariable("DATABASE_URL")
         config.username = if (testing) "root" else getSystemVariable("DATABASE_USERNAME")
         config.password = if (testing) "secret" else getSystemVariable("DATABASE_PASSWORD")
         config.maximumPoolSize = 3
