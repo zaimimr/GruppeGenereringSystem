@@ -17,26 +17,26 @@ class FlowNetwork {
         participantList: ArrayList<Participant>,
         filterInformation: ArrayList<FilterInformation>
     ): Pair<Int, ArrayList<ArrayList<Participant>>> {
-
         val solutions = ArrayList<Pair<Int, ArrayList<ArrayList<Participant>>>>()
 
         var groupCount = 1
 
-        while (groupCount <= participantList.size) {
+        while (groupCount <= participantList.size / (filterInformation.find { it.name == "null" }?.minimum ?: 1)) {
+            try {
+                val reducedProblem = reduceToMaximumFlowProblem(participantList, filterInformation, groupCount)
 
-            val reducedProblem = reduceToMaximumFlowProblem(participantList, filterInformation, groupCount)
+                val edges = reducedProblem.first
+                val nodes = reducedProblem.second
 
-            val edges = reducedProblem.first
-            val nodes = reducedProblem.second
-
-            val source = nodes.find { it.name == Nodes.SOURCE.name }
-            val sink = nodes.find { it.name == Nodes.NEWSINK.name }
-
-            val resultFromSolver = solveMaximumFlowProblem(participantList, nodes, edges, source!!, sink!!, groupCount)
-            solutions.add(resultFromSolver)
-            if (resultFromSolver.first == 0) {
-                break
-            }
+                val source = nodes.find { it.name == Nodes.SOURCE.name }
+                val sink = nodes.find { it.name == Nodes.NEWSINK.name }
+                val resultFromSolver =
+                    solveMaximumFlowProblem(participantList, nodes, edges, source!!, sink!!, groupCount)
+                solutions.add(resultFromSolver)
+                if (resultFromSolver.first == 0) {
+                    break
+                }
+            } catch (e: Exception) {}
             groupCount++
         }
         return solutions.minByOrNull { it.first }!!
