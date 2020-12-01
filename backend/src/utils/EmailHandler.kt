@@ -2,6 +2,7 @@ package com.gruppe7.utils
 
 import com.gruppe7.utils.types.Participant
 import com.gruppe7.utils.types.PresentData
+import com.sun.mail.smtp.SMTPAddressFailedException
 import java.lang.System.getProperties
 import java.net.UnknownHostException
 import javax.mail.MessagingException
@@ -52,6 +53,8 @@ object EmailHandler {
                 mailToBeSent.setContent(body, "text/html;charset=utf-8")
                 transport.sendMessage(mailToBeSent, mailToBeSent.allRecipients)
             }
+        } catch (sme: SMTPAddressFailedException) {
+            sme.printStackTrace()
         } catch (ae: AddressException) {
             ae.printStackTrace()
             throw AddressException("Ugyldig e-post")

@@ -1,11 +1,11 @@
 buildscript {
     repositories {
         jcenter()
-        maven { 
+        maven {
             url "https://plugins.gradle.org/m2/"
-            }
+        }
     }
-    
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.github.jengelman.gradle.plugins:shadow:6.1.0"
@@ -41,7 +41,7 @@ repositories {
     mavenCentral()
     mavenLocal()
     jcenter()
-    maven { 
+    maven {
         url 'https://kotlin.bintray.com/ktor'
     }
 }
@@ -68,7 +68,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:3.4.5")
     implementation("mysql:mysql-connector-java:8.0.21")
 
-dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.10.2")
+    dokkaHtmlPlugin("org.jetbrains.dokka:kotlin-as-java-plugin:1.4.10.2")
     implementation 'io.github.serpro69:kotlin-faker:1.5.0'
     implementation("io.github.cdimascio:java-dotenv:5.2.2")
     implementation("com.github.doyaaaaaken:kotlin-csv-jvm:0.11.0")
@@ -105,15 +105,22 @@ jacocoTestReport {
     }
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir : it,
-                exclude: ['com/gruppe7/utils/types',
-                        'com/gruppe7/utils/exceptions',
-                        'com/gruppe7/utils/UtilFunctions.kt',
-                        'com/gruppe7/utils/serializers',
-                        'com/gruppe7/utils/enums',
-                        'com/gruppe7/utils/FlowNetwork',
-                        'utils/types'
-                ]
+            fileTree(dir: it,
+                    exclude: [
+                            '**/com/gruppe7/web/**/*invokeSuspend*',
+                            '**/com/gruppe7/web/**/*index*',
+                            '**/com/gruppe7/web/**/*event*',
+                            '**/com/gruppe7/web/**/*auth*',
+                            '**/com/gruppe7/web/**/*user*',
+                            '**/com/gruppe7/web/**/*event*',
+                            'com/gruppe7/utils/types',
+                              'com/gruppe7/utils/exceptions',
+                              'com/gruppe7/utils/serializers',
+                              'com/gruppe7/utils/enums',
+                              'com/gruppe7/utils/FlowNetwork',
+                              'utils/types',
+                              '**/*EmailHandler*',
+                    ]
             )
         }))
     }
