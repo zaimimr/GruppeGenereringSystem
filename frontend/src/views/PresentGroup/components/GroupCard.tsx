@@ -14,6 +14,23 @@ export type GroupCardProps = {
   setGroups: any;
 };
 
+/**
+ * GroupCard
+ * @category Views
+ * @subcategory PresentGroup
+ * @param {number} groupNumber Group number
+ * @param {IParticipants[]} participants list of participants
+ * @param {IParticipants[][]} groups list of  groups
+ * @param {any} setGroups set groups function
+ * @return {React.Component} <GroupCard /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <GroupCard groupNumber={groupNumber} groups={groups} participants={participants} setGroups={setGroups} />
+ * )
+ */
+
 function GroupCard({ groupNumber, participants, groups, setGroups }: GroupCardProps) {
   const [, drop] = useDrop({
     accept: ItemTypes.CARD,

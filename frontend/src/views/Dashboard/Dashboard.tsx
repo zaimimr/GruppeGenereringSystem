@@ -15,6 +15,18 @@ import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { IEvent } from 'utils/types';
 
+/**
+ * Dashboard
+ * @category Views
+ * @subcategory Dashboard
+ * @return {React.Component} <Dashboard /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <Dashboard />
+ * )
+ */
 export default function Dashboard() {
   const { control, watch } = useForm();
   const [submitFormLazy, setSubmitFormLazy] = React.useState(Loading());
@@ -82,7 +94,19 @@ export default function Dashboard() {
     </>
   );
 }
-
+/**
+ * DashboardCard
+ * @category Views
+ * @subcategory Dashboard
+ * @param {IEvent} event Event data
+ * @return {React.Component} <DashboardCard /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <DashboardCard event={event}/>
+ * )
+ */
 const DashboardCard = ({ event }: { event: IEvent }) => {
   const history = useHistory();
   return (
@@ -109,6 +133,22 @@ const DashboardCard = ({ event }: { event: IEvent }) => {
     </Grid>
   );
 };
+/**
+ * IconText
+ * @category Views
+ * @subcategory Dashboard
+ * @param {React.ReactNode} icon Iconcomponent
+ * @param {string} text Text to be displayed
+ * @param {any} [xs=6] Grid size
+ * @return {React.Component} <IconText /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <IconText icon={<ICON  />} text="Example icon text" />
+ * )
+ */
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const IconText = ({ icon, text, xs = 6 }: { icon: React.ReactNode; text: string; xs?: any }) => {
   return (

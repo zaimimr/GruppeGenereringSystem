@@ -17,6 +17,19 @@ import Table from 'views/Filter/components/Table';
 
 type findParticipantType = { id: string };
 
+/**
+ * Filter
+ * @category Views
+ * @subcategory Filter
+ * @return {React.Component} <Filter /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <Filter />
+ * )
+ */
+
 function Filter() {
   const [participants] = useSetParticipants();
   const [, setOriginGroups] = useSetOriginalGroups();
@@ -182,7 +195,13 @@ function Filter() {
     </>
   );
 }
-
+/**
+ * inputNumberParser
+ * @category Views
+ * @subcategory Filter
+ * @param {string | number} value
+ * @return {number} parsed number or 0 if empty string
+ */
 export const inputNumberParser = (value: string | number) => {
   return value === '' ? 0 : Number(value);
 };

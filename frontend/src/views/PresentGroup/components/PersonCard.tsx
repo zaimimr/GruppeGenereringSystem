@@ -12,7 +12,22 @@ export type PersonCardProps = {
   // eslint-disable-next-line
   setGroups: any;
 };
-
+/**
+ * PersonCard
+ * @category Views
+ * @subcategory PresentGroup
+ * @param {IParticipants} participant list of participants
+ * @param {number} groupNumber Group number
+ * @param {any} groups list of  groups
+ * @param {any} setGroups set groups function
+ * @return {React.Component} <PersonCard /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <PersonCard groupNumber={groupNumber} groups={groups} key={index} participant={participant} setGroups={setGroups} />
+ * )
+ */
 function PersonCard({ participant, groupNumber, groups, setGroups }: PersonCardProps) {
   const fromGroupNumber = groupNumber;
   const [{ isDragging }, drag] = useDrag({

@@ -13,7 +13,17 @@ import Join from 'views/Join/Join';
 import Login from 'views/Login/Login';
 import PresentGroup from 'views/PresentGroup/PresentGroup';
 import SignUp from 'views/SignUp/SignUp';
-
+/**
+ * Routing
+ * @category Routing
+ * @return {React.Component} <Routing /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <Routing/>
+ * )
+ */
 function Routing() {
   const hasAuth = useAuth();
 

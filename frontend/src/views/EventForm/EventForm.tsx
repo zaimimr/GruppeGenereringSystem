@@ -44,6 +44,7 @@ type IInputFields = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   rules?: any;
 };
+
 const InputFields = ({ id, rows = 1, multiline = false, name, label, type = 'string', control, error, required = undefined, rules }: IInputFields) => {
   return (
     <ListItem>
@@ -64,6 +65,18 @@ const InputFields = ({ id, rows = 1, multiline = false, name, label, type = 'str
     </ListItem>
   );
 };
+/**
+ * EventForm
+ * @category Views
+ * @subcategory EventForm
+ * @return {React.Component} <EventForm /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <EventForm />
+ * )
+ */
 function EventForm() {
   const { control, handleSubmit, getValues, errors, setValue } = useForm<ICreateEventInput>();
   const { showSnackbar } = useSnackbar();
@@ -98,7 +111,7 @@ function EventForm() {
       maximumPerGroup: data.maximumPerGroup,
     };
     eventId
-      ? updateEvent(formData)
+      ? updateEvent(formData, eventId)
       : createEvent(formData)
           .then((response) => {
             showSnackbar('success', `Arrangementet ble ${eventId ? 'oppdatert' : 'opprettet'}!`);

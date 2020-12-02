@@ -24,7 +24,18 @@ export type GroupFilterType = {
   minimumPerGroup: number;
   maximumPerGroup: number;
 };
-
+/**
+ * PresentGroup
+ * @category Views
+ * @subcategory PresentGroup
+ * @return {React.Component} <PresentGroup /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <PresentGroup />
+ * )
+ */
 function PresentGroup() {
   const [, setCsvGroups] = useSetCsvGroups();
   const [, setParticipants] = useSetParticipants();

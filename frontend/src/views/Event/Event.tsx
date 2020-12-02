@@ -24,7 +24,18 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
 }));
-
+/**
+ * Event
+ * @category Views
+ * @subcategory Event
+ * @return {React.Component} <Event /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <Event />
+ * )
+ */
 function Event() {
   const classes = useStyles();
   const { eventId }: { eventId: string } = useParams();

@@ -12,7 +12,18 @@ import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router';
 import { login } from 'utils/axios';
 import { ILoginCredentials } from 'utils/types';
-
+/**
+ * Login
+ * @category Views
+ * @subcategory Login
+ * @return {React.Component} <Login /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <Login />
+ * )
+ */
 function Login() {
   // eslint-disable-next-line new-cap
   const [submitFormLazy, setSubmitFormLazy] = React.useState(Initial());
