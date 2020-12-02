@@ -2,15 +2,13 @@ image: node:12.13.0-alpine
 
 services:
   - mysql:latest
-  - name: docker:dind
-    alias: docker
-
-
+  
+  
 variables:
-  MYSQL_ROOT_PASSWORD: secret
-  MYSQL_DATABASE: gruppegen
-  MYSQL_PORT: 3306
-
+    MYSQL_ROOT_PASSWORD: secret
+    MYSQL_DATABASE: gruppegen
+    MYSQL_PORT: 3306
+    
 stages:
   - connect
   - test
@@ -18,6 +16,8 @@ stages:
   - lint
   - ktbuild
   - ktlint
+  - deploy_jsdoc
+  - deploy_ktdoc
   - deploy_coverage
   - deploy_pages
   - deploy
@@ -50,20 +50,22 @@ lint:
     - yarn add eslint
     - node_modules/eslint/bin/eslint.js
 
-ktlint:
-  image: openjdk:14-ea-8-jdk-alpine3.10
-  stage: ktlint
+deploy_jsdoc:
+  stage: deploy_jsdoc
   script:
-    - cd backend
-    - ./gradlew ktlintCheck
-
-ktbuild:
-  image: openjdk:14-ea-8-jdk-alpine3.10
-  stage: ktbuild
-  script:
-    - cd backend
-    - ./gradlew build
-
+      - cd frontend
+      - yarn global add jsdoc
+      - yarn install
+      - yarn docs
+      - cd ..
+      - mkdir .public
+      - mkdir .public/jsdoc
+      - mv frontend/docs .public/jsdoc
+      - mv .public/jsdoc public
+  artifacts:
+    paths:
+      - public
+      
 deploy:
   stage: deploy
   script:
@@ -76,6 +78,20 @@ deploy:
   only:
     - dev
 
+ktlint:
+  image: openjdk:14-ea-8-jdk-alpine3.10
+  stage: ktlint
+  script:
+    - cd backend
+    - ./gradlew ktlintCheck
+    
+ktbuild:
+  image: openjdk:14-ea-8-jdk-alpine3.10
+  stage: ktbuild
+  script:
+    - cd backend
+    - ./gradlew build
+    
 deploy_coverage:
   image: openjdk:14-ea-8-jdk-alpine3.10
   stage: deploy_coverage
@@ -83,24 +99,38 @@ deploy_coverage:
     - cd backend
     - ./gradlew clean build jacocoTestReport
     - cd ..
-    - mv backend/build/reports/jacoco/test/html public
+    - mkdir .public
+    - mkdir .public/coverage
+    - mv backend/build/reports/jacoco/test/html .public/coverage
+    - mv .public/coverage public
   artifacts:
     paths:
       - public
-  only:
-    - dev
 
-deploy_pages:
+deploy_ktdoc:
   image: openjdk:14-ea-8-jdk-alpine3.10
+  stage: deploy_ktdoc
+  script:
+      - cd backend
+      - ./gradlew dokkaHtml
+      - cd ..
+      - mkdir .public
+      - mkdir .public/dokka
+      - mv backend/build/dokka/html .public/dokka
+      - mv .public/dokka public
+  artifacts:
+    paths:
+      - public
+      
+deploy_pages:
   stage: deploy_pages
   script:
-    - cd backend
-    - ./gradlew dokkaHtml
-    - cd ..
-    - mv backend/build/dokka/html public
+      - mkdir .public
+      - cd .public
+      - echo "<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Gen-g report</title><meta name="description" content="Pages view"><meta name="author" content="Gen-g"></head><body><a href="dokka/html/gruppe7/index.html">Backend code documentation</a><br/><a href="coverage/html/index.html">Backend test coverage</a><br/><a href="docs/index.html">Fro code documentation</a></body></html>" > index.html
+      - cd ..
+      - mv .public public
   artifacts:
     paths:
       - public
-  only:
-    - dev
-  
+

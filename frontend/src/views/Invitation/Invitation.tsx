@@ -54,7 +54,18 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-
+/**
+ * Invitation
+ * @category Views
+ * @subcategory Invitation
+ * @return {React.Component} <Invitation /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <Invitation />
+ * )
+ */
 function Invitation() {
   const history = useHistory();
   const { eventId }: { eventId: string } = useParams();
@@ -103,7 +114,7 @@ function Invitation() {
         history.push(`/event/${eventId}/filter`);
       })
       // eslint-disable-next-line
-      .catch(err => {
+      .catch((err) => {
         showSnackbar('error', err.response.data);
         // eslint-disable-next-line new-cap
         setSubmitFormLazy(Failure(err.response?.statusText));

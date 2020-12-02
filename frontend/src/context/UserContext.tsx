@@ -1,5 +1,12 @@
 import * as React from 'react';
 import { IUser } from 'utils/types';
+
+/**
+ * UserContext
+ * @category Context
+ * @property {ICsvData[]} useSetUser Global useState with userinformation
+ */
+
 type Context = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSetUser: any;

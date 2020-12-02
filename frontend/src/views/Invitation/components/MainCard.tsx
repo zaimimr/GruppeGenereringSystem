@@ -26,7 +26,18 @@ const MainCardFormInputDefaultValue = {
   csvNameField: '',
   csvEmailField: '',
 };
-
+/**
+ * MainCard
+ * @category Views
+ * @subcategory Invitation
+ * @return {React.Component} <MainCard /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <MainCard />
+ * )
+ */
 function MainCard() {
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -76,7 +87,7 @@ function MainCard() {
       if (textareaValue.errors.length !== 0) {
         setError('csvTextarea', {
           type: 'manual',
-          message: textareaValue.errors[0].message, // TODO: bytte denne til en generell tilbakemelding på Norsk
+          message: textareaValue.errors[0].message,
         });
       } else {
         clearErrors(['csvTextarea']);

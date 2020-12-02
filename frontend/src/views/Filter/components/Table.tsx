@@ -10,6 +10,19 @@ const useStyles = makeStyles({
     marginLeft: 'auto',
   },
 });
+/**
+ * Table
+ * @category Views
+ * @subcategory Filter
+ * @param {IParticipants[]} participantList list over particpants
+ * @return {React.Component} <Table /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <Table participantList={participantList} />
+ * )
+ */
 export default function Table({ participantList }: { participantList: IParticipants[] }) {
   const columns: ColDef[] = [
     { field: 'name', headerName: 'Navn', width: 200 },

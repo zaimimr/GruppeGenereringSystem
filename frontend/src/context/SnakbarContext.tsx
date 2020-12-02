@@ -1,6 +1,20 @@
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import React, { createContext, ReactNode, useCallback, useContext, useMemo } from 'react';
+
+/**
+ * SnackbarContext
+ * @category Context
+ * @property {function} useSnackbar Global snackbar
+ */
+/**
+ * showSnackbar
+ * @category Context
+ * @property {'success' | 'error'} setSnackType Global snackbar type
+ * @property {boolean} setSnackbarOpen Global snackbar is open
+ * @property {string} setSnackMessage Global snackbar message
+ */
+
 type ContextProps = {
   showSnackbar: (type: 'success' | 'error', message: string) => void;
 };

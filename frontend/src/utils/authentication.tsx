@@ -6,6 +6,12 @@ import { getEvents, getUserWithToken, setAuthHeader, verifyToken } from 'utils/a
 
 import { IUser } from './types';
 
+/**
+ * useAuth
+ * @category Utils
+ * @return {boolean} If user is authenticated
+ */
+
 export const useAuth = () => {
   const [hasAuth, setHasAuth] = React.useState(false);
   const [cookies, , removeCookie] = useCookies(['access_token']);

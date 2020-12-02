@@ -2,6 +2,13 @@ import { Backdrop, Box, CircularProgress, Theme, Typography } from '@material-ui
 import { createStyles, makeStyles } from '@material-ui/styles';
 import React from 'react';
 
+/**
+ * LoadingScreenProps
+ * @category Types
+ * @alias LoadingScreenProps
+ * @typedef {object} LoadingScreenProps
+ * @property {string} message Message displayed with the loading screen
+ */
 export type LoadingScreenProps = {
   message: string;
 };
@@ -13,7 +20,20 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
-
+/**
+ * LoadingScreen component
+ *
+ * @category Components
+ * @param {string} message  Loadingscreen message
+ * @return {React.Component} <LoadingScreen /> component
+ *
+ * ""
+ * @example
+ *
+ * return (
+ *   <LoadingScreenProps message="Example loadingscreen" />
+ * )
+ */
 function LoadingScreen({ message }: LoadingScreenProps) {
   const classes = useStyles();
 

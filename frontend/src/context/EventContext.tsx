@@ -1,5 +1,16 @@
 import * as React from 'react';
 import { ICsvData, IParticipants, IPresentData } from 'utils/types';
+
+/**
+ * EventContext
+ * @category Context
+ * @property {ICsvData[]} useSetCsvGroups Global useState of CsvGroups
+ * @property {IParticipants[]} useSetParticipants Global useState of participants in an event
+ * @property {IPresentData} useSetOriginalGroups Global useState of generated groups
+ * @property {Event[]} useEvents Global useState of active events
+ * @return {object}
+ */
+
 type Context = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSetCsvGroups: any;

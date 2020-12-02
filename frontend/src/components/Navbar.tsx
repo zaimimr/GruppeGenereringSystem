@@ -16,6 +16,18 @@ const useStyles = makeStyles(() =>
   }),
 );
 
+/**
+ * Navbar component
+ * @category Components
+ * @return {React.Component} <Navbar /> component
+ * ""
+ * @example
+ *
+ * return (
+ *   <Navbar />
+ * )
+ *
+ */
 function Navbar() {
   const [user, setUser] = useSetUser();
   const history = useHistory();
