@@ -73,7 +73,7 @@ function Filter() {
     const filters = [{ name: undefined, minimum: inputNumberParser(formData.minimumPerGroup), maximum: inputNumberParser(formData.maximumPerGroup) }];
     uniqueGroups.forEach((group) =>
       // eslint-disable-next-line
-      filters.push({ name: group as any, minimum: inputNumberParser(formData[`${group}_min`]), maximum: inputNumberParser(formData[`${group}_min`]) }),
+      filters.push({ name: group as any, minimum: inputNumberParser(formData[`${group}_min`]), maximum: inputNumberParser(formData[`${group}_max`]) }),
     );
     const data: IFilterData = {
       participants: joinedParticipants,
