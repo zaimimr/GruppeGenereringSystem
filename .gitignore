@@ -1,0 +1,14 @@
+**/node_modules
+**/coverage
+.idea
+frontend/build
+frontend/.eslintcache
+**/.env
+frontend.env
+
+backend/.gradle
+backend/build
+
+**/.DS_Store
+frontend/.eslintcache
+frontend/yarn.lock
