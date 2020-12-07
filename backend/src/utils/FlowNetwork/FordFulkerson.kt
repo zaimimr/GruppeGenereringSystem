@@ -1,3 +1,5 @@
+// Inspiration from: https://github.com/williamfiset/Algorithms/blob/master/src/main/java/com/williamfiset/algorithms/graphtheory/networkflow/examples/FordFulkersonExample.java
+
 package com.gruppe7.utils.FlowNetwork
 
 import com.gruppe7.utils.types.Edge

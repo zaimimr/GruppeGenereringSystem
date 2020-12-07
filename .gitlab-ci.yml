@@ -35,7 +35,7 @@ test:
     - sleep 20
     - cd backend
     - ./gradlew test
-
+    
 build:
   stage: build
   script:
@@ -53,15 +53,15 @@ lint:
 deploy_jsdoc:
   stage: deploy_jsdoc
   script:
+      - ls
       - cd frontend
       - yarn global add jsdoc
       - yarn install
       - yarn docs
       - cd ..
-      - mkdir .public
-      - mkdir .public/jsdoc
-      - mv frontend/docs .public/jsdoc
-      - mv .public/jsdoc public
+      - mkdir jsdoc
+      - cp -r frontend/docs jsdoc
+      - mv jsdoc public
   artifacts:
     paths:
       - public
@@ -96,13 +96,11 @@ deploy_coverage:
   image: openjdk:14-ea-8-jdk-alpine3.10
   stage: deploy_coverage
   script:
+    - ls public
     - cd backend
     - ./gradlew clean build jacocoTestReport
     - cd ..
-    - mkdir .public
-    - mkdir .public/coverage
-    - mv backend/build/reports/jacoco/test/html .public/coverage
-    - mv .public/coverage public
+    - mv backend/build/reports/jacoco/test public
   artifacts:
     paths:
       - public
@@ -111,13 +109,11 @@ deploy_ktdoc:
   image: openjdk:14-ea-8-jdk-alpine3.10
   stage: deploy_ktdoc
   script:
+      - ls public
       - cd backend
       - ./gradlew dokkaHtml
       - cd ..
-      - mkdir .public
-      - mkdir .public/dokka
-      - mv backend/build/dokka/html .public/dokka
-      - mv .public/dokka public
+      - mv backend/build/dokka public
   artifacts:
     paths:
       - public
@@ -125,11 +121,9 @@ deploy_ktdoc:
 deploy_pages:
   stage: deploy_pages
   script:
-      - mkdir .public
-      - cd .public
-      - echo "<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Gen-g report</title><meta name="description" content="Pages view"><meta name="author" content="Gen-g"></head><body><a href="dokka/html/gruppe7/index.html">Backend code documentation</a><br/><a href="coverage/html/index.html">Backend test coverage</a><br/><a href="docs/index.html">Fro code documentation</a></body></html>" > index.html
-      - cd ..
-      - mv .public public
+      - ls public
+      - echo "<!doctype html><html lang=en><head><title>Gen-g report</title></head><body><a href=dokka/html/gruppe7/index.html>Backend code documentation</a><br /><a href=test/html/index.html>Backend test coverage</a><br /><a href=docs/index.html>Frontend code documentation</a></body></html>" > index.html
+      - mv index.html public/index.html
   artifacts:
     paths:
       - public
