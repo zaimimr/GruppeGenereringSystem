@@ -1,26 +1,5 @@
 # Gruppegenereringssystem
 
-## Frontend
-
-## Backend
-
-### Installation:
-
-Add `.env` to `/backend`-root, and add to file:
-
-```
-DATABASE_URL=db
-DATABASE_USERNAME=root
-DATABASE_PASSWORD=password
-```
-
-To run project, go to `/backend` and run:
-
-```
-docker-compose build
-docker-compose up
-```
-
 ## Arbeidstittel: Gruppegenereringssystem
 
 ### Hensikten med oppgaven:
