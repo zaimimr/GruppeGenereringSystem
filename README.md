@@ -1,23 +1,8 @@
-# Gruppegenereringssystem
+# Group Generation System
+## Working Title: Group Generation System
+### Purpose of the Assignment
+Create a system for automatically generating groups at various events (typically workshops, etc.).
+Short description of the project proposal:
+Forming groups in different contexts can take a surprising amount of time and can be difficult to achieve in a way that satisfies everyone. The goal is to develop a system that allows an organizer to create an event with participants and then send out an email to the participants containing a link to a web page (mobile support is required) along with a PIN code (this information should also be included as a QR code in the email). The participant then logs in via the link/QR code and registers whether they are present at the event.
 
-## Arbeidstittel: Gruppegenereringssystem
-
-### Hensikten med oppgaven:
-
-Lage system for automatisk generering av grupper ved forskjellige evenementer (typisk workshops o.l.)
-Kort beskrivelse av oppgaveforslag:
-Det å opprette grupper i forskjellige sammenhenger, er noe som kan ta overraskende mye tid og samtidig være vanskelig å gjøre alle fornøyde med resultatet. Det er ønskelig med et system som tar utgangspunkt i at ansvarlig oppretter et evenement med deltakere, som deretter sender ut en mail til deltakerne med en link til en web-side (mobil-støtte er påkrevd) med en tilhørende PIN-kode (denne informasjonen bør også inkluderes som en QR-kode i mailen). Deltakeren logger deretter inn via linken/QR-koden og registrerer seg om tilstedeværende på evenementet.
-
-Deretter skal ansvarlig kunne automatisk få opprettet grupper basert på forskjellige kriterier (maks./min. antall på hver gruppe, deltakere kan ønske seg på gruppe med andre deltakere, f.eks.), og systemet skal så sende ut mail til deltakerne om hvem de er på gruppe med. Dersom ikke gruppene kan opprettes i henhold til de gitte kriteriene ansvarlig har satt, skal det presenteres et "best effort"-forslag fra systemet.
-
-### Navn på bedrift eller organisasjon:
-
-3D Motion Technologies
-
-### Navn på kontaktperson/veileder:
-
-Sander
-
-### Utfyllende kommentarer til hva oppgaven gjelder:
-
-Dette er et prosjekt som på overflaten virker ganske rett fram, men i realiteten kan vise seg å være komplisert. Det er spesielt "best effort"-delen som blir utfordrende.
+Afterwards, the organizer should be able to automatically generate groups based on different criteria (e.g., maximum/minimum number of participants per group, participants can request to be in a group with specific other participants, etc.), and the system should then send an email to the participants about which group they have been assigned to. If it is not possible to create groups according to the specified criteria set by the organizer, the system should present a "best effort" suggestion.
